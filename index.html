@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Craig-Reynolds Algorithm</title>
+    <script src="toji-gl-matrix-6866ae9/dist/gl-matrix.js"></script>
+    <script src="mouseCords.js"></script>
+    <script src="vehicle.js"></script>
+</head>
+<body style="margin:0;padding:0;overflow:hidden;">
+    <div class="canvas">
+        <canvas class="viewport" style="background: #eee;"></canvas>
+        <script>
+            var canvas = document.querySelector('.viewport'),
+            ctx = canvas.getContext('2d');
+            canvas.width = 500;
+            canvas.height = 500;
+            
+            var pageX = document.getElementById("x");
+            var pageY = document.getElementById("y");
+            
+            function MouseCordinates(event) {
+                pageX.innerText = event.pageX;
+                pageY.innerText = event.pageY;
+            }
+
+            canvas.addEventListener("mousemove", MouseCordinates, false);
+            canvas.addEventListener("mouseenter", MouseCordinates, false);
+            canvas.addEventListener("mouseleave", MouseCordinates, false);
+
+            var vehicle = new Vehicle(250,250);
+
+            function draw() {
+                ctx.save();
+                ctx.setTransform(1,0,0,1,0,0,);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.restore();
+
+                
+  
+                
+                vehicle.render();
+                vehicle.update();
+                vehicle.seek();
+
+            }
+            
+            setInterval(draw,100);
+
+        </script>
+        <p>
+            <code>pageX</code>: <span id="x">n/a</span>
+          </p>
+          <p>
+            <code>pageY</code>: <span id="y">n/a</span>
+    </div>
+</body>
+</html>
