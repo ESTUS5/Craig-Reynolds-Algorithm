@@ -1,13 +1,13 @@
 var Mouse = function()
 {
-    this.x = 100;
-    this.y = 100;
+    this.xm = 250;
+    this.ym = 250;
     var that = this;
     this.Init = function(element)
     {
         $(element).on("mousemove", function(event){
-            that.x = event.pageX;
-            that.y = event.pageY;
+            that.xm = event.pageX;
+            that.ym = event.pageY;
         });
     };
 };
