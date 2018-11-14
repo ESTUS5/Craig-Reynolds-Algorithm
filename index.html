@@ -13,45 +13,7 @@
 <body style="margin:0;padding:0;overflow:hidden;">
         <canvas id="VP" class="viewport" style="background: #eee;"></canvas>
         <div id="log"></div>
-        <script>
-            var canvas = document.querySelector('.viewport'),
-            ctx = canvas.getContext('2d');
-            canvas.width = 800;
-            canvas.height = 500;
-            mouseObj.Init("#VP");
-            
-            var veh1 = new Vehicle();
-            $( document ).on( "mousemove", function( event ) {
-            $( "#log" ).text( "pageX: " + event.pageX + ", pageY: " + event.pageY );
-            });
-            $(function() {
-                createSlider($( "#slider-maxspeed" ), $( "#val_maxspeed" ));
-                createSlider($( "#slider-maxforce" ), $( "#val_maxforce" ));
-                createSlider($( "#slider-mass" ), $( "#val_mass" ));    
-            });
-            function draw() {
-                ctx.setTransform(1,0,0,1,0,0,); // <- JS magic for PathBegin()..
-                ctx.clearRect(0, 0, canvas.width, canvas.height);   
-                veh1.run();
-                veh1.radius = $('slider-mass').slider("option", "value");
-            }
-            setInterval(draw,16);
 
-            function createSlider(slider, boundTextField) {
-            slider.slider({
-                orientation: "horizontal",
-                range: "min",
-                step: 0.1,
-                min: 1.0,
-                max: 20.0,
-                value: 1.0,
-                slide: function( event, ui ) {
-                    boundTextField.val( ui.value );
-                }
-            })
-            }
-        </script>
-        
         <p>
             <input type="text" id="val_maxspeed"  />
             <input type="text" id="val_maxforce"  />
@@ -61,6 +23,47 @@
         <div id="slider-maxspeed" style="width: 200px;"></div>
         <div id="slider-maxforce" style="width: 200px;"></div>
         <div id="slider-mass" style="width: 200px;"></div>
+        
+        <script>
+            var canvas = document.querySelector('.viewport'),
+            ctx = canvas.getContext('2d');
+            canvas.width = 800;
+            canvas.height = 500;
+            mouseObj.Init("#VP");
+        //    $( document ).on( "mousemove", function( event ) {
+        //    $( "#log" ).text( "pageX: " + event.pageX + ", pageY: " + event.pageY );
+        //    });
+        function createSlider(slider, boundTextField) {
+            slider.slider({
+                orientation: "horizontal",
+                range: "min",
+                step: 0.1,
+                min: 1.0,
+                max: 20.0,
+                value: 4.0,
+                slide: function( event, ui ) {
+                    boundTextField.val( ui.value );
+                }
+            })
+            }
+            $(function() {
+                createSlider($( "#slider-maxspeed" ), $( "#val_maxspeed" ));
+                createSlider($( "#slider-maxforce" ), $( "#val_maxforce" ));
+                createSlider($( "#slider-mass" ), $( "#val_mass" ));    
+            });
+            var veh1 = new Vehicle(100,100);
+            var veh2 = new Vehicle(50,100);
+            function draw() {
+                ctx.setTransform(1,0,0,1,0,0,); // <- JS magic for PathBegin()..
+                ctx.clearRect(0, 0, canvas.width, canvas.height);   
+                veh1.run();
+                veh2.run();
+                $( "#log" ).text( veh1.radius ); 
+                veh1.radius = $( "#slider-mass" ).slider( "value");
+            }
+            setInterval(draw,16); 
+            
+        </script>
 
 </body>
 </html>
