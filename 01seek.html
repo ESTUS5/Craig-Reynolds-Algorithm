@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Craig-Reynolds Algorithm</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+    <link rel="stylesheet" href="slider.css" /> 
+    <link rel="stylesheet" href="anchorSteer.css" /> 
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+    <script src="mouse.js"></script>
+    <script src="vehicle.js"></script>
+    <script src="slider.js"></script>
+</head>
+<body style="margin:0;padding:0;overflow:hidden;">
+        <a id="anchorlinkSteer" class="anchorSteer" href="./00home.html">
+            Back to Main page
+        </a>
+        <canvas id="VP" class="viewport" style="background: #eee;"></canvas>
+        <div style="width: 800px; height: 20px; font-size: 4.7mm; text-align: center">
+                Mouse position x:
+                <span id="mouse_posX"></span>
+                y:
+                <span id="mouse_posY"></span>
+                Vehicle position x:
+                <span id="vehicle_posX"></span>
+                y:
+                <span id="vehicle_posY"></span>
+
+        </div>
+
+        <script>
+            var canvas = document.querySelector('.viewport'),
+            ctx = canvas.getContext('2d');
+            canvas.width = 800;
+            canvas.height = 400;
+            mouseObj.Init("#VP");
+            
+            $( canvas ).on( "mousemove", function( event ) {
+                $( "#mouse_posX" ).text( " " + event.pageX );
+                $( "#mouse_posY" ).text( " " + event.pageY - 25 );
+            });
+
+            $(function() {
+                createSlider($( "#slider-radius" ), $( "#val_radius" ), 1, 20, 3);
+                createSlider($( "#slider-maxspeed" ), $( "#val_maxspeed" ), 0.1, 8, 4);
+                createSlider($( "#slider-maxforce" ), $( "#val_maxforce" ), 0.1, 4, 1);    
+            });
+
+            var vehicle = new Vehicle(100,100);
+            function draw() {
+                ctx.setTransform(1,0,0,1,0,0,); // <- JS magic for PathBegin()..
+                ctx.clearRect(0, 0, canvas.width, canvas.height);   
+                vehicle.renderPathFromVehicleToPosXY(mouseObj.x,mouseObj.y);
+                vehicle.renderCircleAroundPosXY(vehicle.position[0],vehicle.position[1]);
+                vehicle.renderVehicle();
+                vehicle.seek();
+                vehicle.update();
+                vehicle.radius = $('#slider-radius').slider("option", "value");
+                vehicle.maxforce = $('#slider-maxforce').slider("option", "value");
+                vehicle.maxspeed = $('#slider-maxspeed').slider("option", "value");
+                    $("#vehicle_rad").text("Radius: " +  vehicle.radius);
+                    $("#vehicle_maxs").text("Maxspeed: " +  vehicle.maxspeed);
+                    $("#vehicle_maxf").text("Maxforce: " +  vehicle.maxforce);
+                    $("#vehicle_posX").text(Math.ceil(vehicle.position[0]));
+                    $("#vehicle_posY").text(Math.ceil(vehicle.position[1]));
+            }
+            setInterval(draw,16);
+        </script>
+        <div id="slider-radius" style="width: 200px;margin-top: 40px">
+            <div id="vehicle_rad" style="position: relative; bottom: 30px; text-align: center"></div>
+        </div>
+        <div id="slider-maxspeed" style="width: 200px;margin-top: 40px">
+            <div id="vehicle_maxs"  style="position: relative; bottom: 30px; text-align: center"></div>
+        </div>
+        <div id="slider-maxforce" style="width: 200px;margin-top: 40px">
+            <div id="vehicle_maxf"  style="position: relative; bottom: 30px; text-align: center"></div>
+        </div>
+</body>
+</html>
