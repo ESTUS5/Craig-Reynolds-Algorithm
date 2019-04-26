@@ -1,0 +1,34 @@
+#backToHome{
+    position: relative;
+}
+
+#main{
+    position: relative;
+    background-color: #ffe9de;
+    color: #333;
+    border: 2px solid #333;
+    padding: 1px 1px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 2px 2px;
+    
+}
+.box {
+    display: inline-block;
+    position: relative;
+    color: #fff;
+    line-height: 20px;
+    text-align: center;
+    border-radius: 3px;
+    background: #333;
+    padding: 5px 10px;
+    margin-left: 8px;
+}
+
+#codeSnippet{
+    position: relative;
+    margin: 0 auto;
+    top: 1px;
+}
+ 

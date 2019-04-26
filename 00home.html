@@ -1,20 +1,111 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <title>Craig-Reynolds Algorithm</title>
+    <link rel="stylesheet" href="button.css" />
+    <link rel="stylesheet" href="01seek.css">
 </head>
+
 <body>
-    <p>Simulations</p>
-        <nav>
-                <ul>
-                    <a>Basic behaviours</a>
-                    <ul>
-                        <li><a href="./01seek.html">Seek after mouse position </a></li>
-                        <li><a href="./02seekPhysics.html">Pursuit of moving target</a></li>
-                        <li><a href="./03arrive.html">Flee from the mouse</a></li>
-                    </ul>
-                </ul>
-              </nav>
+    <div class="box" style="width:400px;">
+        <div class="box" style="color: black; background: rgb(92, 224, 213);width: 390px;height: 20px;font-size: 4.7mm;text-align: center;
+        margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 8px;">
+            Simulations
+        </div>
+
+        <div class="box" style="color: black; background: rgb(92, 224, 213);width: 380px;height: 20px;font-size: 4.7mm;text-align: center;
+                margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;">
+            Basic behaviors
+        </div>
+
+        <div class="container">
+            <button class="button" onclick='window.location.href = "./01seek.html"'>
+                Seek
+            </button>
+        </div>
+        <div class="container">
+            <button class="button" onclick='window.location.href = "./02flee.html"'>
+                Flee
+            </button>
+        </div>
+        <div class="container">
+            <button class="button" onclick='window.location.href = "./03arrive.html"'>
+                Arrival
+            </button>
+        </div>
+        <div class="container">
+            <button class="button" onclick='window.location.href = "./04pursue_evade.html"'>
+                Pursue and Evade
+            </button>
+        </div>
+        <div class="container">
+            <button class="button" onclick='window.location.href = "./05wander.html"'>
+                Wander
+            </button>
+        </div>
+        <div class="container">
+            <button class="button" onclick='window.location.href = "./06obstacle_avoid.html"'>
+                Obstacle Avoidance
+            </button>
+        </div>
+        <div class="container">
+            <button class="button" onclick='window.location.href = "./07containment.html"'>
+                Containment
+            </button>
+        </div>
+        <div class="container">
+            <button class="button" onclick='window.location.href = "./08wall_follow.html"'>
+                Wall Following
+            </button>
+        </div>
+        <div class="container">
+            <button class="button" onclick='window.location.href = "./09Path_Following.html"'>
+                Path Following
+            </button>
+        </div>
+        <div class="container">
+            <button class="button" onclick='window.location.href = "./10flow.html"'>
+                Flow Field Following
+            </button>
+        </div>
+
+
+        <div class="box" style="color: black; background: rgb(92, 224, 213);width: 380px;height: 20px;font-size: 4.7mm;text-align: center;
+                margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;
+                margin-top: 5px;">
+            Combined behaviors
+        </div>
+        <div class="container">
+            <button class="button" onclick='window.location.href = "./11CrowdPathFollow.html"'>
+                Crowd Path Following
+            </button>
+        </div>
+        <div class="container">
+            <button class="button" onclick='window.location.href = "./12flow.html"'>
+                Leader Following
+            </button>
+        </div>
+        <div class="container">
+            <button class="button" onclick='window.location.href = "./13flow.html"'>
+                Unaligned Collision Avoidance
+            </button>
+        </div>
+        <div class="container">
+            <button class="button" onclick='window.location.href = "./14flow.html"'>
+                Queueing
+            </button>
+        </div>
+        <div class="container">
+            <button class="button" onclick='window.location.href = "./15flow.html"'>
+                Flocking (separation, alignment, cohesion)
+            </button>
+        </div>
+
+
+        </nav>
+    </div>
 </body>
+
 </html>

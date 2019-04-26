@@ -6,8 +6,8 @@ var Mouse = function()
     this.Init = function(element)
     {
         $(element).on("mousemove", function(event){
-            that.x = event.pageX;
-            that.y = event.pageY - 25;
+            that.x = event.clientX -5;
+            that.y = event.clientY - 51;
         });
     };
 };

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Craig-Reynolds Algorithm</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+    <link rel="stylesheet" href="sliderStyle.css" />
+    <link rel="stylesheet" type="text/css" href="desert.css" />
+    <link rel="stylesheet" href="01seek.css" />
+    <link rel="stylesheet" href="button.css" />
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+    <script src="vector.js"></script>
+    <script src="mouse.js"></script>
+    <script src="vehicle.js"></script>
+    <script src="sliderStyle.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script src="board.js"></script>
+</head>
+
+<body style="margin:0;padding:0;overflow:hidden;">
+    <div id="backToHome" class="container" style="width: 400px;">
+        <button class="button" onclick='window.location.href = "./00home.html"'>
+            Back to home page
+        </button>
+    </div>
+    <div id="main" class="container" style="display: inline-block;width: 800px;padding-right: 0px;">
+        <canvas id="VP" class="viewport" style="background: #eee;"></canvas>
+        <div class="box" style="width: 780px;height: 20px;font-size: 4.7mm;text-align: center;
+        margin-left: 0px;padding-left: 0px;padding-right: 0px;">
+            Vehicle position x:
+            <span id="vehicle_posX"></span>
+            y:
+            <span id="vehicle_posY"></span>
+            velocity:
+            <span id="vehicle_vel"></span>
+        </div>
+        <div class="range-slider" style="display: inline-block;top: 20px;">
+            <div class="box">Maxspeed</div>
+            <input id="maxspeed" class="range-slider__range" type="range" value="4" min="0" max="7" step="0.01">
+            <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+        </div>
+        <div class="range-slider" style="display: inline-block;margin-left:100px;margin-right:80px;">
+            <div class="box">Maxforce</div>
+            <input id="maxforce" class="range-slider__range" type="range" value="0.1" min="0" max="5" step="0.01">
+            <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+        </div>
+        <script>
+            var canvas = document.querySelector('.viewport'),
+                ctx = canvas.getContext('2d');
+            canvas.width = 800;
+            canvas.height = 400;
+            mouseObj.Init("#VP");
+            var vehicle = new Vehicle(100, 100);
+            var num_of_divs = 4;
+            var move = "one";
+            board = new Board(800, 400, num_of_divs);
+            board.create_vectors();
+
+            document.getElementById("VP").addEventListener('click', function () {
+                if( move == "all"){
+                    console.log('all')
+                    board.move_vectors(mouseObj);
+                }
+                else if (move == "one"){
+                    console.log('one')
+                    board.move_vector(mouseObj);
+                }
+            }, false);
+
+            rangeSlider();
+            function draw() {
+                ctx.setTransform(1, 0, 0, 1, 0, 0); // <- JS magic for PathBegin()..
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                vehicle.renderCircleAround(mouseObj.x,mouseObj.y);
+                
+                board.draw();
+                vehicle.renderVehicle();
+                target = board.tile(vehicle.position.x, vehicle.position.y)
+                vehicle.onlyCanvas();
+                vehicle.renderVectorTo(target[0], target[1]);
+                vehicle.seek(target[0], target[1]);
+                vehicle.update();
+                vehicle.maxforce = document.getElementById("maxforce").value;
+                vehicle.maxspeed = document.getElementById("maxspeed").value;
+                $("#vehicle_posX").text(Math.ceil(vehicle.position.x));
+                $("#vehicle_posY").text(Math.ceil(vehicle.position.y));
+                $("#vehicle_vel").text((vehicle.velocity.length()).toFixed(2))
+            }
+            setInterval(draw, 14);
+        </script>
+    </div>
+    <div id="codeSnippet" class="container" style="display: inline-block; margin: 0px;">
+        <pre class="prettyprint linenums" style="position: inherit;margin-top: 0px;margin-bottom: 0px;">
+            Board.prototype.tile = function (obj_posX, obj_posY) {
+                for (let x = 0; x < this.divisions; x++) {
+                    if (obj_posX < this.vectors_arr[x][0][2]) {
+                        for (let y = 0; y < this.divisions; y++) {
+                            if (obj_posY < this.vectors_arr[x][y][3]) {
+                                if (this.vectors_arr[x][y][0] > (this.vectors_arr[x][y][2] - 100)) {
+                                    var bx = this.vectors_arr[x][y][2] + 1;
+                                }
+                                else {
+                                    var bx = this.vectors_arr[x][y][2] - 201;
+                                }
+                                var a = (this.vectors_arr[x][y][1] - (this.vectors_arr[x][y][3] - 50))
+                                     / (this.vectors_arr[x][y][0] - (this.vectors_arr[x][y][2] - 100));
+                                if (a == Infinity || a == -Infinity) {
+                                    a = 0;
+                                }
+                                var b = obj_posY - a * obj_posX;
+                                var by = a * bx + b;
+                                if (by > this.vectors_arr[x][y][3]) {
+                                    by = this.vectors_arr[x][y][3];
+                                    bx = (by - b) / a;
+                                }
+                                else if (by < this.vectors_arr[x][y][3] - 100) {
+                                    by = this.vectors_arr[x][y][3] - 100;
+                                    bx = (by - b) / a;
+                                }
+                                return [bx, by];
+                            }
+                        }
+                    }
+                }
+            }
+            target = board.tile(vehicle.position.x, vehicle.position.y)
+            vehicle.seek(target[0], target[1]);</pre>
+    </div>
+</body>
+
+</html>

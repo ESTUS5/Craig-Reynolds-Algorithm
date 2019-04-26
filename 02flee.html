@@ -11,20 +11,21 @@
   <link rel="stylesheet" href="button.css" />
   <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
   <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
-  <script src="mouse.js"></script>
   <script src="vector.js"></script>
+  <script src="mouse.js"></script>
   <script src="vehicle.js"></script>
   <script src="sliderStyle.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
 </head>
 
-<body style="margin:0;padding:0;overflow:hidden; background-color: hsl(118, 83%, 68%);">
+<body style="margin:0;padding:0;overflow:hidden; font-family:sans-serif; font-style: bold;">
   <div id="backToHome" class="container">
     <button class="button" onclick='window.location.href = "./00home.html"'>
-      Back to home page</button>
+      Back to home page
+    </button>
   </div>
   <div id="main" class="container" style="display: inline-block;width: 800px;padding-right: 0px;">
-    <canvas id="VP" class="viewport" style="background: #eee; position: relative;"></canvas>
+    <canvas id="VP" class="viewport" style="background: #eee;"></canvas>
 
     <div class="box" style="width: 780px;height: 20px;font-size: 4.7mm;text-align: center;
       margin-left: 0px;padding-left: 0px;padding-right: 0px;">
@@ -42,6 +43,7 @@
       Vehicle velocity :
       <span id="vehicle_vel"></span>
     </div>
+
     <div class="range-slider" style="display: inline-block;top: 20px;">
       <div class="box">Maxspeed</div>
       <input id="maxspeed" class="range-slider__range" type="range" value="4" min="0" max="7" step="0.01">
@@ -52,11 +54,12 @@
       <input id="maxforce" class="range-slider__range" type="range" value="0.1" min="0" max="5" step="0.01">
       <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
     </div>
+
     <script>
-      var canvas = document.querySelector('.viewport'),
-        ctx = canvas.getContext('2d');
+      var canvas = document.querySelector('.viewport');
+      ctx = canvas.getContext('2d');
       canvas.width = 800;
-      canvas.height = 350;
+      canvas.height = 400;
       mouseObj.Init("#VP");
 
       $(canvas).on("mousemove", function (event) {
@@ -70,56 +73,56 @@
         ctx.setTransform(1, 0, 0, 1, 0, 0); // <- JS magic for PathBegin()..
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         vehicle.renderVehicle();
-        vehicle.seek();
+        vehicle.flee(safeDistance = 100);
+        vehicle.outOfBounds();
         vehicle.update();
         vehicle.renderCircleAround(mouseObj.x, mouseObj.y, 5);
         vehicle.maxforce = document.getElementById("maxforce").value;
         vehicle.maxspeed = document.getElementById("maxspeed").value;
-        //$("#vehicle_maxs").text("Maxspeed: " +  vehicle.maxspeed);
-        //$("#vehicle_maxf").text("Maxforce: " +  vehicle.maxforce);
         $("#vehicle_posX").text(Math.ceil(vehicle.position.x));
         $("#vehicle_posY").text(Math.ceil(vehicle.position.y));
         $("#vehicle_vel").text((vehicle.velocity.length()).toFixed(2));
       }
-
-      setInterval(draw, 30);
-
+      setInterval(draw, 16);
     </script>
   </div>
 
   <div id="codeSnippet" class="container" style="display: inline-block; margin: 0px;">
     <pre class="prettyprint linenums" style="position: inherit;margin-top: 0px;margin-bottom: 0px;">
-class Vehicle 
-{
-  constructor(x, y) {
-    this.acceleration = new Vector(0, 0),
-    this.velocity = new Vector(0, 0),
-    this.position = new Vector(x, y),
-    this.radius = 10,
-    this.maxspeed = 4,
-    this.maxforce = 0.1;
-    this.desired_velocity = new Vector(0, 0);
-  }
-  update() {
-    this.velocity = this.velocity.add(this.acceleration);
-    this.velocity.limit(this.maxspeed);
-    this.position = this.position.add(this.velocity);
-    this.acceleration = this.acceleration.multiply(0);
-  }
-  applyForce(force) {
-    force.limit(this.maxforce);
-    this.acceleration.equal(force);
-  }
-  seek(targetX = mouseObj.x, targetY = mouseObj.y) {
-    this.desired_velocity = new Vector(targetX, targetY);
-    this.desired_velocity = this.desired_velocity.subtract(this.position);
-    this.desired_velocity = this.desired_velocity.normalize();
-    this.desired_velocity = this.desired_velocity.multiply(this.maxspeed);
-    this.steering_force = this.desired_velocity.subtract(this.velocity);
-    this.applyForce(this.steering_force);
-  }
-}
-</pre>
+        class Vehicle 
+        {
+          constructor(x, y) {
+            this.acceleration = new Vector(0, 0),
+            this.velocity = new Vector(0, 0),
+            this.position = new Vector(x, y),
+            this.radius = 10,
+            this.maxspeed = 4,
+            this.maxforce = 0.1;
+            this.desired_velocity = new Vector(0, 0);
+          }
+          update() {
+            this.velocity = this.velocity.add(this.acceleration);
+            this.velocity.limit(this.maxspeed);
+            this.position = this.position.add(this.velocity);
+            this.acceleration = this.acceleration.multiply(0);
+          }
+          applyForce(force) {
+            force.limit(this.maxforce);
+            this.acceleration.equal(force);
+          }
+          flee(safeDistance = 100,targetX = mouseObj.x, targetY = mouseObj.y) {
+            this.desired_velocity = new Vector(targetX, targetY);
+            if (this.desired_velocity.distanceBetweenPoints(this.position) < safeDistance) {
+              this.desired_velocity = this.desired_velocity.subtract(this.position);
+              this.desired_velocity = this.desired_velocity.normalize();
+              this.desired_velocity = this.desired_velocity.multiply(-this.maxspeed);
+            }
+            else {
+              this.desired_velocity = this.desired_velocity.multiply(0);
+            }
+            this.steering_force = this.desired_velocity.subtract(this.velocity);
+            this.applyForce(this.steering_force);
+        }</pre>
   </div>
 </body>
 

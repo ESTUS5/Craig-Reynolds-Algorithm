@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Craig-Reynolds Algorithm</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+    <link rel="stylesheet" href="sliderStyle.css" />
+    <link rel="stylesheet" type="text/css" href="desert.css" />
+    <link rel="stylesheet" href="01seek.css" />
+    <link rel="stylesheet" href="button.css" />
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+    <script src="vector.js"></script>
+    <script src="mouse.js"></script>
+    <script src="vehicle.js"></script>
+    <script src="sliderStyle.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+</head>
+
+<body style="margin:0;padding:0;overflow:hidden;">
+    <div id="backToHome" class="container" style="width: 400px;">
+        <button class="button" onclick='window.location.href = "./00home.html"'>
+            Back to home page
+        </button>
+    </div>
+    <div id="main" class="container" style="display: inline-block;width: 800px;padding-right: 0px;">
+
+        <canvas id="VP" class="viewport" style="background: #eee;"></canvas>
+        <div class="box" style="width: 780px;height: 20px;font-size: 4.7mm;text-align: center;
+        margin-left: 0px;padding-left: 0px;padding-right: 0px;">
+            Vehicle position x:
+            <span id="vehicle_posX"></span>
+            y:
+            <span id="vehicle_posY"></span>
+            velocity:
+            <span id="vehicle_vel"></span>
+
+        </div>
+
+        <div>
+            <div class="range-slider" style="display: inline-block;top: 20px;">
+                <div class="box">Maxspeed</div>
+                <input id="maxspeed" class="range-slider__range" type="range" value="2" min="0" max="7" step="0.01">
+                <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+            </div>
+            <div class="range-slider" style="display: inline-block;margin-left:100px;margin-right:80px;">
+                <div class="box">Maxforce</div>
+                <input id="maxforce" class="range-slider__range" type="range" value="0.1" min="0" max="5" step="0.01">
+                <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+            </div>
+        </div>
+        <div>
+            <div class="range-slider" style="display: inline-block;top: 20px;">
+                <div class="box">Length</div>
+                <input id="L" class="range-slider__range" type="range" value="50" min="0">
+                <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+            </div>
+            <div class="range-slider" style="display: inline-block;margin-left:100px;margin-right:80px;">
+                <div class="box">Radius</div>
+                <input id="r" class="range-slider__range" type="range" value="20" min="0">
+                <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+            </div>
+        </div>
+
+
+        <script>
+            var canvas = document.querySelector('.viewport'),
+                ctx = canvas.getContext('2d');
+            canvas.width = 800;
+            canvas.height = 400;
+
+            var vehicle = new Vehicle(100, 100);
+            vehicle.theta = Math.random() * 360;
+            rangeSlider();
+            function draw() {
+                ctx.setTransform(1, 0, 0, 1, 0, 0); // <- JS magic for PathBegin()..
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                vehicle.renderVehicle();
+                vehicle.wander(document.getElementById("L").value,
+                    document.getElementById("r").value);
+                vehicle.outOfBounds();
+                vehicle.update();
+                vehicle.maxforce = document.getElementById("maxforce").value;
+                vehicle.maxspeed = document.getElementById("maxspeed").value;
+                $("#vehicle_posX").text(Math.ceil(vehicle.position.x));
+                $("#vehicle_posY").text(Math.ceil(vehicle.position.y));
+                $("#vehicle_vel").text((vehicle.velocity.length()).toFixed(2))
+            }
+            setInterval(draw, 50);
+        </script>
+    </div>
+    <div id="codeSnippet" class="container" style="display: inline-block; margin: 0px;">
+        <pre class="prettyprint linenums" style="position: inherit;margin-top: 0px;margin-bottom: 0px;">
+        class Vehicle 
+        {
+          constructor(x, y) {
+            this.acceleration = new Vector(0, 0),
+            this.velocity = new Vector(0, 0),
+            this.position = new Vector(x, y),
+            this.radius = 10,
+            this.maxspeed = 2,
+            this.maxforce = 0.1;
+            this.desired_velocity = new Vector(0, 0);
+          }
+          update() {
+            this.velocity = this.velocity.add(this.acceleration);
+            this.velocity.limit(this.maxspeed);
+            this.position = this.position.add(this.velocity);
+            this.acceleration = this.acceleration.multiply(0);
+          }
+          applyForce(force) {
+            force.limit(this.maxforce);
+            this.acceleration.equal(force);
+          }
+          wander(length, radius) {
+            var lengthVector = this.velocity.normalize().multiply(length);
+            lengthVector = this.position.add(lengthVector);
+            this.theta += ((Math.random() * 10) - (10 * .5));
+            var radiusVector = new Vector(Math.cos(this.theta) * radius,
+              Math.sin(this.theta) * radius);
+            radiusVector = lengthVector.add(radiusVector);
+            this.seek(radiusVector.x, radiusVector.y);
+          }
+        }</pre>
+    </div>
+</body>
+
+</html>
