@@ -19,15 +19,15 @@
 </head>
 
 <body style="margin:0;padding:0;overflow:hidden;">
-    <div id="backToHome" class="container" style="width: 400px;">
+    <div id="backToHome" class="container">
         <button class="button" onclick='window.location.href = "./00home.html"'>
             Back to home page
         </button>
     </div>
-    <div id="main" class="container" style="display: inline-block;width: 800px;padding-right: 0px;">
+    <div id="main" class="container" style="display: inline-block;width: 50%;padding-right: 0px;">
 
         <canvas id="VP" class="viewport" style="background: #eee;"></canvas>
-        <div class="box" style="width: 780px;height: 20px;font-size: 4.7mm;text-align: center;
+        <div class="box" style="width: 90%;height: 20px;font-size: 4.7mm;text-align: center;
         margin-left: 0px;padding-left: 0px;padding-right: 0px;">
             Vehicle position x:
             <span id="vehicle_posX"></span>
@@ -67,14 +67,14 @@
         <script>
             var canvas = document.querySelector('.viewport'),
                 ctx = canvas.getContext('2d');
-            canvas.width = 800;
-            canvas.height = 400;
+            canvas.width = screen.width / 2;
+            canvas.height = 300;
             mouseObj.Init("#VP");
             var vehicle = new Vehicle(canvas.width/2, canvas.height/2);
             vehicle.theta = Math.random() * 360;
-            var obj1x = Math.random() * 800,obj1y = Math.random() * 400,obj1radius = Math.random() * 100,
-            obj2x = Math.random() * 800,obj2y = Math.random() * 400,obj2radius = Math.random() * 100,
-            obj3x = Math.random() * 800,obj3y = Math.random() * 400,obj3radius = Math.random() * 100;
+            var obj1x = Math.random() * canvas.width,obj1y = Math.random() * canvas.height,obj1radius = Math.random() * 100,
+            obj2x = Math.random() * canvas.width,obj2y = Math.random() * canvas.height,obj2radius = Math.random() * 100,
+            obj3x = Math.random() * canvas.width,obj3y = Math.random() * canvas.height,obj3radius = Math.random() * 100;
             var obj1 = [new Vector(obj1x,obj1y),obj1radius],
             obj2 = [new Vector(obj2x,obj2y),obj2radius],
             obj3 = [new Vector(obj3x,obj3y),obj3radius];
@@ -104,34 +104,35 @@
     </div>
     <div id="codeSnippet" class="container" style="display: inline-block; margin: 0px;">
         <pre class="prettyprint linenums" style="position: inherit;margin-top: 0px;margin-bottom: 0px;">
-        class Vehicle 
-        {
-          avoidObstacle(objects, distantPosition = 100, margin = 15) {
-            var predictVehiclePosition = this.velocity.normalize().multiply(distantPosition);
-            predictVehiclePosition = this.position.add(predictVehiclePosition);
-            var smallestDistance = predictVehiclePosition.distanceBetweenPoints(this.position);
-            var closestObj = new Vector(0, 0), closestNormalPoint = new Vector(0, 0);
-            for (let i = 0; i < objects.length; i++) {
-              var normalPointObj = objects[i][0].normalPoint(this.position, predictVehiclePosition);
-              if (normalPointObj.isBetween(this.position, predictVehiclePosition) == true) {
-                if (normalPointObj.distanceBetweenPoints(objects[i][0]) < (objects[i][1] + margin)) {
-                  if (normalPointObj.distanceBetweenPoints(this.position) < smallestDistance) {
-                    smallestDistance = normalPointObj.distanceBetweenPoints(this.position);
-                    closestObj = objects[i][0];
-                    closestNormalPoint = normalPointObj;
-                  }
-                }
-              }
-            }
-            var mirrorTarget = closestObj.mirror(closestNormalPoint);
-            if (mirrorTarget.x != 0 && mirrorTarget.y != 0) {
-              this.seek(mirrorTarget.x, mirrorTarget.y);
-            }
-            else {
-              this.seek(mouseObj.x, mouseObj.y);
-            }
+class Vehicle {
+  avoidObstacle(objects, distantPosition = 100, margin = 15) {
+    var predictVehPosition = this.velocity.normalize();
+    predictVehPosition = predictVehPosition.multiply(distantPosition);
+    predictVehPosition = this.position.add(predictVehPosition);
+    var Distance = predictVehPosition.distanceBetweenPoints(this.position);
+    var closestObj = new Vector(0, 0), closestNormalPoint = new Vector(0, 0);
+    for (let i = 0; i < objects.length; i++) {
+      var normalObj = objects[i][0].normalPoint(this.position,
+          predictVeosition);
+      if (normalObj.isBetween(this.position, predictVehPosition) == true) {
+        if(normalObj.distanceBetweenPoints(objects[i][0]) <
+           (objects[i][1] + margin)){
+          if (normalObj.distanceBetweenPoints(this.position) < Distance) {
+            Distance = normalObj.distanceBetweenPoints(this.position);
+            closestObj = objects[i][0];
+            closestNormalPoint = normalObj;
           }
-        }</pre>
+        }
+      }
+    }
+    var mirrorTarget = closestObj.mirror(closestNormalPoint);
+    if (mirrorTarget.x != 0 && mirrorTarget.y != 0) {
+      this.seek(mirrorTarget.x, mirrorTarget.y);
+    }
+    else {
+      this.seek(mouseObj.x, mouseObj.y);
+    }
+}</pre>
     </div>
 </body>
 

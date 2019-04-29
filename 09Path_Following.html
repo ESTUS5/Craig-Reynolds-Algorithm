@@ -28,9 +28,9 @@
       Random the Path
     </button>
   </div>
-  <div id="main" class="container" style="display: inline-block;width: 800px;padding-right: 0px;">
-    <canvas id="VP" class="viewport" style="background: #eee;"></canvas>
-    <div class="box" style="width: 780px;height: 20px;font-size: 4.7mm;text-align: center;
+  <div id="main" class="container" style="display: inline-block;width: 50%;padding-right: 0px;top: -32px;left: -34px;">
+    <canvas id="VP" class="viewport" style="background: #eee;height: 300px;"></canvas>
+    <div class="box" style="width: 90%;height: 20px;font-size: 4.7mm;text-align: center;
         margin-left: 0px;padding-left: 0px;padding-right: 0px;">
       Vehicle position x:
       <span id="vehicle_posX"></span>
@@ -40,31 +40,31 @@
       <span id="vehicle_vel"></span>
     </div>
     <div>
-      <div class="range-slider" style="display: inline-block;top: 20px;">
+      <div id="ms" class="range-slider" style="display: inline-block;top: 20px;scale: 80%">
         <div class="box">Maxspeed</div>
         <input id="maxspeed" class="range-slider__range" type="range" value="2" min="0" max="7" step="0.01">
         <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
       </div>
-      <div class="range-slider" style="display: inline-block;margin-left:100px;margin-right:80px;">
+      <div id="mf" class="range-slider" style="display: inline-block;margin-left:100px;margin-right:80px;scale: 80%">
         <div class="box">Maxforce</div>
         <input id="maxforce" class="range-slider__range" type="range" value="0.1" min="0" max="5" step="0.01">
         <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
       </div>
     </div>
     <div>
-      <div class="range-slider" style="display: inline-block;top: 20px;">
+      <div id="pd" class="range-slider" style="display: inline-block;top: 20px;scale: 80%">
         <div class="box">Predict distance</div>
         <input id="Predict" class="range-slider__range" type="range" value="30" min="0">
         <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
       </div>
-      <div class="range-slider" style="display: inline-block;margin-left:100px;margin-right:80px;">
+      <div id="to" class="range-slider" style="display: inline-block;margin-left:100px;margin-right:80px;scale: 80%">
         <div class="box">Target offset</div>
         <input id="Target" class="range-slider__range" type="range" value="10" min="0">
         <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
       </div>
     </div>
     <div>
-      <div class="range-slider" style="display: inline-block;top: 20px;">
+      <div id="pr" class="range-slider" style="display: inline-block;top: 20px;scale: 80%">
         <div class="box">Path radius</div>
         <input id="Radius" class="range-slider__range" type="range" value="20" min="0">
         <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
@@ -73,11 +73,11 @@
     <script>
       var canvas = document.querySelector('.viewport'),
         ctx = canvas.getContext('2d');
-      canvas.width = 800;
-      canvas.height = 400;
-
+      canvas.width = screen.width / 2;
+      canvas.height = 300;
+      $('#main').css({ transform: 'scale(.9)' });
       var path = new Path(0, 210, 400, 210, 20);
-      path.addPoint(830, 220);
+      path.addPoint(canvas.width + 30, 220);
       var option = 'off';
       document.getElementById("Random").addEventListener('click', function () {
         option = 'on';
@@ -100,14 +100,14 @@
         if (option == 'on') {
           var numberOfPoints = Math.ceil(Math.random() * 3);
           if (numberOfPoints == 0) {
-            path = new Path(-20, Math.random() * canvas.height, 810, Math.random() * canvas.height, document.getElementById("Radius").value);
+            path = new Path(-20, Math.random() * canvas.height, canvas.width + 10, Math.random() * canvas.height, document.getElementById("Radius").value);
           }
           else {
             path = new Path(-10, Math.random() * canvas.height, 100 + Math.random() * 100, Math.random() * canvas.height, document.getElementById("Radius").value);
             for (let i = 0; i < numberOfPoints-1; i++) {
               path.addPoint(path.points[i + 1].x+ 100 + Math.random() * 200, Math.random() * canvas.height);
             }
-            path.addPoint(820, Math.random() * canvas.height);
+            path.addPoint(canvas.width + 30, Math.random() * canvas.height);
           }
           vehicle = new Vehicle(-30, 110);
           vehicle.choosePath(path.points, path.radius);
@@ -125,40 +125,45 @@
       setInterval(draw, 14);
     </script>
   </div>
-  <div id="codeSnippet" class="container" style="display: inline-block; margin: 0px;">
+  <div id="codeSnippet" class="container" style="display: inline-block; margin: 0px;left: -68px;top: -37px">
     <pre class="prettyprint linenums" style="position: inherit;margin-top: 0px;margin-bottom: 0px;">
-      choosePath(path, radius) {
-        this.path = path,
-          this.pathRadius = radius,
-          this.pathCurrentPoint = 0;
+class Vehicle {
+  choosePath(path, radius) {
+    this.path = path,
+      this.pathRadius = radius,
+      this.pathCurrentPoint = 0;
+  }
+  followPath(predictDistance = 30, targetOffset = 10,displayForces = "on") {
+    var predictVehPosition = this.velocity.normalize();
+    predictVehPosition = predictVehPosition.multiply(predictDistance);
+    predictVehPosition = this.position.add(predictVehPosition);
+    var normalPoint = new Vector(0, 0), 
+        oa, ob, target, smallest_distance = 10000;
+    for (let i = 0; i < this.path.length - 1; i++) {
+      var a = this.path[i];
+      var b = this.path[i + 1];
+      normalPoint = predictVehPosition.normalPoint(a, b);
+      if ((normalPoint.x < Math.min(a.x,b.x)) ||
+         (normalPoint.x > Math.max(a.x,b.x))) {
+        normalPoint.equal(b);
       }
-      followPath(predictDistance = 30,targetOffset = 10) {
-        var predictVehiclePosition = this.velocity.normalize().multiply(predictDistance);
-        predictVehiclePosition = this.position.add(predictVehiclePosition);
-        var normalPoint = new Vector(0, 0), oa, ob, target, smallest_distance = 10000;
-        for (let i = 0; i < this.path.length - 1; i++) {
-          var a = this.path[i];
-          var b = this.path[i + 1];
-          normalPoint = predictVehiclePosition.normalPoint(a, b);
-          if (normalPoint.x < a.x || normalPoint.x > b.x) {
-            normalPoint.equal(b);
-          }
-          var distance = predictVehiclePosition.distanceBetweenPoints(normalPoint);
-          if (distance < smallest_distance) {
-            smallest_distance = distance;
-            target = normalPoint;
-            oa = a;
-            ob = b;
-          }
-        }
-        var dir = ob.subtract(oa);
-        dir = dir.normalize().multiply(targetOffset);
-        target = target.add(dir);
-        var distance = predictVehiclePosition.distanceBetweenPoints(target);
-        if (distance > this.pathRadius) {
-          this.seek(target.x, target.y);
-        }
-        }</pre>
+      var distance = predictVehPosition.distanceBetweenPoints(normalPoint);
+      if (distance < smallest_distance) {
+        smallest_distance = distance;
+        target = normalPoint;
+        oa = a;
+        ob = b;
+      }
+    }
+    var dir = ob.subtract(oa);
+    dir = dir.normalize().multiply(targetOffset);
+    var target_dir = target.add(dir);
+    var distance = predictVehPosition.distanceBetweenPoints(target);
+    if (distance > this.pathRadius ) {
+      this.seek(target_dir.x, target_dir.y);
+    }
+  }
+}</pre>
   </div>
 </body>
 

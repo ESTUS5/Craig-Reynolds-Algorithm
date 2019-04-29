@@ -23,11 +23,14 @@
         <button class="button" onclick='window.location.href = "./00home.html"'>
             Back to home page
         </button>
+        <button id="Forces" class="button">
+                Display Forces
+        </button>
     </div>
-    <div id="main" class="container" style="display: inline-block;width: 800px;padding-right: 0px;">
+    <div id="main" class="container" style="display: inline-block;width: 50%;padding-right: 0px;">
 
         <canvas id="VP" class="viewport" style="background: #eee;"></canvas>
-        <div class="box" style="width: 780px;height: 20px;font-size: 4.7mm;text-align: center;
+        <div class="box" style="width: 90%;height: 20px;font-size: 4.7mm;text-align: center;
         margin-left: 0px;padding-left: 0px;padding-right: 0px;">
             Vehicle position x:
             <span id="vehicle_posX"></span>
@@ -62,23 +65,30 @@
                 <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
             </div>
         </div>
-
-
         <script>
             var canvas = document.querySelector('.viewport'),
                 ctx = canvas.getContext('2d');
-            canvas.width = 800;
-            canvas.height = 400;
+            canvas.width = screen.width / 2;
+            canvas.height = 300;
 
             var vehicle = new Vehicle(100, 100);
             vehicle.theta = Math.random() * 360;
+            var displayForces = 'off';
+            document.getElementById("Forces").addEventListener('click', function () {
+                if(displayForces == 'on'){
+                    displayForces = 'off';
+                }
+                else{
+                    displayForces = 'on';
+                }
+            }, false);
             rangeSlider();
             function draw() {
                 ctx.setTransform(1, 0, 0, 1, 0, 0); // <- JS magic for PathBegin()..
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 vehicle.renderVehicle();
                 vehicle.wander(document.getElementById("L").value,
-                    document.getElementById("r").value);
+                    document.getElementById("r").value,displayForces);
                 vehicle.outOfBounds();
                 vehicle.update();
                 vehicle.maxforce = document.getElementById("maxforce").value;
@@ -92,37 +102,35 @@
     </div>
     <div id="codeSnippet" class="container" style="display: inline-block; margin: 0px;">
         <pre class="prettyprint linenums" style="position: inherit;margin-top: 0px;margin-bottom: 0px;">
-        class Vehicle 
-        {
-          constructor(x, y) {
-            this.acceleration = new Vector(0, 0),
-            this.velocity = new Vector(0, 0),
-            this.position = new Vector(x, y),
-            this.radius = 10,
-            this.maxspeed = 2,
-            this.maxforce = 0.1;
-            this.desired_velocity = new Vector(0, 0);
-          }
-          update() {
-            this.velocity = this.velocity.add(this.acceleration);
-            this.velocity.limit(this.maxspeed);
-            this.position = this.position.add(this.velocity);
-            this.acceleration = this.acceleration.multiply(0);
-          }
-          applyForce(force) {
-            force.limit(this.maxforce);
-            this.acceleration.equal(force);
-          }
-          wander(length, radius) {
-            var lengthVector = this.velocity.normalize().multiply(length);
-            lengthVector = this.position.add(lengthVector);
-            this.theta += ((Math.random() * 10) - (10 * .5));
-            var radiusVector = new Vector(Math.cos(this.theta) * radius,
-              Math.sin(this.theta) * radius);
-            radiusVector = lengthVector.add(radiusVector);
-            this.seek(radiusVector.x, radiusVector.y);
-          }
-        }</pre>
+class Vehicle 
+{
+  constructor(x, y) {
+    this.acceleration = new Vector(0, 0),
+    this.velocity = new Vector(0, 0),
+    this.position = new Vector(x, y),
+    this.radius = 10,
+    this.maxspeed = 4,
+    this.maxforce = 0.1;
+    this.desired_velocity = new Vector(0, 0);
+  }
+  update() {
+    this.velocity = this.velocity.add(this.acceleration);
+    this.velocity.limit(this.maxspeed);
+    this.position = this.position.add(this.velocity);
+    this.acceleration = this.acceleration.multiply(0);
+  }
+  applyForce(force) {
+    this.acceleration = this.acceleration.add(force);
+  }
+  wander(length, radius) {
+    var lengthVector = this.velocity.normalize().multiply(length);
+    lengthVector = this.position.add(lengthVector);
+    this.theta += ((Math.random() * 15) - (15 * .5));
+    var radiusVector = new Vector(Math.cos(this.theta) * radius,
+      Math.sin(this.theta) * radius);
+    radiusVector = lengthVector.add(radiusVector);
+    this.seek(radiusVector.x, radiusVector.y);
+}</pre>
     </div>
 </body>
 

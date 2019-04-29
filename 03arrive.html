@@ -18,23 +18,26 @@
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
 </head>
 
-<body style="margin:0;padding:0;overflow:hidden;">
+<body style="margin:0;padding:0;overflow:hidden;font-family:sans-serif; font-style: bold;">
   <div id="backToHome" class="container">
     <button class="button" onclick='window.location.href = "./00home.html"'>
       Back to home page
     </button>
+    <button id="Forces" class="button">
+      Display forces
+    </button>
   </div>
-  <div id="main" class="container" style="display: inline-block;width: 800px;padding-right: 0px;">
+  <div id="main" class="container" style="display: inline-block;width: 50%;padding-right: 0px;">
     <canvas id="VP" class="viewport" style="background: #eee;"></canvas>
 
-    <div class="box" style="width: 780px;height: 20px;font-size: 4.7mm;text-align: center;
+    <div class="box" style="width: 90%;height: 20px;font-size: 4.7mm;text-align: center;
               margin-left: 0px;padding-left: 0px;padding-right: 0px;">
       Mouse position x:
       <span id="mouse_posX"></span>
       y:
       <span id="mouse_posY"></span>
     </div>
-    <div class="box" style="width: 780px;height: 20px;font-size: 4.7mm;text-align: center;
+    <div class="box" style="width: 90%;height: 20px;font-size: 4.7mm;text-align: center;
               margin-left: 0px;padding-left: 0px;padding-right: 0px; top: -4px;">
       Vehicle position x:
       <span id="vehicle_posX"></span>
@@ -54,27 +57,38 @@
       <input id="maxforce" class="range-slider__range" type="range" value="0.1" min="0" max="5" step="0.01">
       <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
     </div>
-
+    <div class="range-slider" style="display: inline-block;margin-left:100px;margin-right:80px;">
+        <div class="box">Arrival radius</div>
+        <input id="arrivalRadius" class="range-slider__range" type="range" value="100" min="1" max="500" step="0.01">
+        <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+      </div>  
     <script>
       var canvas = document.querySelector('.viewport'),
         ctx = canvas.getContext('2d');
-      canvas.width = 800;
-      canvas.height = 400;
+      canvas.height = 300;
+      canvas.width = screen.width / 2;
       mouseObj.Init("#VP");
-
       $(canvas).on("mousemove", function (event) {
         $("#mouse_posX").text(" " + mouseObj.x);
         $("#mouse_posY").text(" " + mouseObj.y);
       });
-
-
+      var displayForces = 'off';
+      document.getElementById("Forces").addEventListener('click', function () {
+        if(displayForces == 'on'){
+            displayForces = 'off';
+        }
+        else{
+            displayForces = 'on';
+        }
+      }, false);
       rangeSlider();
       var vehicle = new Vehicle(100, 100);
       function draw() {
         ctx.setTransform(1, 0, 0, 1, 0, 0); // <- JS magic for PathBegin()..
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         vehicle.renderVehicle();
-        vehicle.arrival();
+        vehicle.arrival(targetX = mouseObj.x,targetY = mouseObj.y,
+          arrivalDistance = document.getElementById("arrivalRadius").value,displayForces=displayForces);
         vehicle.update();
         vehicle.maxforce = document.getElementById("maxforce").value;
         vehicle.maxspeed = document.getElementById("maxspeed").value;
@@ -87,43 +101,41 @@
   </div>
   <div id="codeSnippet" class="container" style="display: inline-block; margin: 0px;">
     <pre class="prettyprint linenums" style="position: inherit;margin-top: 0px;margin-bottom: 0px;">
-    class Vehicle 
-    {
-      constructor(x, y) {
-        this.acceleration = new Vector(0, 0),
-        this.velocity = new Vector(0, 0),
-        this.position = new Vector(x, y),
-        this.radius = 10,
-        this.maxspeed = 4,
-        this.maxforce = 0.1;
-        this.desired_velocity = new Vector(0, 0);
-      }
-      update() {
-        this.velocity = this.velocity.add(this.acceleration);
-        this.velocity.limit(this.maxspeed);
-        this.position = this.position.add(this.velocity);
-        this.acceleration = this.acceleration.multiply(0);
-      }
-      applyForce(force) {
-        force.limit(this.maxforce);
-        this.acceleration.equal(force);
-      }
-      arrival(targetX = mouseObj.x, targetY = mouseObj.y,arrivalDistance = 100) {
-        this.desired_velocity = new Vector(targetX, targetY);
-        this.desired_velocity = this.desired_velocity.subtract(this.position);
-        var d = this.desired_velocity.length();
-        this.desired_velocity = this.desired_velocity.normalize();
-        if ( d <= arrivalDistance) {
-          var m = this.desired_velocity.map(d,this.maxspeed);
-          this.desired_velocity = this.desired_velocity.multiply(m); 
-        }
-        else {
-          this.desired_velocity = this.desired_velocity.multiply(this.maxspeed);
-        }
-        this.steering_force = this.desired_velocity.subtract(this.velocity);
-        this.applyForce(this.steering_force);
-      }
-    }</pre>
+class Vehicle {
+  constructor(x, y) {
+    this.acceleration = new Vector(0, 0),
+    this.velocity = new Vector(0, 0),
+    this.position = new Vector(x, y),
+    this.radius = 15,
+    this.maxspeed = 4,
+    this.maxforce = 0.1;
+    this.desired_velocity = new Vector(0, 0);
+  }
+  update() {
+    this.velocity = this.velocity.add(this.acceleration);
+    this.velocity.limit(this.maxspeed);
+    this.position = this.position.add(this.velocity);
+    this.acceleration = this.acceleration.multiply(0);
+  }
+  applyForce(force) {
+    this.acceleration = this.acceleration.add(force);
+  }
+  arrival(targetX = mouseObj.x, targetY = mouseObj.y,arrivalDistance = 100) {
+    this.desired_velocity = new Vector(targetX, targetY);
+    this.desired_velocity = this.desired_velocity.subtract(this.position);
+    var d = this.desired_velocity.length();
+    this.desired_velocity = this.desired_velocity.normalize();
+    if ( d <= arrivalDistance) {
+      var m = this.desired_velocity.map(d,this.maxspeed);
+      this.desired_velocity = this.desired_velocity.multiply(m); 
+    }
+    else {
+      this.desired_velocity = this.desired_velocity.multiply(this.maxspeed);
+    }
+    this.steering_force = this.desired_velocity.subtract(this.velocity);
+    this.applyForce(this.steering_force);
+  }
+}</pre>
   </div>
 </body>
 

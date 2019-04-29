@@ -15,20 +15,22 @@ class Vehicle {
     this.acceleration = this.acceleration.multiply(0);
   }
   applyForce(force) {
-    force.limit(this.maxforce);
     this.acceleration = this.acceleration.add(force);
   }
-  seek(targetX = mouseObj.x, targetY = mouseObj.y) {
+  seek(targetX, targetY,displayForces = 'off') {
     this.desired_velocity = new Vector(targetX, targetY);
     this.desired_velocity = this.desired_velocity.subtract(this.position);
     this.desired_velocity = this.desired_velocity.normalize();
     this.desired_velocity = this.desired_velocity.multiply(this.maxspeed);
     this.steering_force = this.desired_velocity.subtract(this.velocity);
+    this.steering_force.limit(this.maxforce);
     this.applyForce(this.steering_force);
-
-    this.renderForces();
+    if(displayForces == "on"){
+      this.renderForces();
+    }
+    return this.steering_force;
   }
-  flee(safeDistance = 100, targetX = mouseObj.x, targetY = mouseObj.y) {
+  flee(safeDistance = 100, targetX = mouseObj.x, targetY = mouseObj.y,displayForces = 'off') {
     this.desired_velocity = new Vector(targetX, targetY);
     if (this.desired_velocity.distanceBetweenPoints(this.position) < safeDistance) {
       this.desired_velocity = this.desired_velocity.subtract(this.position);
@@ -39,12 +41,15 @@ class Vehicle {
       this.desired_velocity = this.desired_velocity.multiply(0);
     }
     this.steering_force = this.desired_velocity.subtract(this.velocity);
+    this.steering_force.limit(this.maxforce);
     this.applyForce(this.steering_force);
-
-    this.renderCircleAround(this.position.x, this.position.y, safeDistance);
-    this.renderForces();
+    if(displayForces == 'on'){
+      this.renderCircleAround(this.position.x, this.position.y, safeDistance);
+      this.renderForces();
+    }
+    return this.steering_force;
   }
-  arrival(targetX = mouseObj.x, targetY = mouseObj.y, arrivalDistance = 100) {
+  arrival(targetX = mouseObj.x, targetY = mouseObj.y, arrivalDistance = 100,displayForces = 'off') {
     this.desired_velocity = new Vector(targetX, targetY);
     this.desired_velocity = this.desired_velocity.subtract(this.position);
     var d = this.desired_velocity.length();
@@ -57,49 +62,57 @@ class Vehicle {
       this.desired_velocity = this.desired_velocity.multiply(this.maxspeed);
     }
     this.steering_force = this.desired_velocity.subtract(this.velocity);
+    this.steering_force.limit(this.maxforce);
     this.applyForce(this.steering_force);
-
-    this.renderCircleAround(targetX, targetY, arrivalDistance);
-    this.renderForces();
+    if(displayForces == "on"){
+      this.renderCircleAround(targetX, targetY, arrivalDistance);
+      this.renderForces();
+    }
+    return this.steering_force;
   }
-  wander(length, radius) {
-    var lengthVector = this.velocity.normalize().multiply(length);
+  wander(length, radius,displayForces = 'off') {
+    var lengthVector = this.velocity.normalize();
+    lengthVector = lengthVector.multiply(length);
     lengthVector = this.position.add(lengthVector);
     this.theta += ((Math.random() * 15) - (15 * .5));
     var radiusVector = new Vector(Math.cos(this.theta) * radius,
-      Math.sin(this.theta) * radius);
+    Math.sin(this.theta) * radius);
     radiusVector = lengthVector.add(radiusVector);
-    this.seek(radiusVector.x, radiusVector.y);
-    this.ctx = canvas.getContext("2d");
-    this.ctx.beginPath();
-    this.ctx.moveTo(this.position.x, this.position.y);
-    this.ctx.lineTo(radiusVector.x, radiusVector.y);
-    this.ctx.strokeStyle = "rgba(150,0,0,0.5)";
-    this.ctx.stroke();
-    this.ctx.closePath();
-    this.ctx.beginPath();
-    this.ctx.moveTo(this.position.x, this.position.y);
-    this.ctx.lineTo(lengthVector.x, lengthVector.y);
-    this.ctx.lineTo(radiusVector.x, radiusVector.y);
-    this.ctx.strokeStyle = "rgba(50,200,0,0.5)";
-    this.ctx.stroke();
-    this.ctx.closePath();
-    this.renderCircleAround(lengthVector.x, lengthVector.y, radius);
+    this.seek(radiusVector.x,radiusVector.y,displayForces);
+    if(displayForces == 'on'){
+      this.ctx = canvas.getContext("2d");
+      this.ctx.beginPath();
+      this.ctx.moveTo(this.position.x, this.position.y);
+      this.ctx.lineTo(radiusVector.x, radiusVector.y);
+      this.ctx.strokeStyle = "rgba(150,0,0,0.5)";
+      this.ctx.stroke();
+      this.ctx.closePath();
+      this.ctx.beginPath();
+      this.ctx.moveTo(this.position.x, this.position.y);
+      this.ctx.lineTo(lengthVector.x, lengthVector.y);
+      this.ctx.lineTo(radiusVector.x, radiusVector.y);
+      this.ctx.strokeStyle = "rgba(50,200,0,0.5)";
+      this.ctx.stroke();
+      this.ctx.closePath();
+      this.renderCircleAround(lengthVector.x, lengthVector.y, radius);
+    }
   }
-  avoidObstacle(objects, distantPosition = 100, margin = 15) {
+  avoidObstacle(objects, distantPosition = 100, margin = 15, displayForces = 'off') {
     var predictVehiclePosition = this.velocity.normalize().multiply(distantPosition);
     predictVehiclePosition = this.position.add(predictVehiclePosition);
     var smallestDistance = predictVehiclePosition.distanceBetweenPoints(this.position);
     var closestObj = new Vector(0, 0), closestNormalPoint = new Vector(0, 0);
     for (let i = 0; i < objects.length; i++) {
       var normalPointObj = objects[i][0].normalPoint(this.position, predictVehiclePosition);
-      this.renderCircleAround(normalPointObj.x, normalPointObj.y, 5)
-      this.ctx.beginPath();
-      this.ctx.moveTo(normalPointObj.x, normalPointObj.y);
-      this.ctx.lineTo(objects[i][0].x, objects[i][0].y);
-      this.ctx.strokeStyle = "rgba(44,44,70,0.5)";
-      this.ctx.stroke();
-      this.ctx.closePath();
+      if(displayForces == 'on'){
+        this.renderCircleAround(normalPointObj.x, normalPointObj.y, 5)
+        this.ctx.beginPath();
+        this.ctx.moveTo(normalPointObj.x, normalPointObj.y);
+        this.ctx.lineTo(objects[i][0].x, objects[i][0].y);
+        this.ctx.strokeStyle = "rgba(44,44,70,0.5)";
+        this.ctx.stroke();
+        this.ctx.closePath();
+      }
       if (normalPointObj.isBetween(this.position, predictVehiclePosition) == true) {
         if (normalPointObj.distanceBetweenPoints(objects[i][0]) < (objects[i][1] + margin)) {
           if (normalPointObj.distanceBetweenPoints(this.position) < smallestDistance) {
@@ -113,60 +126,82 @@ class Vehicle {
     var mirrorTarget = closestObj.mirror(closestNormalPoint);
     if (mirrorTarget.x != 0 && mirrorTarget.y != 0) {
       this.seek(mirrorTarget.x, mirrorTarget.y);
+      if(displayForces=='on'){
+        this.ctx.beginPath();
+        this.ctx.moveTo(this.position.x, this.position.y);
+        this.ctx.lineTo(mirrorTarget.x, mirrorTarget.y);
+        this.ctx.strokeStyle = "rgba(255,0,0,1)";
+        this.ctx.stroke();
+        this.ctx.closePath();
+      }
+    }
+    else {
+      this.wander(50,30,displayForces);
+    }
+    if(displayForces=='on'){
+      this.ctx = canvas.getContext("2d");
       this.ctx.beginPath();
       this.ctx.moveTo(this.position.x, this.position.y);
-      this.ctx.lineTo(mirrorTarget.x, mirrorTarget.y);
+      this.ctx.lineTo(predictVehiclePosition.x, predictVehiclePosition.y);
+      this.ctx.lineWidth = margin * 2;
+      this.ctx.strokeStyle = "rgba(50,155,50,0.3)";
+      this.ctx.stroke();
+      this.ctx.closePath();
+      this.ctx.lineWidth = 1;
+      this.ctx.beginPath();
+      this.ctx.moveTo(this.position.x, this.position.y);
+      this.ctx.lineTo(predictVehiclePosition.x, predictVehiclePosition.y);
       this.ctx.strokeStyle = "rgba(255,0,0,1)";
       this.ctx.stroke();
       this.ctx.closePath();
+      this.ctx.beginPath();
+      var axisPlus = this.velocity.normalize().multiply(900),
+        axisPlus = this.position.add(axisPlus),
+        axisMinus = this.velocity.normalize().multiply(-900),
+        axisMinus = this.position.add(axisMinus);
+      this.ctx.moveTo(axisPlus.x, axisPlus.y);
+      this.ctx.lineTo(axisMinus.x, axisMinus.y);
+      this.ctx.strokeStyle = "rgba(44,44,70,0.5)";
+      this.ctx.stroke();
+      this.ctx.closePath();
     }
-    else {
-      this.seek(mouseObj.x, mouseObj.y);
-    }
-    this.ctx = canvas.getContext("2d");
-    this.ctx.beginPath();
-    this.ctx.moveTo(this.position.x, this.position.y);
-    this.ctx.lineTo(predictVehiclePosition.x, predictVehiclePosition.y);
-    this.ctx.lineWidth = margin * 2;
-    this.ctx.strokeStyle = "rgba(50,155,50,0.3)";
-    this.ctx.stroke();
-    this.ctx.closePath();
-    this.ctx.lineWidth = 1;
-    this.ctx.beginPath();
-    this.ctx.moveTo(this.position.x, this.position.y);
-    this.ctx.lineTo(predictVehiclePosition.x, predictVehiclePosition.y);
-    this.ctx.strokeStyle = "rgba(255,0,0,1)";
-    this.ctx.stroke();
-    this.ctx.closePath();
-    this.ctx.beginPath();
-    var axisPlus = this.velocity.normalize().multiply(900),
-      axisPlus = this.position.add(axisPlus),
-      axisMinus = this.velocity.normalize().multiply(-900),
-      axisMinus = this.position.add(axisMinus);
-    this.ctx.moveTo(axisPlus.x, axisPlus.y);
-    this.ctx.lineTo(axisMinus.x, axisMinus.y);
-    this.ctx.strokeStyle = "rgba(44,44,70,0.5)";
-    this.ctx.stroke();
-    this.ctx.closePath();
   }
-  pursue(target_position, target_velocity) {
+  pursue(target_position, target_velocity,displayForces ='off') {
     var d = this.position.distanceBetweenPoints(target_position);
     var T = d / this.maxspeed;
     var target = target_position.add(target_velocity.multiply(T))
-    this.seek(target.x, target.y);
+    this.seek(target.x, target.y,displayForces);
+    if(displayForces == 'on'){
+      this.ctx = canvas.getContext('2d');
+      this.ctx.beginPath();
+      this.ctx.moveTo(this.position.x,this.position.y);
+      this.ctx.lineTo(target.x,target.y);
+      this.ctx.strokeStyle = "rgba(40,80,60,0.5)";
+      this.ctx.stroke();
+      this.ctx.closePath();
+    }
   }
-  evade(target_position, target_velocity) {
+  evade(target_position, target_velocity, displayForces = 'off') {
     var d = this.position.distanceBetweenPoints(target_position);
     var T = d / this.maxspeed;
     var target = target_position.add(target_velocity.multiply(T))
-    this.flee(200, target.x, target.y);
+    this.flee(200, target.x, target.y,displayForces);
+    if(displayForces == 'on'){
+      this.ctx = canvas.getContext('2d');
+      this.ctx.beginPath();
+      this.ctx.moveTo(this.position.x,this.position.y);
+      this.ctx.lineTo(target.x,target.y);
+      this.ctx.strokeStyle ="rgba(40,80,60,0.5)";
+      this.ctx.stroke();
+      this.ctx.closePath();
+    }
   }
   choosePath(path, radius) {
     this.path = path,
       this.pathRadius = radius,
       this.pathCurrentPoint = 0;
   }
-  followPath(predictDistance = 30, targetOffset = 10,displayForces = "on") {
+  followPath(predictDistance = 30, targetOffset = 10,displayForces = "off") {
     var predictVehiclePosition = this.velocity.normalize().multiply(predictDistance);
     predictVehiclePosition = this.position.add(predictVehiclePosition);
     var normalPoint = new Vector(0, 0), oa, ob, target, smallest_distance = 10000;
@@ -174,7 +209,6 @@ class Vehicle {
       var a = this.path[i];
       var b = this.path[i + 1];
       normalPoint = predictVehiclePosition.normalPoint(a, b);
-      console.log(normalPoint)
       if ((normalPoint.x < Math.min(a.x,b.x)) || (normalPoint.x > Math.max(a.x,b.x))) {
         normalPoint.equal(b);
       }
@@ -191,7 +225,7 @@ class Vehicle {
     var target_dir = target.add(dir);
     var distance = predictVehiclePosition.distanceBetweenPoints(target);
     if (distance > this.pathRadius ) {
-      this.seek(target_dir.x, target_dir.y);
+      this.seek(target_dir.x, target_dir.y,displayForces);
     }
     if(displayForces == "on"){
       this.ctx = canvas.getContext("2d");
@@ -208,7 +242,7 @@ class Vehicle {
     }
   }
   separation(Vehicles) {
-    var desired_seperation = this.radius * 2;
+    var desired_seperation = this.radius * 3;
     var sumVector = new Vector(0, 0);
     var j = 0;
     for (let i = 0; i < Vehicles.length; i++) {
@@ -225,16 +259,75 @@ class Vehicle {
       sumVector = sumVector.divide(j);
       sumVector = sumVector.normalize();
       sumVector = sumVector.multiply(this.maxspeed);
-      var steer = sumVector.subtract(this.velocity);
-      this.applyForce(steer);
+      sumVector = sumVector.subtract(this.velocity);
+      sumVector.limit(this.maxforce);
+      this.applyForce(sumVector);
     }
+    return sumVector;
+  }
+  align(Vehicles,neighbourDistance = 50) {
+    var sumVector = new Vector(0,0),
+    j = 0;
+    for (let i = 0; i < Vehicles.length; i++) {
+      var distance = this.position.distanceBetweenPoints(Vehicles[i].position);
+      if((distance> 0) && (distance<neighbourDistance)){
+        sumVector = sumVector.add(Vehicles[i].velocity);
+        j++;
+      }
+    }
+    if(j > 0){
+      sumVector = sumVector.divide(j);
+      sumVector = sumVector.normalize();
+      sumVector = sumVector.multiply(this.maxspeed);
+      sumVector = sumVector.subtract(this.velocity);
+      sumVector.limit(this.maxforce);
+      this.applyForce(sumVector);
+    }
+    return sumVector;
+  }
+  cohesion(Vehicles,neighbourDistance = 50) {
+    var sumVector = new Vector(0,0),
+    j = 0;
+    for (let i = 0; i < Vehicles.length; i++) {
+      var distance = this.position.distanceBetweenPoints(Vehicles[i].position);
+      if((distance> 0) && (distance<neighbourDistance)){
+        sumVector = sumVector.add(Vehicles[i].position);
+        j++;
+      }
+    }
+    if(j > 0){
+      sumVector = sumVector.divide(j);
+      sumVector = this.seek(sumVector.x,sumVector.y);  
+    }
+    return sumVector;
+  }
+  follow(Vehicle,offset=this.radius*3,displayForces='off') {
+    var targetOffset = Vehicle.velocity.normalize();
+    targetOffset = targetOffset.multiply(offset);
+    targetOffset = targetOffset.add(Vehicle.position)
+    targetOffset = targetOffset.mirror(Vehicle.position);
+    this.arrival(targetOffset.x,targetOffset.y,displayForces);
+    if(displayForces=='on'){
+      this.renderCircleAround(targetOffset.x,targetOffset.y,5)
+    }
+  }
+
+  flock(Vehicles){
+    var seperate = this.separation(Vehicles),
+    align = this.align(Vehicles),
+    cohesion = this.cohesion(Vehicles);
+    this.acceleration = this.acceleration.multiply(0);
+    seperate = seperate.multiply(1.5);
+    this.applyForce(seperate);
+    this.applyForce(cohesion);
+    this.applyForce(align);
   }
   // Boundries methods
   outOfBounds() {
     if (this.position.x >= canvas.width) {
       this.position.x = 0;
     }
-    else if (vehicle.position.x <= 0) {
+    else if (this.position.x <= 0) {
       this.position.x = canvas.width;
     }
     if (this.position.y >= canvas.height) {

@@ -25,9 +25,9 @@
             Back to home page
         </button>
     </div>
-    <div id="main" class="container" style="display: inline-block;width: 800px;padding-right: 0px;">
+    <div id="main" class="container" style="display: inline-block;width: 50%;padding-right: 0px;top: -44px">
         <canvas id="VP" class="viewport" style="background: #eee;"></canvas>
-        <div class="box" style="width: 780px;height: 20px;font-size: 4.7mm;text-align: center;
+        <div class="box" style="width: 90%;height: 20px;font-size: 4.7mm;text-align: center;
         margin-left: 0px;padding-left: 0px;padding-right: 0px;">
             Vehicle position x:
             <span id="vehicle_posX"></span>
@@ -49,13 +49,13 @@
         <script>
             var canvas = document.querySelector('.viewport'),
                 ctx = canvas.getContext('2d');
-            canvas.width = 800;
+            canvas.width = screen.width / 2;
             canvas.height = 400;
             mouseObj.Init("#VP");
             var vehicle = new Vehicle(100, 100);
             var num_of_divs = 4;
             var move = "one";
-            board = new Board(800, 400, num_of_divs);
+            board = new Board(canvas.width, canvas.height, num_of_divs);
             board.create_vectors();
 
             document.getElementById("VP").addEventListener('click', function () {
@@ -94,40 +94,42 @@
     </div>
     <div id="codeSnippet" class="container" style="display: inline-block; margin: 0px;">
         <pre class="prettyprint linenums" style="position: inherit;margin-top: 0px;margin-bottom: 0px;">
-            Board.prototype.tile = function (obj_posX, obj_posY) {
-                for (let x = 0; x < this.divisions; x++) {
-                    if (obj_posX < this.vectors_arr[x][0][2]) {
-                        for (let y = 0; y < this.divisions; y++) {
-                            if (obj_posY < this.vectors_arr[x][y][3]) {
-                                if (this.vectors_arr[x][y][0] > (this.vectors_arr[x][y][2] - 100)) {
-                                    var bx = this.vectors_arr[x][y][2] + 1;
-                                }
-                                else {
-                                    var bx = this.vectors_arr[x][y][2] - 201;
-                                }
-                                var a = (this.vectors_arr[x][y][1] - (this.vectors_arr[x][y][3] - 50))
-                                     / (this.vectors_arr[x][y][0] - (this.vectors_arr[x][y][2] - 100));
-                                if (a == Infinity || a == -Infinity) {
-                                    a = 0;
-                                }
-                                var b = obj_posY - a * obj_posX;
-                                var by = a * bx + b;
-                                if (by > this.vectors_arr[x][y][3]) {
-                                    by = this.vectors_arr[x][y][3];
-                                    bx = (by - b) / a;
-                                }
-                                else if (by < this.vectors_arr[x][y][3] - 100) {
-                                    by = this.vectors_arr[x][y][3] - 100;
-                                    bx = (by - b) / a;
-                                }
-                                return [bx, by];
-                            }
-                        }
-                    }
-                }
-            }
-            target = board.tile(vehicle.position.x, vehicle.position.y)
-            vehicle.seek(target[0], target[1]);</pre>
+class Board{
+ tile(obj_posX, obj_posY) {
+  for (let x = 0; x < this.divisions; x++) {
+   if (obj_posX < this.vectors_arr[x][0][2]) {
+    for (let y = 0; y < this.divisions; y++) {
+     if (obj_posY < this.vectors_arr[x][y][3]) {
+      if (this.vectors_arr[x][y][0] > (this.vectors_arr[x][y][2]
+       - (canvas.width/(this.divisions*2)))) {
+       var bx = this.vectors_arr[x][y][2] + 1;
+      }
+      else {
+       var bx = this.vectors_arr[x][y][2]
+             - (canvas.width/this.divisions) - 1;
+      }
+      var a = (this.vectors_arr[x][y][1] - (this.vectors_arr[x][y][3]
+       - (canvas.height/(this.divisions*2)))) / (this.vectors_arr[x][y][0]
+        - (this.vectors_arr[x][y][2] - (canvas.width/(this.divisions*2))));
+      if (a == Infinity || a == -Infinity) {
+       a = 0;
+      }
+      var b = obj_posY - a * obj_posX;
+      var by = a * bx + b;
+      if (by > this.vectors_arr[x][y][3]) {
+       by = this.vectors_arr[x][y][3];
+       bx = (by - b) / a;
+      }
+      else if (by < this.vectors_arr[x][y][3]
+         - (canvas.height/this.divisions)) {
+       by = this.vectors_arr[x][y][3] - (canvas.height/this.divisions);
+       bx = (by - b) / a;
+      }
+      return [bx, by];
+     }
+    }}}}}
+target = board.tile(vehicle.position.x, vehicle.position.y)
+vehicle.seek(target[0], target[1]);</pre>
     </div>
 </body>
 

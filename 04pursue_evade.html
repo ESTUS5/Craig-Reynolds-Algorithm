@@ -19,18 +19,21 @@
 </head>
 
 <body style="margin:0;padding:0;overflow:hidden;">
-    <div id="backToHome" class="container" style="width: 400px;">
+    <div id="backToHome" class="container" style="width: 600px;">
         <button class="button" onclick='window.location.href = "./00home.html"'>
             Back to home page
+        </button>
+        <button id="Forces" class="button">
+            Display Forces
         </button>
         <button id="change" class="button">
             Pursue
         </button>
     </div>
-    <div id="main" class="container" style="display: inline-block;width: 800px;padding-right: 0px;">
-        <canvas id="VP" class="viewport" style="background: #eee;"></canvas>
+    <div id="main" class="container" style="display: inline-block;width: 50%;padding-right: 0px;">
+        <canvas id="VP" class="viewport" style="background: #eee;height: 300px;"></canvas>
 
-        <div class="box" style="width: 780px;height: 20px;font-size: 4.7mm;text-align: center;
+        <div class="box" style="width: 90%;height: 20px;font-size: 4.7mm;text-align: center;
               margin-left: 0px;padding-left: 0px;padding-right: 0px;">
             Pursuer position x:
             <span id="pursuer_posX"></span>
@@ -39,9 +42,9 @@
             velocity :
             <span id="pursuer_vel"></span>
         </div>
-        <div class="box" style="width: 780px;height: 20px;font-size: 4.7mm;text-align: center;
+        <div class="box" style="width: 90%;height: 20px;font-size: 4.7mm;text-align: center;
               margin-left: 0px;padding-left: 0px;padding-right: 0px; top: -4px;">
-            Evader position x:
+            Target position x:
             <span id="evader_posX"></span>
             y:
             <span id="evader_posY"></span>
@@ -75,9 +78,8 @@
         <script>
             var canvas = document.querySelector('.viewport'),
                 ctx = canvas.getContext('2d');
-            canvas.width = 800;
-            canvas.height = 400;
-            mouseObj.Init("#VP");
+            canvas.width = screen.width / 2;
+            canvas.height = 300;
 
             document.getElementById("maxforce1").value = Math.random() * 5;
             document.getElementById("maxspeed1").value = Math.random() * 7;
@@ -88,20 +90,29 @@
             document.getElementById("span2a").textContent = document.getElementById("maxspeed2").value;
             document.getElementById("span2b").textContent = document.getElementById("maxforce2").value;
 
-            var vehicle = new Vehicle(Math.random() * 800, Math.random() * 350);
-            var vehicle2 = new Vehicle(Math.random() * 800, Math.random() * 350);
+            var vehicle = new Vehicle(Math.random() * canvas.width, Math.random() * canvas.height);
+            var vehicle2 = new Vehicle(Math.random() * canvas.width, Math.random() * canvas.height);
+            vehicle2.theta = Math.random() * 360;
             var option = 'pursuer';
-
             document.getElementById("change").addEventListener('click', function () {
-                    if (option == 'pursuer') {
-                        option = 'evader';
-                        document.getElementById("change").textContent = 'Evade';
-                    }
-                    else if (option == 'evader') {
-                        option = 'pursuer';
-                        document.getElementById("change").textContent = 'Pursue';
-                    }
-                }, false);
+                if (option == 'pursuer') {
+                    option = 'evader';
+                    document.getElementById("change").textContent = 'Evade';
+                }
+                else if (option == 'evader') {
+                    option = 'pursuer';
+                    document.getElementById("change").textContent = 'Pursue';
+                }
+            }, false);
+            var displayForces = 'off';
+            document.getElementById("Forces").addEventListener('click', function () {
+                if(displayForces == 'on'){
+                    displayForces = 'off';
+                }
+                else{
+                    displayForces = 'on';
+                }
+            }, false);
             rangeSlider();
             function draw() {
                 if (vehicle.position.distanceBetweenPoints(vehicle2.position) < 3) {
@@ -114,20 +125,21 @@
                     document.getElementById("span2a").textContent = document.getElementById("maxspeed2").value;
                     document.getElementById("span2b").textContent = document.getElementById("maxforce2").value;
 
-                    vehicle = new Vehicle(Math.random() * 800, Math.random() * 350);
-                    vehicle2 = new Vehicle(Math.random() * 800, Math.random() * 350);
+                    vehicle = new Vehicle(Math.random() * canvas.width, Math.random() * canvas.height);
+                    vehicle2 = new Vehicle(Math.random() * canvas.width, Math.random() * canvas.height);
+                    vehicle2.theta = Math.random() * 360;
                 }
                 ctx.setTransform(1, 0, 0, 1, 0, 0); // <- JS magic for PathBegin()..
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 vehicle.renderVehicle();
                 vehicle2.renderVehicle();
                 if (option === 'pursuer') {
-                    vehicle.pursue(vehicle2.position, vehicle2.velocity);
-                    vehicle2.flee(100,vehicle.position.x, vehicle.position.y);
+                    vehicle.pursue(vehicle2.position, vehicle2.velocity,displayForces);
+                    vehicle2.wander(50,20,displayForces);
                 }
                 else {
-                    vehicle.seek(vehicle2.position.x, vehicle2.position.y);
-                    vehicle2.evade(vehicle.position, vehicle.velocity);
+                    vehicle.seek(vehicle2.position.x, vehicle2.position.y,displayForces);
+                    vehicle2.evade(vehicle.position, vehicle.velocity,displayForces);
                 }
                 vehicle.onlyCanvas();
                 vehicle2.onlyCanvas();
@@ -144,46 +156,44 @@
                 $("#evader_posY").text(Math.ceil(vehicle2.position.y));
                 $("#evader_vel").text(Math.ceil(vehicle2.velocity.length()));
             }
-            setInterval(draw, 10);
+            setInterval(draw, 50);
         </script>
     </div>
     <div id="codeSnippet" class="container" style="display: inline-block; margin: 0px;">
         <pre class="prettyprint linenums" style="position: inherit;margin-top: 0px;margin-bottom: 0px;">
-        class Vehicle 
-        {
-          constructor(x, y) {
-            this.acceleration = new Vector(0, 0),
-            this.velocity = new Vector(0, 0),
-            this.position = new Vector(x, y),
-            this.radius = 10,
-            this.maxspeed = 4,
-            this.maxforce = 0.1;
-            this.desired_velocity = new Vector(0, 0);
-          }
-          update() {
-            this.velocity = this.velocity.add(this.acceleration);
-            this.velocity.limit(this.maxspeed);
-            this.position = this.position.add(this.velocity);
-            this.acceleration = this.acceleration.multiply(0);
-          }
-          applyForce(force) {
-            force.limit(this.maxforce);
-            this.acceleration.equal(force);
-          }
-          pursue(target_position, target_velocity) {
-            var d = this.position.distanceBetweenPoints(target_position);
-            var T = d / this.maxspeed;
-            var target = target_position.add(target_velocity.multiply(T))
-            this.seek(target.x, target.y);
-          }
-          evade(target_position, target_velocity) {
-            var d = this.position.distanceBetweenPoints(target_position);
-            var T = d / this.maxspeed;
-            var target = target_position.add(target_velocity.multiply(T))
-            this.flee(target.x, target.y);
-          }
-          }
-        }</pre>
+class Vehicle 
+{
+  constructor(x, y) {
+    this.acceleration = new Vector(0, 0),
+    this.velocity = new Vector(0, 0),
+    this.position = new Vector(x, y),
+    this.radius = 10,
+    this.maxspeed = 4,
+    this.maxforce = 0.1;
+    this.desired_velocity = new Vector(0, 0);
+  }
+  update() {
+    this.velocity = this.velocity.add(this.acceleration);
+    this.velocity.limit(this.maxspeed);
+    this.position = this.position.add(this.velocity);
+    this.acceleration = this.acceleration.multiply(0);
+  }
+  applyForce(force) {
+    this.acceleration = this.acceleration.add(force);
+  }
+  pursue(target_position, target_velocity) {
+    var d = this.position.distanceBetweenPoints(target_position);
+    var T = d / this.maxspeed;
+    var target = target_position.add(target_velocity.multiply(T))
+    this.seek(target.x, target.y);
+  }
+  evade(target_position, target_velocity) {
+    var d = this.position.distanceBetweenPoints(target_position);
+    var T = d / this.maxspeed;
+    var target = target_position.add(target_velocity.multiply(T))
+    this.flee(target.x, target.y);
+  }
+}</pre>
     </div>
 </body>
 
