@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Craig-Reynolds Algorithm</title>
+    <link rel="stylesheet" href="sliderStyle.css" />
+    <link rel="stylesheet" type="text/css" href="desert.css" />
+    <link rel="stylesheet" href="pagesLayoutStyle.css" />
+    <link rel="stylesheet" href="button.css" />
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script src="vector.js"></script>
+    <script src="mouse.js"></script>
+    <script src="vehicle.js"></script>
+    <script src="sliderStyle.js"></script>
+  <script type="text/javascript"> //To disable focusing on Chrome browser
+    document.addEventListener('click', function (e) {
+      if (document.activeElement.toString() == '[object HTMLButtonElement]') { document.activeElement.blur(); }
+    });
+  </script>
+</head>
+
+<body style="margin:0;padding:0;overflow:hidden; background-color: hsl(117, 43%, 80%);">
+    <div id="backToHome" class="container">
+        <!--BUTTON BACK TO HOME PAGE/ANCHOR-->
+    <button class="button" onclick='window.location.href = "./00home.html"'>
+            Back to home page
+        </button>
+        <!--BUTTON DISPLAY FORCES-->
+    <button id="Forces" class="button">
+            Display Forces
+        </button>
+        
+    <!--BUTTON FREEZE-->
+    <button id="Freeze" class="button">
+            Freeze
+        </button>
+    </div>
+    <div id="main" class="container" style="display: inline-block;width: 50%;padding-right: 0px;">
+
+        <canvas id="VP" class="viewport" style="background: #eee; width: 100%;"></canvas>
+        <div class="box" style="width: 90%;height: 20px;font-size: 4.7mm;text-align: center;
+        margin-left: 0px;padding-left: 0px;padding-right: 0px;">
+            Vehicle position x:
+            <span id="vehicle_posX"></span>
+            y:
+            <span id="vehicle_posY"></span>
+            velocity:
+            <span id="vehicle_vel"></span>
+
+        </div>
+
+        <div>
+            <div class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
+                <div class="box">Maxspeed</div>
+                <input id="maxspeed" class="range-slider__range" type="range" value="2" min="0" max="7" step="0.01">
+                <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+            </div>
+            <div class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
+                <div class="box">Maxforce</div>
+                <input id="maxforce" class="range-slider__range" type="range" value="0.1" min="0" max="5" step="0.01">
+                <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+            </div>
+        </div>
+        <div>
+            <div class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
+                <div class="box">Length</div>
+                <input id="L" class="range-slider__range" type="range" value="50" min="0">
+                <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+            </div>
+            <div class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
+                <div class="box">Radius</div>
+                <input id="r" class="range-slider__range" type="range" value="20" min="0">
+                <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+            </div>
+        </div>
+
+
+        <script>
+            var canvas = document.querySelector('.viewport'),
+                ctx = canvas.getContext('2d');
+            canvas.width = screen.width / 2;
+            canvas.height = 300;
+            mouseObj.Init("#VP");
+            var vehicle = new Vehicle(10, 10);
+            var displayForces = 'off';
+            document.getElementById("Forces").addEventListener('click', function () {
+                if(displayForces == 'on'){
+                    displayForces = 'off';
+                }
+                else{
+                    displayForces = 'on';
+                }
+            }, false);
+                  var freeze = "off";
+      document.getElementById("Freeze").addEventListener('click', function freezer() {
+        if (freeze == 'on') {
+          freeze = 'off';
+          document.getElementById("Freeze").innerHTML = "Freeze OFF";
+        }
+        else {
+          freeze = 'on';
+          document.getElementById("Freeze").innerHTML = "Freeze ON";
+        }
+      }, false);
+      document.body.addEventListener("keypress", function (k) {
+        console.log(k.keyCode, k.key, displayForces, freeze)
+        if (k.keyCode == 32) {
+          if (freeze == 'on') {
+            freeze = 'off';
+            document.getElementById("Freeze").innerHTML = "Freeze OFF";
+          }
+          else {
+            freeze = 'on';
+            document.getElementById("Freeze").innerHTML = "Freeze ON";
+          }
+        }
+      }, false);
+      rangeSliderInit();
+            var target = new Vector(0,0), timeout = 0;
+            document.getElementById("VP").addEventListener('mousedown', function () {
+                target = new Vector(mouseObj.x,mouseObj.y);
+                timeout = 20;
+            }, false);
+            function draw() {
+                ctx.setTransform(1, 0, 0, 1, 0, 0); // <- JS magic for PathBegin()..
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                vehicle.renderCircleAround(mouseObj.x, mouseObj.y, 5);
+                var obstacle = vehicle.avoidObstacle(objects,distantPosition = predictedVehPosition, margin = VehMargin,displayForces = displayForces);
+                if((obstacle.x == 0 && obstacle.y == 0) && 
+                    ((vehicle.radius < vehicle.position.x) && (vehicle.position.x < canvas.width - vehicle.radius)) && 
+                    ((vehicle.radius < vehicle.position.y) && (vehicle.position.y < canvas.height - vehicle.radius)) ){
+                    vehicle.runAhead();
+                }
+                if(timeout>0){
+                    vehicle.seek(target.x,target.y);
+                    timeout--;
+                }
+                if(displayForces=='on'){
+                    vehicle.renderForces();
+                }
+                //vehicle.bounceOfBoundries();
+                vehicle.onlyCanvas();
+               if (freeze == 'off') {
+          vehicle.update();
+        }
+                vehicle.renderVehicle();
+                drawObjects(objects);
+                vehicle.maxforce = document.getElementById("maxforce").value;
+                vehicle.maxspeed = document.getElementById("maxspeed").value;
+                $("#vehicle_posX").text(Math.ceil(vehicle.position.x));
+                $("#vehicle_posY").text(Math.ceil(vehicle.position.y));
+                $("#vehicle_vel").text((vehicle.velocity.length()).toFixed(2))   
+            }
+            setInterval(draw, 50);
+        </script>
+    </div>
+    <div id="codeSnippet" class="container" style="float: right; width: 49%; margin: 2px;">
+        <pre class="prettyprint linenums" style="position: inherit;margin-top: 0px;margin-bottom: 0px;">
+class Vehicle {
+  avoidObstacle(objects, distantPosition = 100, margin = 15) {
+    var predictVehPosition = this.velocity.normalize();
+    predictVehPosition = predictVehPosition.multiply(distantPosition);
+    predictVehPosition = this.position.add(predictVehPosition);
+    var Distance = predictVehPosition.distanceBetweenPoints(this.position);
+    var closestObj = new Vector(0, 0), closestNormalPoint = new Vector(0, 0);
+    for (let i = 0; i < objects.length; i++) {
+      var normalObj = objects[i][0].normalPoint(this.position,
+          predictVeosition);
+      if (normalObj.isBetween(this.position, predictVehPosition) == true) {
+        if(normalObj.distanceBetweenPoints(objects[i][0]) <
+           (objects[i][1] + margin)){
+          if (normalObj.distanceBetweenPoints(this.position) < Distance) {
+            Distance = normalObj.distanceBetweenPoints(this.position);
+            closestObj = objects[i][0];
+            closestNormalPoint = normalObj;
+          }
+        }
+      }
+    }
+    var mirrorTarget = closestObj.mirror(closestNormalPoint);
+    if (mirrorTarget.x != 0 && mirrorTarget.y != 0) {
+      this.seek(mirrorTarget.x, mirrorTarget.y);
+    }
+    else {
+      this.seek(mouseObj.x, mouseObj.y);
+    }
+}</pre>
+    </div>
+</body>
+
+</html>
