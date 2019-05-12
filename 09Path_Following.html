@@ -4,141 +4,285 @@
 <head>
   <meta charset="utf-8" />
   <title>Craig-Reynolds Algorithm</title>
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
   <link rel="stylesheet" href="sliderStyle.css" />
   <link rel="stylesheet" type="text/css" href="desert.css" />
-  <link rel="stylesheet" href="01seek.css" />
+  <link rel="stylesheet" href="pagesLayoutStyle.css" />
   <link rel="stylesheet" href="button.css" />
   <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="vector.js"></script>
   <script src="mouse.js"></script>
   <script src="vehicle.js"></script>
   <script src="sliderStyle.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <!--To disable focusing on Chrome browser -->
+  <script type="text/javascript">
+    document.addEventListener('click', function (e) {
+      if (document.activeElement.toString() == '[object HTMLButtonElement]') { document.activeElement.blur(); }
+    });
+  </script>
   <script src="path.js"></script>
 </head>
 
-<body style="margin:0;padding:0;overflow:hidden;">
-  <div id="backToHome" class="container" style="width: 400px;">
+<body style="margin:0;padding:0;overflow:hidden; background-color: hsl(117, 43%, 80%);">
+
+  <div id="backToHome" class="container" >
+
+    <!--BUTTON BACK TO HOME PAGE/ANCHOR-->
     <button class="button" onclick='window.location.href = "./00home.html"'>
       Back to home page
     </button>
+
+    <!--BUTTON DISPLAY FORCES-->
+    <button id="Forces" class="button">
+      Display Forces
+    </button>
+    
+    <!--BUTTON FREEZE-->
+    <button id="Freeze" class="button">
+      Freeze
+    </button>
+
+    <!--BUTTON RANDOM-->
     <button id="Random" class="button">
       Random the Path
     </button>
+
   </div>
-  <div id="main" class="container" style="display: inline-block;width: 50%;padding-right: 0px;top: -32px;left: -34px;">
-    <canvas id="VP" class="viewport" style="background: #eee;height: 300px;"></canvas>
+
+  <div id="main" class="container" style="float: left; width: 50%;padding-right: 0px;">
+
+    <canvas id="VP" class="viewport" style="background: #eee; width: 100%;width: 100%;height: 300px;"></canvas>
+    
+    <!--OUTPUT OF VEHICLE POSITION & VELOCITY-->
     <div class="box" style="width: 90%;height: 20px;font-size: 4.7mm;text-align: center;
         margin-left: 0px;padding-left: 0px;padding-right: 0px;">
+
       Vehicle position x:
       <span id="vehicle_posX"></span>
       y:
       <span id="vehicle_posY"></span>
       velocity:
       <span id="vehicle_vel"></span>
+
     </div>
+
     <div>
-      <div id="ms" class="range-slider" style="display: inline-block;top: 20px;scale: 80%">
+
+      <!--RANGE SLIDER OF MAXSPEED-->
+      <div id="ms" class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
+
         <div class="box">Maxspeed</div>
+
         <input id="maxspeed" class="range-slider__range" type="range" value="2" min="0" max="7" step="0.01">
+        
         <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+      
       </div>
-      <div id="mf" class="range-slider" style="display: inline-block;margin-left:100px;margin-right:80px;scale: 80%">
+
+      <!--RANGE SLIDER OF MAXFORCE-->
+      <div id="mf" class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
+        
         <div class="box">Maxforce</div>
+        
         <input id="maxforce" class="range-slider__range" type="range" value="0.1" min="0" max="5" step="0.01">
+        
         <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+      
       </div>
+
     </div>
+
     <div>
-      <div id="pd" class="range-slider" style="display: inline-block;top: 20px;scale: 80%">
+
+      <!--RANGE SLIDER OF PREDICT DISTANCE-->
+      <div id="pd" class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
+        
         <div class="box">Predict distance</div>
+        
         <input id="Predict" class="range-slider__range" type="range" value="30" min="0">
+        
         <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+      
       </div>
-      <div id="to" class="range-slider" style="display: inline-block;margin-left:100px;margin-right:80px;scale: 80%">
+
+      <!--RANGE SLIDER OF TARGET OFFSET-->
+      <div id="to" class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
+        
         <div class="box">Target offset</div>
+        
         <input id="Target" class="range-slider__range" type="range" value="10" min="0">
+        
         <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+      
       </div>
+
     </div>
+
     <div>
-      <div id="pr" class="range-slider" style="display: inline-block;top: 20px;scale: 80%">
+
+      <!--RANGE SLIDER OF PATH RADIUS/MARGIN-->
+      <div id="pr" class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
+        
         <div class="box">Path radius</div>
+        
         <input id="Radius" class="range-slider__range" type="range" value="20" min="0">
+        
         <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+      
       </div>
+    
     </div>
+
     <script>
+      //CHANGE WIDTH & HEIGHT OF CANVAS
       var canvas = document.querySelector('.viewport'),
         ctx = canvas.getContext('2d');
       canvas.width = screen.width / 2;
+      console.log(pageXOffset)
       canvas.height = 300;
-      $('#main').css({ transform: 'scale(.9)' });
+
+      //PATH INIT
       var path = new Path(0, 210, 400, 210, 20);
       path.addPoint(canvas.width + 30, 220);
+
+      //READ IF BUTTON "RANDOM" WAS CLICKED
       var option = 'off';
       document.getElementById("Random").addEventListener('click', function () {
         option = 'on';
       }, false);
+
+      //INIT VEHICLE
       var vehicle = new Vehicle(-30, 110);
       vehicle.choosePath(path.points, path.radius);
-      rangeSlider();
+
+      //READ IF BUTTON "DISPLAY FORCE" WAS CLICKED
+      var displayForces = 'off';
+      document.getElementById("Forces").addEventListener('click', function () {
+        if (displayForces == 'on') {
+          displayForces = 'off';
+        }
+        else {
+          displayForces = 'on';
+        }
+      }, false);
+
+      //READ IF BUTTON "FREEZE" WAS CLICKED
+      var freeze = "off";
+      document.getElementById("Freeze").addEventListener('click', function freezer() {
+        if (freeze == 'on') {
+          freeze = 'off';
+          document.getElementById("Freeze").innerHTML = "Freeze OFF";
+        }
+        else {
+          freeze = 'on';
+          document.getElementById("Freeze").innerHTML = "Freeze ON";
+        }
+      }, false);
+
+      //READ IF BUTTON "FREEZE" WAS KEYPRESSED
+      document.body.addEventListener("keypress", function (k) {
+        console.log(k.keyCode, k.key, displayForces, freeze)
+        if (k.keyCode == 32) {
+          if (freeze == 'on') {
+            freeze = 'off';
+            document.getElementById("Freeze").innerHTML = "Freeze OFF";
+          }
+          else {
+            freeze = 'on';
+            document.getElementById("Freeze").innerHTML = "Freeze ON";
+          }
+        }
+      }, false);
+
+      rangeSliderInit();
+
+      //LOOP FUNC
       function draw() {
+        
         ctx.setTransform(1, 0, 0, 1, 0, 0); // <- JS magic for PathBegin()..
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        if(vehicle.position.distanceBetweenPoints(path.points[path.points.length-1])<path.radius){
+        
+        //RESET POSITION
+        if (vehicle.position.distanceBetweenPoints(path.points[path.points.length - 1]) < path.radius) {
           vehicle.position.x = -30;
           vehicle.position.y = 110;
         }
-        vehicle.renderVehicle();
+
         vehicle.followPath(document.getElementById("Predict").value,
-          document.getElementById("Target").value);
-        vehicle.update();
+          document.getElementById("Target").value, displayForces);
+
+        if (freeze == 'off') {
+          vehicle.update();
+        }
+
+        vehicle.renderVehicle();
+
         path.draw();
+
         if (option == 'on') {
+
           var numberOfPoints = Math.ceil(Math.random() * 3);
+          
           if (numberOfPoints == 0) {
+
             path = new Path(-20, Math.random() * canvas.height, canvas.width + 10, Math.random() * canvas.height, document.getElementById("Radius").value);
+          
           }
           else {
+
             path = new Path(-10, Math.random() * canvas.height, 100 + Math.random() * 100, Math.random() * canvas.height, document.getElementById("Radius").value);
-            for (let i = 0; i < numberOfPoints-1; i++) {
-              path.addPoint(path.points[i + 1].x+ 100 + Math.random() * 200, Math.random() * canvas.height);
+            
+            for (let i = 0; i < numberOfPoints - 1; i++) {
+
+              path.addPoint(path.points[i + 1].x + 100 + Math.random() * 200, Math.random() * canvas.height);
+            
             }
+
             path.addPoint(canvas.width + 30, Math.random() * canvas.height);
           }
+
           vehicle = new Vehicle(-30, 110);
           vehicle.choosePath(path.points, path.radius);
+
           option = 'off';
+
         }
+
         vehicle.maxforce = document.getElementById("maxforce").value;
         vehicle.maxspeed = document.getElementById("maxspeed").value;
         vehicle.pathRadius = document.getElementById("Radius").value;
         path.radius = document.getElementById("Radius").value;
+
+        document.getElementById("snipPredictDist").innerHTML = document.getElementById("Predict").value;
+        document.getElementById("snipOffsetTarget").innerHTML = document.getElementById("Target").value;
         $("#vehicle_posX").text(Math.ceil(vehicle.position.x));
         $("#vehicle_posY").text(Math.ceil(vehicle.position.y));
-
         $("#vehicle_vel").text((vehicle.velocity.length()).toFixed(2))
+
       }
+
       setInterval(draw, 14);
+
     </script>
+
   </div>
-  <div id="codeSnippet" class="container" style="display: inline-block; margin: 0px;left: -68px;top: -37px">
-    <pre class="prettyprint linenums" style="position: inherit;margin-top: 0px;margin-bottom: 0px;">
+
+  <div id="codeSnippet" class="container" style="float: right; width: 49%; margin: 0px;">
+
+    <!--CREATES SNIPPET OF CODE-->
+    <pre class="prettyprint linenums" style="position: inherit;margin-top: 2px;margin-bottom: 2px;">
 class Vehicle {
   choosePath(path, radius) {
     this.path = path,
       this.pathRadius = radius,
       this.pathCurrentPoint = 0;
   }
-  followPath(predictDistance = 30, targetOffset = 10,displayForces = "on") {
+  followPath(predictDistance = <b id="snipPredictDist" style="color: #cd5c5c">30</b>, targetOffset = <b id="snipOffsetTarget" style="color: #cd5c5c">10</b>,displayForces = "on") {
     var predictVehPosition = this.velocity.normalize();
     predictVehPosition = predictVehPosition.multiply(predictDistance);
     predictVehPosition = this.position.add(predictVehPosition);
     var normalPoint = new Vector(0, 0), 
-        oa, ob, target, smallest_distance = 10000;
+        oa, ob, target, smallest_distance = Infinity;
     for (let i = 0; i < this.path.length - 1; i++) {
       var a = this.path[i];
       var b = this.path[i + 1];
@@ -164,7 +308,8 @@ class Vehicle {
     }
   }
 }</pre>
-  </div>
-</body>
 
+  </div>
+
+</body>
 </html>

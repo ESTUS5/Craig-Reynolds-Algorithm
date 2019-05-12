@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Craig-Reynolds Algorithm</title>
+    <link rel="stylesheet" href="sliderStyle.css" />
+    <link rel="stylesheet" type="text/css" href="desert.css" />
+    <link rel="stylesheet" href="pagesLayoutStyle.css" />
+    <link rel="stylesheet" href="button.css" />
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script src="vector.js"></script>
+    <script src="mouse.js"></script>
+    <script src="vehicle.js"></script>
+    <script src="sliderStyle.js"></script>
+  <script type="text/javascript"> //To disable focusing on Chrome browser
+    document.addEventListener('click', function (e) {
+      if (document.activeElement.toString() == '[object HTMLButtonElement]') { document.activeElement.blur(); }
+    });
+  </script>
+</head>
+
+<body style="margin:0;padding:0;overflow:hidden; background-color: hsl(117, 43%, 80%);">
+    <div id="backToHome" class="container" style="width: auto px;">
+        <!--BUTTON BACK TO HOME PAGE/ANCHOR-->
+    <button class="button" onclick='window.location.href = "./00home.html"'>
+            Back to home page
+        </button>
+        <!--BUTTON DISPLAY FORCES-->
+    <button id="Forces" class="button">
+            Display Forces
+        </button>
+        
+    <!--BUTTON FREEZE-->
+    <button id="Freeze" class="button">
+            Freeze
+        </button>
+        <button id="followingType" class="button">
+            Change Following Type
+        </button>
+    </div>
+    <div id="main" class="container" style="float: left;width: 50%;padding-right: 0px;">
+        <canvas id="VP" class="viewport" style="background: #eee; width: 100%;"></canvas>
+        <div>
+            <div class="range-slider" style="display: inline-block;top: 20px;">
+                <div class="box">Maxspeed</div>
+                <input id="maxspeed" class="range-slider__range" type="range" value="2" min="0" max="7" step="0.01">
+                <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+            </div>
+            <div class="range-slider" style="display: inline-block;margin-left:100px;margin-right:80px;">
+                <div class="box">Maxforce</div>
+                <input id="maxforce" class="range-slider__range" type="range" value="0.1" min="0" max="5" step="0.01">
+                <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+            </div>
+        </div>
+        <script>
+            var canvas = document.querySelector('.viewport'),
+                ctx = canvas.getContext('2d');
+            canvas.width = screen.width / 2;
+            canvas.height = 400;
+
+            function drawWall() {
+                ctx.beginPath();
+                ctx.moveTo(0, 100);
+                ctx.lineTo(canvas.width / 2 - 20, 100);
+                ctx.lineTo(canvas.width / 2 - 20, 0);
+                ctx.moveTo(canvas.width, 100);
+                ctx.lineTo(canvas.width / 2 + 20, 100);
+                ctx.lineTo(canvas.width / 2 + 20, 0);
+                ctx.strokeStyle = 'rgba(40,120,60,1)';
+                ctx.stroke();
+                ctx.closePath();
+            }
+            var wall = [];
+            wall.push(new Vector(0, 100));
+            wall.push(new Vector(canvas.width / 2 - 20, 100));
+            wall.push(new Vector(canvas.width / 2 - 20, -50));
+            wall.push(new Vector(canvas.width / 2 + 20, -50));
+            wall.push(new Vector(canvas.width / 2 + 20, 100));
+            wall.push(new Vector(canvas.width, 100));
+
+            var vehicles = [];
+            for (let index = 0; index < 30; index++) {
+                vehicles.push(new Vehicle(Math.ceil(100 + Math.random() * (canvas.width - 100)), Math.ceil(canvas.height)));
+                vehicles[vehicles.length - 1].radius = 10;
+            }
+
+            var displayForces = 'off';
+            document.getElementById("Forces").addEventListener('click', function () {
+                if (displayForces == 'on') {
+                    displayForces = 'off';
+                }
+                else {
+                    displayForces = 'on';
+                }
+            }, false);
+
+                  var freeze = "off";
+      document.getElementById("Freeze").addEventListener('click', function freezer() {
+        if (freeze == 'on') {
+          freeze = 'off';
+          document.getElementById("Freeze").innerHTML = "Freeze OFF";
+        }
+        else {
+          freeze = 'on';
+          document.getElementById("Freeze").innerHTML = "Freeze ON";
+        }
+      }, false);
+      document.body.addEventListener("keypress", function (k) {
+        console.log(k.keyCode, k.key, displayForces, freeze)
+        if (k.keyCode == 32) {
+          if (freeze == 'on') {
+            freeze = 'off';
+            document.getElementById("Freeze").innerHTML = "Freeze OFF";
+          }
+          else {
+            freeze = 'on';
+            document.getElementById("Freeze").innerHTML = "Freeze ON";
+          }
+        }
+      }, false);
+      rangeSliderInit();
+            var target = new Vector(canvas.width / 2, -50)
+            function draw() {
+                ctx.setTransform(1, 0, 0, 1, 0, 0); // <- JS magic for PathBegin()..
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let index = 0; index < vehicles.length; index++) {
+                    if (vehicles[index].position.distanceBetweenPoints(target) < 20) {
+                        vehicles[index].position.x = Math.ceil(100+ Math.random() * (canvas.width-100));
+                        vehicles[index].position.y = Math.ceil(canvas.height);
+                    }
+                    var seek = vehicles[index].seek(target.x, target.y,displayForces);
+                    sep = vehicles[index].separation(vehicles),
+                    vehicles[index].queueV(vehicles, 20, 21,seek,displayForces);
+                    sep = sep.multiply(1);
+                    
+                    vehicles[index].applyForce(sep);
+                    vehicles[index].obstacleWall(wall);
+                    if (freeze == 'off') {
+          vehicles[index].update();
+        }
+                    vehicles[index].renderVehicle();
+                    vehicles[index].maxforce = document.getElementById("maxforce").value;
+                    vehicles[index].maxspeed = document.getElementById("maxspeed").value;
+                }
+                drawWall();
+            }
+            setInterval(draw, 20);
+        </script>
+    </div>
+    <div id="codeSnippet" class="container" style="float: right; width: 49%; margin: 2px;">
+        <pre class="prettyprint linenums" style="position: inherit;margin-top: 0px;margin-bottom: 0px;">
+        kurwa
+        </pre>
+    </div>
+</body>
+
+</html>

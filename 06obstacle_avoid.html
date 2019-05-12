@@ -4,29 +4,50 @@
 <head>
     <meta charset="utf-8" />
     <title>Craig-Reynolds Algorithm</title>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
     <link rel="stylesheet" href="sliderStyle.css" />
     <link rel="stylesheet" type="text/css" href="desert.css" />
-    <link rel="stylesheet" href="01seek.css" />
+    <link rel="stylesheet" href="pagesLayoutStyle.css" />
     <link rel="stylesheet" href="button.css" />
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="vector.js"></script>
     <script src="mouse.js"></script>
     <script src="vehicle.js"></script>
     <script src="sliderStyle.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <!--To disable focusing on Chrome browser -->
+    <script type="text/javascript">
+        document.addEventListener('click', function (e) {
+            if (document.activeElement.toString() == '[object HTMLButtonElement]') { document.activeElement.blur(); }
+        });
+    </script>
 </head>
 
-<body style="margin:0;padding:0;overflow:hidden;">
+<body style="margin:0;padding:0;overflow:hidden; background-color: hsl(117, 43%, 80%);">
+
     <div id="backToHome" class="container">
+
+        <!--BUTTON BACK TO HOME PAGE/ANCHOR-->
         <button class="button" onclick='window.location.href = "./00home.html"'>
             Back to home page
         </button>
+
+        <!--BUTTON DISPLAY FORCES-->
+        <button id="Forces" class="button">
+            Display Forces
+        </button>
+        
+        <!--BUTTON FREEZE-->
+        <button id="Freeze" class="button">
+            Freeze
+        </button>
+
     </div>
+
     <div id="main" class="container" style="display: inline-block;width: 50%;padding-right: 0px;">
 
-        <canvas id="VP" class="viewport" style="background: #eee;"></canvas>
+        <canvas id="VP" class="viewport" style="background: #eee; width: 100%;"></canvas>
+        
+        <!--OUTPUT OF VEHICLE POSITION & VELOCITY-->
         <div class="box" style="width: 90%;height: 20px;font-size: 4.7mm;text-align: center;
         margin-left: 0px;padding-left: 0px;padding-right: 0px;">
             Vehicle position x:
@@ -39,73 +60,234 @@
         </div>
 
         <div>
-            <div class="range-slider" style="display: inline-block;top: 20px;">
+
+            <!--RANGE SLIDER OF MAXSPEED-->
+            <div class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
+
                 <div class="box">Maxspeed</div>
+
                 <input id="maxspeed" class="range-slider__range" type="range" value="2" min="0" max="7" step="0.01">
+                
                 <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+            
             </div>
-            <div class="range-slider" style="display: inline-block;margin-left:100px;margin-right:80px;">
+
+            <!--RANGE SLIDER OF MAXFORCE-->
+            <div class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
+                
                 <div class="box">Maxforce</div>
+                
                 <input id="maxforce" class="range-slider__range" type="range" value="0.1" min="0" max="5" step="0.01">
+                
                 <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+            
             </div>
+        
         </div>
+
         <div>
-            <div class="range-slider" style="display: inline-block;top: 20px;">
+
+            <!--RANGE SLIDER OF LENGHT-->
+            <div class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
+
                 <div class="box">Length</div>
-                <input id="L" class="range-slider__range" type="range" value="50" min="0">
+
+                <input id="L" class="range-slider__range" type="range" value="100" min="0" max="200">
+                
                 <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+            
             </div>
-            <div class="range-slider" style="display: inline-block;margin-left:100px;margin-right:80px;">
+
+            <!--RANGE SLIDER OF RADIUS-->
+            <div class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
+                
                 <div class="box">Radius</div>
-                <input id="r" class="range-slider__range" type="range" value="20" min="0">
+                
+                <input id="r" class="range-slider__range" type="range" value="15" min="0" max="200">
+                
                 <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+            
             </div>
+
         </div>
 
 
         <script>
+
+            //CHANGE WIDTH & HEIGHT OF CANVAS
             var canvas = document.querySelector('.viewport'),
                 ctx = canvas.getContext('2d');
             canvas.width = screen.width / 2;
             canvas.height = 300;
+
+            //READ MOUSE POSITION
             mouseObj.Init("#VP");
-            var vehicle = new Vehicle(canvas.width/2, canvas.height/2);
-            vehicle.theta = Math.random() * 360;
-            var obj1x = Math.random() * canvas.width,obj1y = Math.random() * canvas.height,obj1radius = Math.random() * 100,
-            obj2x = Math.random() * canvas.width,obj2y = Math.random() * canvas.height,obj2radius = Math.random() * 100,
-            obj3x = Math.random() * canvas.width,obj3y = Math.random() * canvas.height,obj3radius = Math.random() * 100;
-            var obj1 = [new Vector(obj1x,obj1y),obj1radius],
-            obj2 = [new Vector(obj2x,obj2y),obj2radius],
-            obj3 = [new Vector(obj3x,obj3y),obj3radius];
-            rangeSlider();
+
+            //READ IF BUTTON "DISPLAY FORCE" WAS CLICKED
+            var displayForces = 'off';
+            document.getElementById("Forces").addEventListener('click', function () {
+                if (displayForces == 'on') {
+                    displayForces = 'off';
+                }
+                else {
+                    displayForces = 'on';
+                }
+            }, false);
+
+            //READ IF BUTTON "FREEZE" WAS CLICKED
+            var freeze = "off";
+            document.getElementById("Freeze").addEventListener('click', function freezer() {
+                if (freeze == 'on') {
+                freeze = 'off';
+                document.getElementById("Freeze").innerHTML = "Freeze OFF";
+                }
+                else {
+                freeze = 'on';
+                document.getElementById("Freeze").innerHTML = "Freeze ON";
+                }
+            }, false);
+
+            //READ IF BUTTON "FREEZE" WAS KEYPRESSED
+            document.body.addEventListener("keypress", function (k) {
+                console.log(k.keyCode, k.key, displayForces, freeze)
+                if (k.keyCode == 32) {
+                if (freeze == 'on') {
+                    freeze = 'off';
+                    document.getElementById("Freeze").innerHTML = "Freeze OFF";
+                }
+                else {
+                    freeze = 'on';
+                    document.getElementById("Freeze").innerHTML = "Freeze ON";
+                }
+                }
+            }, false);
+
+            rangeSliderInit();
+
+            // DEFINE AND FILL ARRAY OF OBJECTS
+            var objects = []
+            var numOfRandomObj = 5;
+            for (let index = 0; index < numOfRandomObj; index++) {
+                objects.push([new Vector(Math.random() * canvas.width, Math.random() * canvas.height),10 + Math.random() * 90])
+            }
+
+            //DISPLAY OBJECTS ON CANVAS 
+            function drawObjects(Objects) {
+                for (let index = 0; index < Objects.length; index++) {
+                    ctx = canvas.getContext('2d');
+                    ctx.beginPath();
+                    ctx.arc(Objects[index][0].x, Objects[index][0].y, Objects[index][1], 0, 2 * Math.PI);
+                    ctx.closePath();
+                    ctx.fillStyle = "rgba(200, 0, 200,0.3)";
+                    ctx.fill();
+                }
+            }
+
+            var target = new Vector(0, 0), timeout = 0;
+            document.getElementById("VP").addEventListener('mousedown', function () {
+                target = new Vector(mouseObj.x, mouseObj.y);
+                timeout = 20;
+            }, false);
+
+            //INIT VEHICLE
+            var vehicle = new Vehicle(10, 10);
+
+            //CHANGE VEHICLE POSITION IF THAT INTERSECTS WITH OBSTACLES
+            var colliding = true;
+            while (colliding) {
+
+                var collisions = 0;
+
+                for(let i = 0; i < objects.length; i++){
+
+                    if(vehicle.position.distanceBetweenPoints(objects[i][0]) <= objects[i][1]){
+                        collisions++;
+                    }
+
+                }
+
+                if(collisions>0){
+
+                    vehicle.position.x = Math.ceil(Math.random() * canvas.width);
+                    vehicle.position.y = Math.ceil(Math.random() * canvas.height);
+                }
+
+                else{
+
+                    colliding = false;
+
+                }
+
+            }
+            
+            //INITIAL PUSH FOR VEHICLE
+            vehicle.velocity.x = vehicle.maxspeed;
+            vehicle.velocity.y = vehicle.maxspeed;
+
+            //LOOP FUNC
             function draw() {
+
                 ctx.setTransform(1, 0, 0, 1, 0, 0); // <- JS magic for PathBegin()..
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                vehicle.renderVehicle();
-                vehicle.renderCircleAround(obj1x,obj1y,obj1radius);
-                vehicle.renderCircleAround(obj2x,obj2y,obj2radius);
-                vehicle.renderCircleAround(obj3x,obj3y,obj3radius);
-                //vehicle.wander(document.getElementById("L").value,
-                //    document.getElementById("r").value);
-                //vehicle.seek(mouseObj.x, mouseObj.y);
-                vehicle.renderCircleAround(mouseObj.x, mouseObj.y, 5);
-                vehicle.avoidObstacle([obj1,obj2,obj3]);
-                vehicle.outOfBounds();
-                vehicle.update();
+                
                 vehicle.maxforce = document.getElementById("maxforce").value;
                 vehicle.maxspeed = document.getElementById("maxspeed").value;
+                vehicle.renderCircleAround(mouseObj.x, mouseObj.y, 5);
+                
+                var obstacle = vehicle.avoidObstacle(objects,
+                     distantPosition = Math.ceil(document.getElementById("L").value),
+                     margin = Math.ceil(document.getElementById("r").value),
+                      displayForces = displayForces);
+
+                if ((obstacle.x == 0 && obstacle.y == 0) &&
+                    ((vehicle.radius < vehicle.position.x) && (vehicle.position.x < canvas.width - vehicle.radius)) &&
+                    ((vehicle.radius < vehicle.position.y) && (vehicle.position.y < canvas.height - vehicle.radius))) {
+                    vehicle.runAhead();
+                }
+
+                if (timeout > 0) {
+
+                    vehicle.seek(target.x, target.y);
+
+                    timeout--;
+
+                }
+
+                if (displayForces == 'on') {
+
+                    vehicle.renderForces();
+
+                }
+                
+                if (freeze == 'off') {
+                    
+                    vehicle.update();
+                    
+                }
+                
+                vehicle.onlyCanvas();
+                vehicle.renderVehicle();
+
+                drawObjects(objects);
+
+                document.getElementById("snipMargin").innerHTML = Math.ceil(document.getElementById("r").value);
+                document.getElementById("snipL").innerHTML = Math.ceil(document.getElementById("L").value);
                 $("#vehicle_posX").text(Math.ceil(vehicle.position.x));
                 $("#vehicle_posY").text(Math.ceil(vehicle.position.y));
                 $("#vehicle_vel").text((vehicle.velocity.length()).toFixed(2))
+
             }
             setInterval(draw, 50);
         </script>
+        
     </div>
-    <div id="codeSnippet" class="container" style="display: inline-block; margin: 0px;">
+
+    <div id="codeSnippet" class="container" style="float: right; width: 49%; margin: 2px;">
+        
+        <!--CREATES SNIPPET OF CODE-->
         <pre class="prettyprint linenums" style="position: inherit;margin-top: 0px;margin-bottom: 0px;">
 class Vehicle {
-  avoidObstacle(objects, distantPosition = 100, margin = 15) {
+  avoidObstacle(objects, distantPosition = <b id="snipL" style="color: #cd5c5c">100</b>, margin = <b id="snipMargin" style="color: #cd5c5c">15</b>) {
     var predictVehPosition = this.velocity.normalize();
     predictVehPosition = predictVehPosition.multiply(distantPosition);
     predictVehPosition = this.position.add(predictVehPosition);

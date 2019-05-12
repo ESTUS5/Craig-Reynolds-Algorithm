@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Craig-Reynolds Algorithm</title>
+  <link rel="stylesheet" href="sliderStyle.css" />
+  <link rel="stylesheet" type="text/css" href="desert.css" />
+  <link rel="stylesheet" href="pagesLayoutStyle.css" />
+  <link rel="stylesheet" href="button.css" />
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="vector.js"></script>
+  <script src="mouse.js"></script>
+  <script src="vehicle.js"></script>
+  <script src="sliderStyle.js"></script>
+  <script type="text/javascript"> //To disable focusing on Chrome browser
+    document.addEventListener('click', function (e) {
+      if (document.activeElement.toString() == '[object HTMLButtonElement]') { document.activeElement.blur(); }
+    });
+  </script>
+</head>
+
+<body style="margin:0;padding:0;overflow:hidden; background-color: hsl(117, 43%, 80%);">
+  <div id="backToHome" class="container" style="width: auto px;">
+    <!--BUTTON BACK TO HOME PAGE/ANCHOR-->
+    <button class="button" onclick='window.location.href = "./00home.html"'>
+      Back to home page
+    </button>
+    <!--BUTTON DISPLAY FORCES-->
+    <button id="Forces" class="button">
+      Display Forces
+    </button>
+    
+    <!--BUTTON FREEZE-->
+    <button id="Freeze" class="button">
+      Freeze
+    </button>
+    <button id="followingType" class="button">
+      Change Following Type
+    </button>
+  </div>
+  <div id="main" class="container" style="float: left;width: 50%;padding-right: 0px;">
+    <canvas id="VP" class="viewport" style="background: #eee; width: 100%;"></canvas>
+    <div>
+      <div class="range-slider" style="display: inline-block;top: 20px;">
+        <div class="box">Maxspeed</div>
+        <input id="maxspeed" class="range-slider__range" type="range" value="2" min="0" max="7" step="0.01">
+        <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+      </div>
+      <div class="range-slider" style="display: inline-block;margin-left:100px;margin-right:80px;">
+        <div class="box">Maxforce</div>
+        <input id="maxforce" class="range-slider__range" type="range" value="0.1" min="0" max="5" step="0.01">
+        <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+      </div>
+    </div>
+    <script>
+      class Area {
+        constructor(ax, bx) {
+          this.ax = ax;
+          this.bx = bx;
+          this.x = (this.bx + this.ax) / 2;
+          this.y = canvas.height / 2;
+        }
+        has(Vehicles) {
+          var count = 0;
+          for (let i = 0; i < Vehicles.length; i++) {
+            if (Vehicles[i].position.x > this.ax && Vehicles[i].position.x < this.bx) {
+              count++;
+            }
+          }
+          if (count == Vehicles.length) {
+            return true;
+          }
+          else {
+            return false;
+          }
+        }
+      }
+      function drawWall() {
+        ctx.beginPath();
+        ctx.moveTo(canvas.width / 2, 0);
+        ctx.lineTo(canvas.width / 2, 145);
+        ctx.moveTo(canvas.width / 2, canvas.height);
+        ctx.lineTo(canvas.width / 2, canvas.height - 145);
+        ctx.strokeStyle = 'rgba(40,120,60,1)';
+        ctx.stroke();
+        ctx.closePath();
+      }
+      function obstacleWall(Vehicles){
+        Vehicles.forEach(Vehicle => {
+          var pointA = new Vector(canvas.width / 2, 0);
+          var pointB = new Vector(canvas.width / 2, canvas.height);
+          var normalPoint = Vehicle.position.normalPoint(pointA,pointB);
+          if(Vehicle.position.distanceBetweenPoints(normalPoint) <= Vehicle.radius){
+            if(Vehicle.position.y < 145 || Vehicle.position.y > 155){
+              if(Vehicle.position.x < canvas.width / 2){
+                Vehicle.position.x = canvas.width / 2 - Vehicle.radius;
+                var sek = Vehicle.seek(canvas.width / 2 - Vehicle.radius,canvas.height/2);
+                Vehicle.applyForce(sek.multiply(2));
+              }
+              else{
+                Vehicle.position.x = canvas.width / 2 + Vehicle.radius;
+                var sek = Vehicle.seek(canvas.width / 2 + Vehicle.radius,canvas.height/2);
+                Vehicle.applyForce(sek.multiply(3));
+              }
+            }
+            
+          }
+        });
+      }
+      var canvas = document.querySelector('.viewport'),
+        ctx = canvas.getContext('2d');
+      canvas.width = screen.width / 2;
+      canvas.height = 300;
+      mouseObj.Init('#VP');
+      var vehicles = [];
+      for (let index = 0; index < 200; index++) {
+        vehicles.push(new Vehicle(Math.ceil(Math.random() * canvas.width / 2), Math.ceil(Math.random() * canvas.height)));
+        vehicles[vehicles.length - 1].radius = 5;
+      }
+
+      var displayForces = 'off';
+      document.getElementById("Forces").addEventListener('click', function () {
+        if (displayForces == 'on') {
+          displayForces = 'off';
+        }
+        else {
+          displayForces = 'on';
+        }
+      }, false);
+
+            var freeze = "off";
+      document.getElementById("Freeze").addEventListener('click', function freezer() {
+        if (freeze == 'on') {
+          freeze = 'off';
+          document.getElementById("Freeze").innerHTML = "Freeze OFF";
+        }
+        else {
+          freeze = 'on';
+          document.getElementById("Freeze").innerHTML = "Freeze ON";
+        }
+      }, false);
+      document.body.addEventListener("keypress", function (k) {
+        console.log(k.keyCode, k.key, displayForces, freeze)
+        if (k.keyCode == 32) {
+          if (freeze == 'on') {
+            freeze = 'off';
+            document.getElementById("Freeze").innerHTML = "Freeze OFF";
+          }
+          else {
+            freeze = 'on';
+            document.getElementById("Freeze").innerHTML = "Freeze ON";
+          }
+        }
+      }, false);
+      rangeSliderInit();
+
+      var AreaA = new Area(0, canvas.width * 0.25),
+        AreaB = new Area(canvas.width * 0.75, canvas.width);
+
+        var target = new Vector(AreaB.x, AreaB.y);
+      function draw() {
+        ctx.setTransform(1, 0, 0, 1, 0, 0); // <- JS magic for PathBegin()..
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if (AreaA.has(vehicles)) {
+          target.x = AreaB.x;
+          target.y = AreaB.y;
+        }
+        if (AreaB.has(vehicles)) {
+          target.x = AreaA.x;
+          target.y = AreaA.y;
+        }
+        obstacleWall(vehicles);
+        for (let index = 0; index < vehicles.length; index++) {
+          var seek = vehicles[index].seek(target.x, target.y),
+            sep = vehicles[index].separation(vehicles);
+          sep = sep.multiply(2);
+          vehicles[index].applyForce(seek);
+          vehicles[index].applyForce(sep);
+          if (freeze == 'off') {
+          vehicles[index].update();
+        }
+          vehicles[index].renderVehicle();
+          vehicles[index].maxforce = document.getElementById("maxforce").value;
+          vehicles[index].maxspeed = document.getElementById("maxspeed").value;
+          /*
+          ctx.beginPath();
+          ctx.moveTo(vehicles[index].position.x, vehicles[index].position.y);
+          ctx.lineTo(target.x, target.y);
+          ctx.strokeStyle = 'rgba(140,60,90,0.4)';
+          ctx.stroke();
+          ctx.closePath();*/
+        }
+        drawWall();
+        ctx.beginPath();
+        ctx.moveTo(AreaA.ax + 15, 0);
+        ctx.lineTo(AreaA.ax + 15, canvas.height);
+        ctx.moveTo(AreaA.bx, 0);
+        ctx.lineTo(AreaA.bx, canvas.height);
+        ctx.moveTo(AreaB.ax, 0);
+        ctx.lineTo(AreaB.ax, canvas.height);
+        ctx.moveTo(AreaB.bx - 15, 0);
+        ctx.lineTo(AreaB.bx - 15, canvas.height);
+        ctx.strokeStyle = 'rgba(40,60,90,1)';
+        ctx.stroke();
+        ctx.closePath();
+      }
+      setInterval(draw, 14);
+    </script>
+  </div>
+  <div id="codeSnippet" class="container" style="float: right; width: 49%; margin: 2px;">
+    <pre class="prettyprint linenums" style="position: inherit;margin-top: 0px;margin-bottom: 0px;">
+        separation(Vehicles) {
+            var desired_seperation = this.radius * 2;
+            var sumVector = new Vector(0, 0);
+            var j = 0;
+            for (let i = 0; i < Vehicles.length; i++) {
+              var distance = this.position.distanceBetweenPoints(Vehicles[i].position);
+              if ((distance > 0) && (distance < desired_seperation)) {
+                var differance = this.position.subtract(Vehicles[i].position);
+                differance = differance.normalize();
+                differance = differance.divide(distance);
+                sumVector = sumVector.add(differance);
+                j++;
+              }
+            }
+            if (j > 0) {
+              sumVector = sumVector.divide(j);
+              sumVector = sumVector.normalize();
+              sumVector = sumVector.multiply(this.maxspeed);
+              var steer = sumVector.subtract(this.velocity);
+              this.applyForce(steer);
+            }
+        }</pre>
+  </div>
+</body>
+
+</html>

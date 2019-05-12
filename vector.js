@@ -1,7 +1,7 @@
 class Vector {
     constructor(x, y) {
         this.x = x,
-            this.y = y;
+        this.y = y;
     }
     equal(other) {
         this.x = other.x,
@@ -72,21 +72,41 @@ class Vector {
         ab = ab.multiply(ap.dotProduct(ab));
         return a.add(ab);
     }
-    isBetween(a,b){
-        if(this.x <= b.x){
-            if(this.x >= a.x) {
-                return true;
+    isBetween(a,b,axes = 'x'){
+        if(axes == 'x'){
+            if(this.x <= b.x){
+                if(this.x >= a.x) {
+                    return true;
+                }
+                else{
+                    return false;
+                }
             }
-            else{
-                return false;
+            else if(this.x >= b.x){
+                if(this.x <= a.x){
+                    return true;
+                }
+                else{
+                    return false;
+                }
             }
         }
-        else if(this.x >= b.x){
-            if(this.x <= a.x){
-                return true;
+        else {
+            if(this.y <= b.y){
+                if(this.y >= a.y) {
+                    return true;
+                }
+                else{
+                    return false;
+                }
             }
-            else{
-                return false;
+            else if(this.y >= b.y){
+                if(this.y <= a.y){
+                    return true;
+                }
+                else{
+                    return false;
+                }
             }
         }
     }
