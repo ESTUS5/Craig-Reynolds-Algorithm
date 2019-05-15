@@ -14,7 +14,8 @@
   <script src="mouse.js"></script>
   <script src="vehicle.js"></script>
   <script src="sliderStyle.js"></script>
-  <script type="text/javascript"> //To disable focusing on Chrome browser
+
+  <script type="text/javascript">
     document.addEventListener('click', function (e) {
       if (document.activeElement.toString() == '[object HTMLButtonElement]') { document.activeElement.blur(); }
     });
@@ -22,11 +23,14 @@
 </head>
 
 <body style="margin:0;padding:0;overflow:hidden; background-color: hsl(117, 43%, 80%);">
+
   <div id="backToHome" class="container" style="width: auto px;">
+
     <!--BUTTON BACK TO HOME PAGE/ANCHOR-->
     <button class="button" onclick='window.location.href = "./00home.html"'>
       Back to home page
     </button>
+
     <!--BUTTON DISPLAY FORCES-->
     <button id="Forces" class="button">
       Display Forces
@@ -36,42 +40,70 @@
     <button id="Freeze" class="button">
       Freeze
     </button>
-    <button id="followingType" class="button">
-      Change Following Type
-    </button>
+
   </div>
+
   <div id="main" class="container" style="float: left;width: 50%;padding-right: 0px;">
+
     <canvas id="VP" class="viewport" style="background: #eee; width: 100%;"></canvas>
+
     <div>
-      <div class="range-slider" style="display: inline-block;top: 20px;">
+
+      <div class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
+
         <div class="box">Maxspeed</div>
+
         <input id="maxspeed" class="range-slider__range" type="range" value="2" min="0" max="7" step="0.01">
+        
         <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+      
       </div>
-      <div class="range-slider" style="display: inline-block;margin-left:100px;margin-right:80px;">
+
+      <div class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
+        
         <div class="box">Maxforce</div>
+        
         <input id="maxforce" class="range-slider__range" type="range" value="0.1" min="0" max="5" step="0.01">
+        
         <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+      
       </div>
+    
     </div>
+
     <div>
-      <div class="range-slider" style="display: inline-block;margin-left:100px;margin-right:80px;">
+
+      <div class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
+        
         <div class="box">Target offset</div>
+        
         <input id="Target" class="range-slider__range" type="range" value="10" min="0">
+        
         <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+      
       </div>
+    
     </div>
+    
     <script>
+
+
       var canvas = document.querySelector('.viewport'),
       ctx = canvas.getContext('2d');
       canvas.width = screen.width / 2;
       canvas.height = 400;
+
+
       mouseObj.Init('#VP');
+
+
       var vehicles = [];
       for (let index = 0; index < 10; index++) {
         vehicles.push(new Vehicle(Math.ceil(Math.random() * 800), Math.ceil(Math.random() * 400)));
         vehicles[vehicles.length - 1].radius = 5;
       }
+
+
       var displayForces = 'off';
       document.getElementById("Forces").addEventListener('click', function () {
         if (displayForces == 'on') {
@@ -81,6 +113,8 @@
           displayForces = 'on';
         }
       }, false);
+
+
       var followingType = 'line';
       document.getElementById("followingType").addEventListener('click', function () {
         if (followingType == 'line') {
@@ -90,7 +124,9 @@
           followingType = 'line';
         }
       }, false);
-            var freeze = "off";
+
+
+      var freeze = "off";
       document.getElementById("Freeze").addEventListener('click', function freezer() {
         if (freeze == 'on') {
           freeze = 'off';
@@ -101,6 +137,8 @@
           document.getElementById("Freeze").innerHTML = "Freeze ON";
         }
       }, false);
+
+
       document.body.addEventListener("keypress", function (k) {
         console.log(k.keyCode, k.key, displayForces, freeze)
         if (k.keyCode == 32) {
@@ -114,57 +152,77 @@
           }
         }
       }, false);
+
+
       rangeSliderInit();
+
+
       function draw() {
+
         ctx.setTransform(1, 0, 0, 1, 0, 0); // <- JS magic for PathBegin()..
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+
         if(followingType == 'line'){
+
           for (let index = 1; index < vehicles.length; index++) {
+
             vehicles[index].follow(vehicles[index - 1],offset=vehicles[index].radius*3,displayForces)
             vehicles[index].separation(vehicles);
+
             if (freeze == 'off') {
-          vehicles[index].update();
-        }
+              vehicles[index].update();
+            }
+
             vehicles[index].renderVehicle();
             vehicles[index].maxforce = document.getElementById("maxforce").value;
             vehicles[index].maxspeed = document.getElementById("maxspeed").value;
+            
           }
+
           vehicles[0].arrival(mouseObj.x, mouseObj.y,displayForces);
           vehicles[0].separation(vehicles);
           vehicles[0].update();
           vehicles[0].renderVehicle();
           vehicles[0].maxforce = document.getElementById("maxforce").value;
           vehicles[0].maxspeed = document.getElementById("maxspeed").value;
+
         }
         else if(followingType == 'group'){
+
           for (let index = 1; index < vehicles.length; index++) {
+
             vehicles[index].follow(vehicles[0],offset=vehicles[index].radius*3,displayForces)
             vehicles[index].separation(vehicles);
+
             if (freeze == 'off') {
-          vehicles[index].update();
-        }
+              vehicles[index].update();
+            }
+
             vehicles[index].renderVehicle();
             vehicles[index].maxforce = document.getElementById("maxforce").value;
             vehicles[index].maxspeed = document.getElementById("maxspeed").value;
+
           }
+
           vehicles[0].arrival(mouseObj.x, mouseObj.y,displayForces);
           vehicles[0].separation(vehicles);
           vehicles[0].update();
           vehicles[0].renderVehicle();
           vehicles[0].maxforce = document.getElementById("maxforce").value;
           vehicles[0].maxspeed = document.getElementById("maxspeed").value;  
+
         }
-          //vehicle.maxforce = document.getElementById("maxforce").value;
-        //vehicle.maxspeed = document.getElementById("maxspeed").value;
-        //path.radius = document.getElementById("Radius").value;
-        //$("#vehicle_posX").text(Math.ceil(vehicle.position.x));
-        //$("#vehicle_posY").text(Math.ceil(vehicle.position.y));
-        //$("#vehicle_vel").text((vehicle.velocity.length()).toFixed(2))
+
       }
+
       setInterval(draw, 14);
+
     </script>
+
   </div>
+
   <div id="codeSnippet" class="container" style="float: right; width: 49%; margin: 2px;">
+
     <pre class="prettyprint linenums" style="position: inherit;margin-top: 0px;margin-bottom: 0px;">
 separation(Vehicles) {
   var desired_seperation = this.radius * 2;
@@ -213,7 +271,9 @@ else if(followingType == 'group'){
   vehicles[0].update();
   vehicles[0].renderVehicle();  
 }</pre>
+
   </div>
+
 </body>
 
 </html>
