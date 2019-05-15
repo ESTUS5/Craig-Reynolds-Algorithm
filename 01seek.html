@@ -137,7 +137,7 @@
       <div id="main" class="box" style="display: block; width: 800px; padding-right: 0px;">
 
         <div class="box" style="width: 90%;height:  auto;font-size: 4.7mm;text-align: center;
-        margin-left: 0px;padding-left: 0px;padding-right: 0px;">
+        margin-bottom: 5px;">
         The seek method calculates and returns vector that will be applied to the current velocity of Vehicle.
         The orange vector pointing out of the center of Vehicle is visualization of the desired_velocity and the blue one shows current velocity vector.
         </div>
@@ -198,9 +198,9 @@
           canvas.width = 800;
 
           //READ & WRITE MOUSE POSITION
-          mouseObj.Init("#VP");
+          mouseObj.Init("#VP",canvas);
           $(canvas).on("mousemove", function (event) {
-            $("#mouse_posX").text(" " + mouseObj.x);
+            $("#mouse_posX").text(" " + Math.ceil(mouseObj.x));
             $("#mouse_posY").text(" " + mouseObj.y);
           });
 
@@ -283,35 +283,14 @@
 
         <!--CREATES SNIPPET OF CODE-->
         <pre class="prettyprint linenums" style="position: inherit;margin-top: 2px;margin-bottom: 2px;">
-    class Vehicle {
-      constructor(x, y) {
-        this.acceleration = new Vector(0, 0),
-        this.velocity = new Vector(0, 0),
-        this.position = new Vector(x, y),
-        this.radius = 30,
-        this.maxspeed = <b id="snipSpeed" style="color: #cd5c5c">4</b>,
-        this.maxforce = <b id="snipForce" style="color: #cd5c5c">0.1</b>;
-        this.desired_velocity = new Vector(0, 0);
-      }
-      update() {
-        this.velocity = this.velocity.add(this.acceleration);
-        this.velocity.limit(this.maxspeed);
-        this.position = this.position.add(this.velocity);
-        this.acceleration = this.acceleration.multiply(0);
-      }
-      applyForce(force) {
-        this.acceleration = this.acceleration.add(force);
-      }
-      seek(targetX = mouseObj.x, targetY = mouseObj.y) {
-        this.desired_velocity = new Vector(targetX, targetY);
-        this.desired_velocity = this.desired_velocity.subtract(this.position);
-        this.desired_velocity = this.desired_velocity.normalize();
-        this.desired_velocity = this.desired_velocity.multiply(this.maxspeed);
-        this.steering_force = this.desired_velocity.subtract(this.velocity);
-        this.steering_force.limit(this.maxforce);
-        this.applyForce(this.steering_force);
-        return this.steering_force;
-      }
+    seek(targetX = mouseObj.x, targetY = mouseObj.y) {
+      this.desired_velocity = new Vector(targetX, targetY);
+      this.desired_velocity = this.desired_velocity.subtract(this.position);
+      this.desired_velocity = this.desired_velocity.normalize();
+      this.desired_velocity = this.desired_velocity.multiply(this.maxspeed);
+      this.steering_force = this.desired_velocity.subtract(this.velocity);
+      this.steering_force.limit(this.maxforce);
+      return this.steering_force;
     }</pre>
       </div>
     </div>
