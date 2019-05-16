@@ -22,15 +22,15 @@
   </script>
 </head>
 
-<body style=" background-color: hsl(117, 43%, 80%); ">
+<body style=" background-color: hsl(117, 43%, 80%); font-family: sans-serif">
 
   <div class="box" style="float: left; width: auto; height: auto;">
-          <div class="box" style="color: black; background: #53d8cd;width: 95%;height: 20px;font-size: 4.7mm;text-align: center;
+          <div class="box" style="color: black; background: #53d8cd;width: 95%;height: 20px;text-align: center;
           margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 8px;">
               Simulations
           </div>
   
-          <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 20px;font-size: 4.7mm;text-align: center;
+          <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 20px;text-align: center;
                   margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;">
               Basic behaviors
           </div>
@@ -86,7 +86,7 @@
               </button>
           </div>
   
-          <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 20px;font-size: 4.7mm;text-align: center;
+          <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 20px;text-align: center;
                   margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;
                   margin-top: 5px;">
               Combined behaviors
@@ -136,16 +136,17 @@
     <div style="display: block;">
       <div id="main" class="box" style="display: block; width: 800px; padding-right: 0px;">
 
-        <div class="box" style="width: 90%;height:  auto;font-size: 4.7mm;text-align: center;
+        <div class="box" style="width: 90%;height:  auto;text-align: center;
         margin-bottom: 5px;">
-        The seek method calculates and returns vector that will be applied to the current velocity of Vehicle.
-        The orange vector pointing out of the center of Vehicle is visualization of the desired_velocity and the blue one shows current velocity vector.
+          <span>The seek method calculates and returns vector that will be applied to the current velocity of Vehicle.
+            The orange vector pointing out of the center of Vehicle is visualization of the desired_velocity and the blue one shows current velocity vector.
+          </span>
         </div>
 
         <canvas id="VP" class="viewport" style="background: #eee; width: 100%; position: relative;height: 50%;"></canvas>
 
         <!--OUTPUT OF MOUSE POSITIONS OF CANVAS-->
-        <div class="box" style="width: 90%;height: 20px;font-size: 4.7mm;text-align: center;
+        <div class="box" style="width: 90%;height: 20px;text-align: center;
           margin-left: 0px;padding-left: 0px;padding-right: 0px;">
 
           Mouse position x:
@@ -156,7 +157,7 @@
         </div>
 
         <!--OUTPUT OF VEHICLE POSITION & VELOCITY-->
-        <div class="box" style="width: 90%;height: 20px;font-size: 4.7mm;text-align: center;
+        <div class="box" style="width: 90%;height: 20px;text-align: center;
           margin-left: 0px;padding-left: 0px;padding-right: 0px; top: -4px;">
 
           Vehicle position x:
@@ -267,8 +268,6 @@
             }
             vehicle.renderVehicle();
 
-            document.getElementById("snipSpeed").innerHTML = vehicle.maxspeed;
-            document.getElementById("snipForce").innerHTML = vehicle.maxforce;
             $("#vehicle_posX").text(Math.ceil(vehicle.position.x));
             $("#vehicle_posY").text(Math.ceil(vehicle.position.y));
             $("#vehicle_vel").text((vehicle.velocity.length()).toFixed(2));
