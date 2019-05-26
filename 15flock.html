@@ -21,12 +21,113 @@
   </script>
 </head>
 
-<body style="margin:0;padding:0;overflow:hidden; background-color: hsl(117, 43%, 80%);">
-  <div id="backToHome" class="container" style="width: auto px;">
-    <!--BUTTON BACK TO HOME PAGE/ANCHOR-->
-    <button class="button" onclick='window.location.href = "./00home.html"'>
-      Back to home page
-    </button>
+<body
+  style=" background-color: hsl(117, 43%, 80%);margin-left: 0px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 16px">
+
+  <div class="box" style="float: left; width: auto; height: auto;">
+    <div class="box" style="color: black; background: #53d8cd;width: 95%;height: 20px;text-align: center;
+          margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 8px;">
+      Simulations
+    </div>
+
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./00home.html"'>
+        Vehicle
+      </button>
+    </div>
+
+    <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 20px;text-align: center;
+                  margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;margin-top: 5px;">
+      Basic behaviors
+    </div>
+
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./01seek.html"'>
+        Seek
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./02flee.html"'>
+        Flee
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./03arrive.html"'>
+        Arrival
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./04pursue_evade.html"'>
+        Pursue and Evade
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./05wander.html"'>
+        Wander
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./06obstacle_avoid.html"'>
+        Obstacle Avoidance
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./07containment.html"'>
+        Containment
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./08wall_follow.html"'>
+        Wall Following
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./09Path_Following.html"'>
+        Path Following
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./10flow.html"'>
+        Flow Field Following
+      </button>
+    </div>
+
+    <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 20px;text-align: center;
+                  margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;
+                  margin-top: 5px;">
+      Combined behaviors
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./11CrowdPathFollow.html"'>
+        Crowd Path Following
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./12leader.html"'>
+        Leader Following
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./13unalignedAvoidence.html"'>
+        Unaligned Collision Avoidance
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./14queue.html"'>
+        Queueing
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./15flock.html"'>
+        Flocking
+      </button>
+    </div>
+    </nav>
+  </div>
+
+  <div id="backToHome" class="container" style="display: inline-block;">
+
+
     <!--BUTTON DISPLAY FORCES-->
     <button id="Forces" class="button">
       Display Forces
@@ -36,103 +137,227 @@
     <button id="Freeze" class="button">
       Freeze
     </button>
+
   </div>
-  <div id="main" class="container" style="float: left;width: 50%;padding-right: 0px;">
-    <canvas id="VP" class="viewport" style="background: #eee; width: 100%;"></canvas>
+
+  <div id="main" class="container" style="display: inline-block;width: 50vw;padding-right: 0px;">
+
+    <div class="box" style="width: 90%;height:  auto;text-align: left;
+      margin-bottom: 5px;">
+      <span>&nbsp;&nbsp;The Flocking behaviour is method made of 3 other algorithms and those are Cohesion, Alignment, Separation.
+         Separation doesn't need to be explained, but the other two were not used before.
+         Cohesion makes average of neighbours's positions and returns it as target(vector) for vehicle.
+         Alignment takes neighbours's velocities and then averages them into one direction(vector), which is then applied to vehicle.
+         All three can be weighted to make one vector more influencial than the rest.
+         <br>
+         &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of Vehicle is visualization of the desiredVelocity and the <span style="color:#6A5ACD">violet</span>
+        one shows current velocity vector.<br>
+        &nbsp;&nbsp;If you wish to freeze animation you can also press a spacebar on your keyboard.
+      </span>
+    </div>
+
+    <canvas id="VP" class="viewport" style="background: #eee; width: 100%; position: relative;height: 50%;"></canvas>
+
     <div>
-      <div class="range-slider" style="display: inline-block;top: 20px;">
-        <div class="box">Maxspeed</div>
+      <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
+        <div class="box" style="margin:0px; top:4px">Maxspeed</div>
         <input id="maxspeed" class="range-slider__range" type="range" value="2" min="0" max="7" step="0.01">
-        <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+        <span class="range-slider__value" style="top:4px">0</span>
       </div>
-      <div class="range-slider" style="display: inline-block;margin-left:100px;margin-right:80px;">
-        <div class="box">Maxforce</div>
+      <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
+        <div class="box" style="margin:0px; top:4px">Maxforce</div>
         <input id="maxforce" class="range-slider__range" type="range" value="0.1" min="0" max="5" step="0.01">
-        <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+        <span class="range-slider__value" style="top:4px">0</span>
+      </div>
+    </div>
+    <div>
+      <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
+        <div class="box" style="margin:0px; top:4px">Separation Force</div>
+        <input id="SepSlider" class="range-slider__range" type="range" value="1" min="0" max="7" step="0.01">
+        <span class="range-slider__value" style="top:4px">1</span>
+      </div>
+      <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
+        <div class="box" style="margin:0px; top:4px">Alignment Force</div>
+        <input id="AliSlider" class="range-slider__range" type="range" value="1" min="0" max="5" step="0.01">
+        <span class="range-slider__value" style="top:4px">1</span>
+      </div>
+    </div>
+    <div>
+      <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
+        <div class="box" style="margin:0px; top:4px">Cohesion Force</div>
+        <input id="CohSlider" class="range-slider__range" type="range" value="1" min="0" max="7" step="0.01">
+        <span class="range-slider__value" style="top:4px">1</span>
       </div>
     </div>
     <script>
       var canvas = document.querySelector('.viewport'),
         ctx = canvas.getContext('2d');
       canvas.width = screen.width / 2;
-      canvas.height = 400;
-      mouseObj.Init('#VP');
+      canvas.height = screen.height / 3;
+
       var vehicles = [];
+
       for (let index = 0; index < 200; index++) {
+
         vehicles.push(new Vehicle(Math.ceil(Math.random() * 800), Math.ceil(Math.random() * 400)));
         vehicles[vehicles.length - 1].radius = 5;
       }
+
       var displayForces = 'off';
       document.getElementById("Forces").addEventListener('click', function () {
         if (displayForces == 'on') {
+
           displayForces = 'off';
+
         }
         else {
+
           displayForces = 'on';
+
         }
       }, false);
-            var freeze = "off";
+
+      var freeze = "off";
       document.getElementById("Freeze").addEventListener('click', function freezer() {
         if (freeze == 'on') {
+
           freeze = 'off';
           document.getElementById("Freeze").innerHTML = "Freeze OFF";
+
         }
         else {
+
           freeze = 'on';
           document.getElementById("Freeze").innerHTML = "Freeze ON";
+
         }
       }, false);
+
       document.body.addEventListener("keypress", function (k) {
-        console.log(k.keyCode, k.key, displayForces, freeze)
+
         if (k.keyCode == 32) {
+
           if (freeze == 'on') {
+
             freeze = 'off';
             document.getElementById("Freeze").innerHTML = "Freeze OFF";
+
           }
           else {
+
             freeze = 'on';
             document.getElementById("Freeze").innerHTML = "Freeze ON";
+
           }
         }
       }, false);
+
       rangeSliderInit();
+
       function draw() {
+
         ctx.setTransform(1, 0, 0, 1, 0, 0); // <- JS magic for PathBegin()..
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-          for (let index = 0; index < vehicles.length; index++) {
-            vehicles[index].flock(vehicles);
-            if (freeze == 'off') {
-          vehicles[index].update();
-        }
-            vehicles[index].outOfBounds();
-            vehicles[index].renderVehicle();
-            if(displayForces == 'on'){
-                vehicles[index].renderForces();
-            }
-            vehicles[index].maxforce = document.getElementById("maxforce").value;
-            vehicles[index].maxspeed = document.getElementById("maxspeed").value;
+
+        for (let index = 0; index < vehicles.length; index++) {
+
+          vehicles[index].flock(vehicles,SepMulti = document.getElementById("SepSlider").value,
+              AliMulti = document.getElementById("AliSlider").value, 
+              CohMulti = document.getElementById("CohSlider").value);
+
+          if (freeze == 'off') {
+
+            vehicles[index].update();
+
+          }
+
+          vehicles[index].outOfBounds();
+
+          vehicles[index].renderVehicle();
+
+          if(displayForces == 'on'){
+
+            vehicles[index].renderForces();
+
+          }
+
+          document.getElementById("snipSep").innerHTML = document.getElementById("SepSlider").value;
+          document.getElementById("snipAli").innerHTML = document.getElementById("AliSlider").value;
+          document.getElementById("snipCoh").innerHTML = document.getElementById("CohSlider").value;
+          vehicles[index].maxforce = document.getElementById("maxforce").value;
+          vehicles[index].maxspeed = document.getElementById("maxspeed").value;
+
           }
       }
       setInterval(draw, 14);
+
     </script>
+
   </div>
-  <div id="codeSnippet" class="container" style="float: right; width: 49%; margin: 2px;">
-    <pre class="prettyprint linenums" style="position: inherit;margin-top: 0px;margin-bottom: 0px;">
-separation(Vehicles) {
 
-}</pre>
-<pre class="prettyprint linenums" style="position: relative;margin-top: 2px;margin-bottom: 0px;">
-flock(Vehicles){
-  var seperate = this.separation(Vehicles),
-  align = this.align(Vehicles),
-  cohesion = this.cohesion(Vehicles);
-  this.acceleration = this.acceleration.multiply(0);
-  seperate = seperate.multiply(1.5);
-  this.applyForce(seperate);
-  this.applyForce(cohesion);
+   <div id="codeSnippet" class="box" style="text-align: left; display: block;">
+
+    <!--CREATES SNIPPET OF CODE-->
+    <pre class="prettyprint linenums"
+    style="display: block;position: inherit;margin-top: 2px;margin-bottom: 2px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
+flock(Vehicles, SepMulti = <b id="snipSep" style="color: #cd5c5c">100</b>, AliMulti = <b id="snipAli" style="color: #cd5c5c">100</b>, CohMulti = <b id="snipCoh" style="color: #cd5c5c">100</b>) {
+  var separate = this.separation(Vehicles);
+  separate = separate.multiply(SepMulti);
+  this.applyForce(separate);
+  
+  var align = this.align(Vehicles);
+  align = align.multiply(AliMulti);
   this.applyForce(align);
+  
+  var cohesion = this.cohesion(Vehicles);
+  cohesion = cohesion.multiply(CohMulti);
+  this.applyForce(cohesion);
 }</pre>
-
+<pre class="prettyprint linenums"
+    style="display: block;position: inherit;margin-top: 20px;margin-bottom: 2px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
+align(Vehicles, neighbourDistance = 50) {
+  var sumVector = new Vector(0, 0),
+    j = 0;
+  for (let i = 0; i < Vehicles.length; i++) {
+    var distance = this.position.distanceBetweenPoints(Vehicles[i].position);
+    if ((distance > 0) && (distance < neighbourDistance)) {
+      sumVector = sumVector.add(Vehicles[i].velocity);
+      j++;
+    }
+  }
+  if (j > 0) {
+    sumVector = sumVector.divide(j);
+    sumVector = sumVector.normalize();
+    sumVector = sumVector.multiply(this.maxspeed);
+    sumVector = sumVector.subtract(this.velocity);
+    sumVector.limit(this.maxforce);
+    return sumVector;
+  }
+  else {
+    return new Vector(0,0);
+  }
+}</pre>
+<pre class="prettyprint linenums"
+    style="display: block;position: inherit;margin-top: 20px;margin-bottom: 2px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
+cohesion(Vehicles, neighbourDistance = 50) {
+  var sumVector = new Vector(0, 0),
+    j = 0;
+  for (let i = 0; i < Vehicles.length; i++) {
+    var distance = this.position.distanceBetweenPoints(Vehicles[i].position);
+    if ((distance > 0) && (distance < neighbourDistance)) {
+      sumVector = sumVector.add(Vehicles[i].position);
+      j++;
+    }
+  }
+  if (j > 0) {
+    sumVector = sumVector.divide(j);
+    sumVector = this.seek(sumVector.x,sumVector.y);
+    return sumVector;
+  }
+  else {
+    return new Vector(0,0);
+  }
+}</pre>
   </div>
 
 </body>

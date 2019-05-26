@@ -54,6 +54,11 @@ class Vector {
     angle(other) {
         return Math.acos(this.dotProduct(other) / (this.length() * this.length()));
     }
+    moveByAngle(angle){
+        var xPrim = this.x * Math.cos(angle) - this.y * Math.sin(angle);
+        var yPrim = this.x * Math.sin(angle) + this.y * Math.cos(angle);
+        return new Vector(xPrim, yPrim);
+    }
     limit(limiter) {
         if (this.length() > limiter) {
             this.equal(this.normalize().multiply(limiter));
@@ -63,8 +68,8 @@ class Vector {
         return (Math.sqrt((this.x - other.x) * (this.x - other.x)
             + (this.y - other.y) * (this.y - other.y)));
     }
-    map(d, rangeMax) {
-        return (rangeMax * (Math.abs(d)) / 100);
+    map(d, outputMax, outputMin, inputMax, inputMin) {
+        return outputMin + (outputMax - outputMin) * ((d - inputMin) / (inputMax - inputMin));
     }
     normalPoint(a, b) {
         var ap = this.subtract(a),
@@ -72,42 +77,18 @@ class Vector {
         ab = ab.multiply(ap.dotProduct(ab));
         return a.add(ab);
     }
-    isBetween(a,b,axes = 'x'){
-        if(axes == 'x'){
-            if(this.x <= b.x){
-                if(this.x >= a.x) {
-                    return true;
-                }
-                else{
-                    return false;
-                }
+    //returns True if point is in rectangle made of A & B
+    isBetween(a,b){
+        if((a.x >= this.x && b.x <= this.x) || (a.x <= this.x && b.x >= this.x) ){
+            if((a.y >= this.y && b.y <= this.y) || (a.y <= this.y && b.y >= this.y) ){
+                return true;
             }
-            else if(this.x >= b.x){
-                if(this.x <= a.x){
-                    return true;
-                }
-                else{
-                    return false;
-                }
+            else{
+                return false;
             }
         }
-        else {
-            if(this.y <= b.y){
-                if(this.y >= a.y) {
-                    return true;
-                }
-                else{
-                    return false;
-                }
-            }
-            else if(this.y >= b.y){
-                if(this.y <= a.y){
-                    return true;
-                }
-                else{
-                    return false;
-                }
-            }
+        else{
+            return false;
         }
     }
     mirror(other) {

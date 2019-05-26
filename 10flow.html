@@ -23,14 +23,110 @@
     <script src="board.js"></script>
 </head>
 
-<body style="margin:0;padding:0;overflow:hidden; background-color: hsl(117, 43%, 80%);">
+<body
+  style=" background-color: hsl(117, 43%, 80%);margin-left: 0px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 16px">
 
-    <div id="backToHome" class="container">
+  <div class="box" style="float: left; width: auto; height: auto;">
+    <div class="box" style="color: black; background: #53d8cd;width: 95%;height: 20px;text-align: center;
+          margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 8px;">
+      Simulations
+    </div>
 
-      <!--BUTTON BACK TO HOME PAGE/ANCHOR-->
+    <div class="container">
       <button class="button" onclick='window.location.href = "./00home.html"'>
-        Back to home page
+        Vehicle
       </button>
+    </div>
+
+    <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 20px;text-align: center;
+                  margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;margin-top: 5px;">
+      Basic behaviors
+    </div>
+
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./01seek.html"'>
+        Seek
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./02flee.html"'>
+        Flee
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./03arrive.html"'>
+        Arrival
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./04pursue_evade.html"'>
+        Pursue and Evade
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./05wander.html"'>
+        Wander
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./06obstacle_avoid.html"'>
+        Obstacle Avoidance
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./07containment.html"'>
+        Containment
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./08wall_follow.html"'>
+        Wall Following
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./09Path_Following.html"'>
+        Path Following
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./10flow.html"'>
+        Flow Field Following
+      </button>
+    </div>
+
+    <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 20px;text-align: center;
+                  margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;
+                  margin-top: 5px;">
+      Combined behaviors
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./11CrowdPathFollow.html"'>
+        Crowd Path Following
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./12leader.html"'>
+        Leader Following
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./13unalignedAvoidence.html"'>
+        Unaligned Collision Avoidance
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./14queue.html"'>
+        Queueing
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./15flock.html"'>
+        Flocking
+      </button>
+    </div>
+    </nav>
+  </div>
+    <div id="backToHome" class="container" style=" display: inline-block;">
       
       <!--BUTTON DISPLAY FORCES-->
       <button id="Forces" class="button">
@@ -44,12 +140,24 @@
 
     </div>
 
-    <div id="main" class="container" style="float: left; width: 50%; padding-right: 0px;">
+    <div id="main" class="container" style="float: left; width: 50vw; padding-right: 0px;">
 
-        <canvas id="VP" class="viewport" style="background: #eee; width: 100%;"></canvas>
+        <div class="box" style="width: 90%;height:  auto;text-align: left;
+        margin-bottom: 5px;">
+        <span>
+          &nbsp;&nbsp;The Flow Field Following is a method that requires implementation of object which divides space into tiles. Every tile has his own vector. 
+          When the vehicle is currently positioned on certain tile, this tile will return his vector, which will be new target for Seek method.<br>
+          &nbsp;&nbsp;The<span style="color:#FF4500">orange</span> vector pointing out of the center of Vehicle is visualization of the desiredVelocity and the <span style="color:#6A5ACD">violet</span>
+          one shows current velocity vector. <span style="color:rgba(102, 196, 149, 0.5)">Green</span> vector is flow of tile that vehicle is occupying right now.<br>
+          &nbsp;&nbsp;If you wish to freeze animation you can also press a spacebar on your keyboard. In order to change the vector in tile use left mouse button in tile's space.
+           This action will move vector to direction of your choosing.
+        </span>
+      </div>
+
+        <canvas id="VP" class="viewport" style="background: #eee; width: 100%; position: relative;height: 50%;"></canvas>
 
         <!--OUTPUT OF VEHICLE POSITION & VELOCITY-->
-        <div class="box" style="width: 90%;height: 20px;font-size: 4.7mm;text-align: center;
+        <div class="box" style="width: 90%;height: 20px;text-align: center;
         margin-left: 0px;padding-left: 0px;padding-right: 0px;">
 
             Vehicle position x:
@@ -62,24 +170,28 @@
         </div>
 
         <!--RANGE SLIDER OF MAXSPEED-->
-        <div class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
+        <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
 
-          <div class="box">Maxspeed</div>
+          <div class="box" style="margin:0px; top:4px">
+            Maxspeed
+          </div>
 
           <input id="maxspeed" class="range-slider__range" type="range" value="4" min="0" max="7" step="0.01">
             
-          <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+          <span class="range-slider__value" style="top:4px">
+            0
+          </span>
         
         </div>
 
         <!--RANGE SLIDER OF MAXFORCE-->
-        <div class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
+        <div class="range-slider" style="float:left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
             
-          <div class="box">Maxforce</div>
+          <div class="box" style="margin:0px; top:4px">Maxforce</div>
           
           <input id="maxforce" class="range-slider__range" type="range" value="0.1" min="0" max="5" step="0.01">
           
-          <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+          <span class="range-slider__value"style="top:4px">0</span>
         
         </div>
 
@@ -88,10 +200,10 @@
           var canvas = document.querySelector('.viewport'),
             ctx = canvas.getContext('2d');
           canvas.width = screen.width / 2;
-          canvas.height = 400;
+          canvas.height = screen.height / 3;
 
           //READ MOUSE POSITION
-          mouseObj.Init("#VP");
+          mouseObj.Init("#VP",canvas);
 
           //INIT VEHICLE
           var vehicle = new Vehicle(100, 100);
@@ -167,7 +279,8 @@
               vehicle.renderVectorTo(target[0], target[1],"rgba(40,80,60,0.5)");
             }
             
-            vehicle.seek(target[0], target[1],displayForces);
+            var seek = vehicle.seek(target[0], target[1],displayForces);
+            vehicle.applyForce(seek);
             if (freeze == 'off') {
               vehicle.update();
             }
@@ -188,9 +301,11 @@
 
     </div>
 
-    <div id="codeSnippet" class="container" style="float: right; width: 49%; margin: 2px;">
+    <div id="codeSnippet" class="box" style="text-align: left; display: block;">
+
         <!--CREATES SNIPPET OF CODE-->
-        <pre class="prettyprint linenums" style="position: inherit;margin-top: 0px;margin-bottom: 0px;">
+    <pre class="prettyprint linenums"
+      style="position: inherit;margin-top: 2px;margin-bottom: 2px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
 class Board{
  tile(obj_posX, obj_posY) {
   for (let x = 0; x < this.divisions; x++) {
@@ -199,35 +314,34 @@ class Board{
      if (obj_posY < this.vectors_arr[x][y][3]) {
       if (this.vectors_arr[x][y][0] > (this.vectors_arr[x][y][2]
        - (canvas.width/(this.divisions*2)))) {
-       var bx = this.vectors_arr[x][y][2] + 1;
+        var bx = this.vectors_arr[x][y][2] + 1;
       }
       else {
-       var bx = this.vectors_arr[x][y][2]
+         var bx = this.vectors_arr[x][y][2]
              - (canvas.width/this.divisions) - 1;
       }
       var a = (this.vectors_arr[x][y][1] - (this.vectors_arr[x][y][3]
        - (canvas.height/(this.divisions*2)))) / (this.vectors_arr[x][y][0]
         - (this.vectors_arr[x][y][2] - (canvas.width/(this.divisions*2))));
       if (a == Infinity || a == -Infinity) {
-       a = 0;
+        a = 0;
       }
       var b = obj_posY - a * obj_posX;
       var by = a * bx + b;
       if (by > this.vectors_arr[x][y][3]) {
-       by = this.vectors_arr[x][y][3];
-       bx = (by - b) / a;
+        by = this.vectors_arr[x][y][3];
+        bx = (by - b) / a;
       }
       else if (by < this.vectors_arr[x][y][3]
          - (canvas.height/this.divisions)) {
-       by = this.vectors_arr[x][y][3] - (canvas.height/this.divisions);
-       bx = (by - b) / a;
+        by = this.vectors_arr[x][y][3] - (canvas.height/this.divisions);
+        bx = (by - b) / a;
       }
       return [bx, by];
      }
     }
-}}}}
-target = board.tile(vehicle.position.x, vehicle.position.y)
-vehicle.seek(target[0], target[1]);</pre>
+  }
+}</pre>
     </div>
     
 </body>

@@ -14,6 +14,7 @@
   <script src="mouse.js"></script>
   <script src="vehicle.js"></script>
   <script src="sliderStyle.js"></script>
+  <script src="object.js"></script>
   <script type="text/javascript"> //To disable focusing on Chrome browser
     document.addEventListener('click', function (e) {
       if (document.activeElement.toString() == '[object HTMLButtonElement]') { document.activeElement.blur(); }
@@ -21,158 +22,458 @@
   </script>
 </head>
 
-<body style="margin:0;padding:0;overflow:hidden; background-color: hsl(117, 43%, 80%);">
-  <div id="backToHome" class="container" style="width: auto px;">
-    <!--BUTTON BACK TO HOME PAGE/ANCHOR-->
-    <button class="button" onclick='window.location.href = "./00home.html"'>
-      Back to home page
-    </button>
+<body
+  style=" background-color: hsl(117, 43%, 80%);margin-left: 0px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 16px">
+
+  <div class="box" style="float: left; width: auto; height: auto;">
+    <div class="box" style="color: black; background: #53d8cd;width: 95%;height: 20px;text-align: center;
+          margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 8px;">
+      Simulations
+    </div>
+
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./00home.html"'>
+        Vehicle
+      </button>
+    </div>
+
+    <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 20px;text-align: center;
+                  margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;margin-top: 5px;">
+      Basic behaviors
+    </div>
+
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./01seek.html"'>
+        Seek
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./02flee.html"'>
+        Flee
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./03arrive.html"'>
+        Arrival
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./04pursue_evade.html"'>
+        Pursue and Evade
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./05wander.html"'>
+        Wander
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./06obstacle_avoid.html"'>
+        Obstacle Avoidance
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./07containment.html"'>
+        Containment
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./08wall_follow.html"'>
+        Wall Following
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./09Path_Following.html"'>
+        Path Following
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./10flow.html"'>
+        Flow Field Following
+      </button>
+    </div>
+
+    <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 20px;text-align: center;
+                  margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;
+                  margin-top: 5px;">
+      Combined behaviors
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./11CrowdPathFollow.html"'>
+        Crowd Path Following
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./12leader.html"'>
+        Leader Following
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./13unalignedAvoidence.html"'>
+        Unaligned Collision Avoidance
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./14queue.html"'>
+        Queueing
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./15flock.html"'>
+        Flocking
+      </button>
+    </div>
+    </nav>
+  </div>
+  <div id="backToHome" class="container" style="display: inline-block;">
+
     <!--BUTTON DISPLAY FORCES-->
     <button id="Forces" class="button">
       Display Forces
     </button>
-    
+
     <!--BUTTON FREEZE-->
     <button id="Freeze" class="button">
       Freeze
     </button>
-    <button id="followingType" class="button">
-      Change Following Type
-    </button>
+
   </div>
-  <div id="main" class="container" style="float: left;width: 50%;padding-right: 0px;">
-    <canvas id="VP" class="viewport" style="background: #eee; width: 100%;"></canvas>
-    <div class="box" style="width: 780px;height: 20px;font-size: 4.7mm;text-align: center;
+
+  <div id="main" class="container" style="display: inline-block;width: 50vw;padding-right: 0px;">
+
+    <div class="box" style="width: 90%;height:  auto;text-align: left;
+      margin-bottom: 5px;">
+      <span>
+        <br>
+        The <span style="color:orange">orange</span> vector pointing out of the center of Vehicle is visualization of
+        the desiredVelocity and the <span style="color:#6A5ACD">violet</span>
+        one shows current velocity vector.<br>
+        If you wish to freeze animation you can also press a spacebar on your keyboard.
+      </span>
+    </div>
+
+    <canvas id="VP" class="viewport" style="background: #eee; width: 100%; position: relative;height: 50%;"></canvas>
+
+    <div class="box" style="width: 90%;height: 20px;text-align: center;
         margin-left: 0px;padding-left: 0px;padding-right: 0px;">
+
       Vehicle position x:
       <span id="vehicle_posX"></span>
       y:
       <span id="vehicle_posY"></span>
       velocity:
       <span id="vehicle_vel"></span>
+
     </div>
+
     <div>
-      <div class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
-        <div class="box">Maxspeed</div>
+
+      <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
+
+        <div class="box" style="margin:0px; top:4px">Maxspeed</div>
+
         <input id="maxspeed" class="range-slider__range" type="range" value="2" min="0" max="7" step="0.01">
-        <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+
+        <span class="range-slider__value" style="top:4px">0</span>
+
       </div>
-      <div class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
-        <div class="box">Maxforce</div>
+
+      <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
+
+        <div class="box" style="margin:0px; top:4px">Maxforce</div>
+
         <input id="maxforce" class="range-slider__range" type="range" value="0.1" min="0" max="5" step="0.01">
-        <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+
+        <span class="range-slider__value" style="top:4px">0</span>
+
       </div>
+
     </div>
+
     <div>
-      <div class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
-        <div class="box">Predict distance</div>
+
+      <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
+
+        <div class="box" style="margin:0px; top:4px">Predict distance</div>
+
         <input id="Predict" class="range-slider__range" type="range" value="30" min="0">
-        <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+
+        <span class="range-slider__value" style="top:4px">0</span>
+
       </div>
-      <div class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
-        <div class="box">Target offset</div>
+
+      <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
+
+        <div class="box" style="margin:0px; top:4px">Target offset</div>
+
         <input id="Target" class="range-slider__range" type="range" value="10" min="0">
-        <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+
+        <span class="range-slider__value" style="top:4px">0</span>
+
       </div>
+
     </div>
+
     <script>
+
       var canvas = document.querySelector('.viewport'),
         ctx = canvas.getContext('2d');
       canvas.width = screen.width / 2;
-      canvas.height = 400;
-      mouseObj.Init('#VP');
-      var vehicle = new Vehicle(Math.ceil(Math.random() * 800), Math.ceil(Math.random() * 400));
-      
+      canvas.height = screen.height / 3;
+
+      mouseObj.Init('#VP', canvas);
+
+      var vehicle = new Vehicle(400, 200);
+      vehicle.theta = Math.random() * 360;
+
       var displayForces = 'off';
       document.getElementById("Forces").addEventListener('click', function () {
+
         if (displayForces == 'on') {
+
           displayForces = 'off';
+
         }
+
         else {
+
           displayForces = 'on';
+
         }
+
       }, false);
-            var freeze = "off";
+
+      var freeze = "off";
       document.getElementById("Freeze").addEventListener('click', function freezer() {
+
         if (freeze == 'on') {
+
           freeze = 'off';
           document.getElementById("Freeze").innerHTML = "Freeze OFF";
+
         }
+
         else {
+
           freeze = 'on';
           document.getElementById("Freeze").innerHTML = "Freeze ON";
+
         }
+
       }, false);
+
       document.body.addEventListener("keypress", function (k) {
-        console.log(k.keyCode, k.key, displayForces, freeze)
+
         if (k.keyCode == 32) {
+
           if (freeze == 'on') {
+
             freeze = 'off';
             document.getElementById("Freeze").innerHTML = "Freeze OFF";
+
           }
+
           else {
+
             freeze = 'on';
             document.getElementById("Freeze").innerHTML = "Freeze ON";
+
           }
+
         }
+
       }, false);
+
       rangeSliderInit();
+
+      // DEFINE AND FILL ARRAY OF OBJECTS
+      var objects = []
+
+      var numOfRandomObj = 0;
+      for (let k = 0; k < numOfRandomObj; k++) {
+
+        var randomVector = new Vector((Math.random() * canvas.width), (Math.random() * canvas.height/2 + canvas.height/2)),
+          randomRadius = 5 + Math.round(Math.random() * 5, 2);
+
+        var colliding = false;
+
+        if (objects.length > 0) {
+
+          colliding = true;
+
+        }
+        
+        while (colliding) {
+
+          var collisions = 0;
+
+          for (let i = 0; i < objects.length; i++) {
+
+            if (objects[i].center.distanceBetweenPoints(randomVector) <= (randomRadius + objects[i].radius)) {
+              collisions++;
+            }
+            if(randomVector.x <=300 || randomVector.x >=600){
+              if(randomVector.y <= 120){
+                collisions++;
+              }
+              else if(randomVector.y >= 250){
+                collisions++;
+              }
+            }
+          }
+
+          if (collisions > 0) {
+
+            randomVector = new Vector(Math.random() * canvas.width, (Math.random() * canvas.height/2 + canvas.height/2)),
+              randomRadius = 5 + Math.round(Math.random() * 5, 2);
+
+          }
+
+          else {
+
+            colliding = false;
+
+          }
+
+        }
+        objects.push(new objectCircle(randomVector.x,randomVector.y,randomRadius));
+
+      }
+
+      // DEFINE AND CREATE WALL OBJECT
+      function objectW(x1,y1,x2,y2){
+        objects.push( new objectWall(x1,y1,x2,y2));
+      }
+      objectW(0,120,300,120);
+      objectW(300,120,301,0);
+
+      objectW(599,0,600,120);
+      objectW(600,120,canvas.width,120);
+
+      objectW(0,250,300,250);
+      objectW(300,250,301,canvas.height);
+
+      objectW(599,canvas.height,600,250);
+      objectW(600,250,canvas.width,250);
+
+      //DISPLAY OBJECTS ON CANVAS 
+      function drawObjects(Objects) {
+
+        for (let index = 0; index < Objects.length; index++) {
+
+          Objects[index].draw();
+
+        }
+
+      }
+
+      var target = new Vector(0, 0), timeout = 0;
+      document.getElementById("VP").addEventListener('mousedown', function () {
+        target = new Vector(mouseObj.x, mouseObj.y);
+        timeout = 20;
+      }, false);
+      
+
+      var ArrVector = [];
+
+      //INITIAL PUSH FOR VEHICLE
+      vehicle.velocity.x = vehicle.maxspeed;
+      vehicle.velocity.y = vehicle.maxspeed;
+      var seek = 0;
+
       function draw() {
+
         ctx.setTransform(1, 0, 0, 1, 0, 0); // <- JS magic for PathBegin()..
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-          vehicle.containment(0, displayForces);
-          if(freeze == "on"){
+        
+        var avoid = vehicle.containment(objects,displayForces);
+        if(avoid.x != 0 || avoid.y != 0){
+          seek = vehicle.seek(avoid.x,avoid.y);
+        }
+        else{
+          ArrVector = vehicle.wander(20, 20, displayForces);
+          seek = vehicle.seek(ArrVector[0].x, ArrVector[0].y);
+        }
+        
+        if (freeze == "off") {
+
+          vehicle.applyForce(seek);
           vehicle.update();
-          }
-          vehicle.outOfBounds();
-          vehicle.renderVehicle();
-          if (displayForces == 'on') {
-            vehicle.renderForces();
-          }
-        //vehicle.maxforce = document.getElementById("maxforce").value;
-        //vehicle.maxspeed = document.getElementById("maxspeed").value;
+
+        }
+
+        vehicle.outOfBounds();
+
+        vehicle.renderVehicle();
+
+        drawObjects(objects);
+
+        if (displayForces == 'on') {
+
+          vehicle.renderForces();
+
+        }
+
+        vehicle.maxforce = document.getElementById("maxforce").value;
+        vehicle.maxspeed = document.getElementById("maxspeed").value;
         //path.radius = document.getElementById("Radius").value;
         $("#vehicle_posX").text(Math.ceil(vehicle.position.x));
         $("#vehicle_posY").text(Math.ceil(vehicle.position.y));
         $("#vehicle_vel").text((vehicle.velocity.length()).toFixed(2))
+
       }
-      setInterval(draw, 14);
+
+      setInterval(draw, 50);
+
     </script>
+
   </div>
-  <div id="codeSnippet" class="container" style="float: right; width: 49%; margin: 2px;">
-    <pre class="prettyprint linenums" style="position: inherit;margin-top: 0px;margin-bottom: 0px;">
-separation(Vehicles) {
-  var desired_seperation = this.radius * 2;
-  var sumVector = new Vector(0, 0);
-  var j = 0;
-  for (let i = 0; i < Vehicles.length; i++) {
-    var distance = this.position.distanceBetweenPoints(Vehicles[i].position);
-    if ((distance > 0) && (distance < desired_seperation)) {
-      var differance = this.position.subtract(Vehicles[i].position);
-      differance = differance.normalize();
-      differance = differance.divide(distance);
-      sumVector = sumVector.add(differance);
-      j++;
+
+  <div id="codeSnippet" class="box" style="text-align: left; display: block;">
+
+    <!--CREATES SNIPPET OF CODE-->
+    <pre class="prettyprint linenums"
+      style="position: inherit;margin-top: 2px;margin-bottom: 2px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
+containment(Objects) {
+  var mainRay = this.velocity.normalize().multiply(this.maxspeed),
+  leftRay = mainRay.moveByAngle(-Math.PI / 6),
+  rightRay = mainRay.moveByAngle(Math.PI / 6);
+    
+  mainRay = mainRay.multiply(this.radius*2);
+  leftRay = leftRay.multiply(this.radius);
+  rightRay = rightRay.multiply(this.radius);
+    
+  var mainRayPos = mainRay.add(this.position),
+  leftRayPos = leftRay.add(this.position),
+  rightRayPos = rightRay.add(this.position);
+    
+  var summedVector = new Vector(0,0);
+  for (let i = 0; i < Objects.length; i++) {
+    if(Objects[i].hasInside(mainRayPos,this.position)){
+      var projectedPoint = Objects[i].projectedPointOnSurface(mainRayPos
+      ,this.position);
+      summedVector = summedVector.add( 
+        Objects[i].normalVector(projectedPoint, mainRayPos) );
+    }
+      
+    if(Objects[i].hasInside(leftRayPos,this.position)){
+      var projectedPoint = Objects[i].projectedPointOnSurface(leftRayPos
+      ,this.position);
+      summedVector = summedVector.add(
+        Objects[i].normalVector(projectedPoint, leftRayPos) );
+    }
+      
+    if(Objects[i].hasInside(rightRayPos,this.position)){
+      var projectedPoint = Objects[i].projectedPointOnSurface(rightRayPos
+      ,this.position);
+      summedVector = summedVector.add(
+        Objects[i].normalVector(projectedPoint, rightRayPos) );
     }
   }
-  if (j > 0) {
-    sumVector = sumVector.divide(j);
-    sumVector = sumVector.normalize();
-    sumVector = sumVector.multiply(this.maxspeed);
-    var steer = sumVector.subtract(this.velocity);
-    this.applyForce(steer);
-  }
-}</pre>
-    <pre class="prettyprint linenums" style="position: relative;margin-top: 2px;margin-bottom: 0px;">
-flock(Vehicles){
-  var seperate = this.separation(Vehicles),
-  align = this.align(Vehicles),
-  cohesion = this.cohesion(Vehicles);
-  this.acceleration = this.acceleration.multiply(0);
-  seperate = seperate.multiply(1.5);
-  this.applyForce(seperate);
-  this.applyForce(cohesion);
-  this.applyForce(align);
+  if(summedVector.x != 0 || summedVector.y != 0){
+    summedVector = summedVector.add(this.position);
+  }     
+  return summedVector;
 }</pre>
   </div>
 </body>

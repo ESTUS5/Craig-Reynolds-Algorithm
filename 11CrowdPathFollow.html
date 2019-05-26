@@ -23,14 +23,111 @@
   <script src="path.js"></script>
 </head>
 
-<body style="margin:0;padding:0;overflow:hidden; background-color: hsl(117, 43%, 80%);">
+<body
+  style=" background-color: hsl(117, 43%, 80%);margin-left: 0px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 16px">
 
-  <div id="backToHome" class="container">
+  <div class="box" style="float: left; width: auto; height: auto;">
+    <div class="box" style="color: black; background: #53d8cd;width: 95%;height: 20px;text-align: center;
+          margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 8px;">
+      Simulations
+    </div>
 
-    <!--BUTTON BACK TO HOME PAGE/ANCHOR-->
-    <button class="button" onclick='window.location.href = "./00home.html"'>
-      Back to home page
-    </button>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./00home.html"'>
+        Vehicle
+      </button>
+    </div>
+
+    <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 20px;text-align: center;
+                  margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;margin-top: 5px;">
+      Basic behaviors
+    </div>
+
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./01seek.html"'>
+        Seek
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./02flee.html"'>
+        Flee
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./03arrive.html"'>
+        Arrival
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./04pursue_evade.html"'>
+        Pursue and Evade
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./05wander.html"'>
+        Wander
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./06obstacle_avoid.html"'>
+        Obstacle Avoidance
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./07containment.html"'>
+        Containment
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./08wall_follow.html"'>
+        Wall Following
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./09Path_Following.html"'>
+        Path Following
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./10flow.html"'>
+        Flow Field Following
+      </button>
+    </div>
+
+    <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 20px;text-align: center;
+                  margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;
+                  margin-top: 5px;">
+      Combined behaviors
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./11CrowdPathFollow.html"'>
+        Crowd Path Following
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./12leader.html"'>
+        Leader Following
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./13unalignedAvoidence.html"'>
+        Unaligned Collision Avoidance
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./14queue.html"'>
+        Queueing
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./15flock.html"'>
+        Flocking
+      </button>
+    </div>
+    </nav>
+  </div>
+
+  <div id="backToHome" class="container" style=" display: inline-block;">
 
     <!--BUTTON DISPLAY FORCES-->
     <button id="Forces" class="button">
@@ -44,31 +141,45 @@
 
   </div>
 
-  <div id="main" class="container" style="float: left;width: 50%;padding-right: 0px;">
+  <div id="main" class="container" style="display: inline-block;width: 50vw;padding-right: 0px;">
 
-    <canvas id="VP" class="viewport" style="background: #eee; width: 100%;height: 400px;"></canvas>
+      <div class="box" style="width: 90%;height:  auto;text-align: left;
+      margin-bottom: 5px;">
+      <span>
+        &nbsp;&nbsp;Crowd Path following is supposingly an example of human crowd walking through corridor. Only two methods are combined to achieve this effect.
+        First was already described as Path following algorithm and here it is used the same way. Second method is new and requires other vehicles to work properly.
+         It is called Separation and is quite simple. After it finds every neighbour's position, it makes average of it and then inverses the vector.
+         When it is applied the vehicle will be separating itself from the biggest group of neighbours. 
+        <br>
+        &nbsp;&nbsp;The <span style="color:orange">orange</span> vector pointing out of the center of Vehicle is visualization of the desiredVelocity and the <span style="color:#6A5ACD">violet</span>
+        one shows current velocity vector.<br>
+        &nbsp;&nbsp;If you wish to freeze animation you can also press a spacebar on your keyboard.
+      </span>
+    </div>
+
+    <canvas id="VP" class="viewport" style="background: #eee; width: 100%; position: relative;height: 50%;"></canvas>
     
     <div>
 
       <!--RANGE SLIDER OF MAXSPEED-->
-      <div class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
+      <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
 
-        <div class="box">Maxspeed</div>
+        <div class="box" style="margin:0px; top:4px">Maxspeed</div>
         
         <input id="maxspeed" class="range-slider__range" type="range" value="2" min="0" max="7" step="0.01">
         
-        <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+        <span class="range-slider__value" style="top:4px">0</span>
       
       </div>
 
       <!--RANGE SLIDER OF MAXFORCE-->
-      <div class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
+      <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
         
-        <div class="box">Maxforce</div>
+        <div class="box" style="margin:0px; top:4px">Maxforce</div>
         
         <input id="maxforce" class="range-slider__range" type="range" value="0.1" min="0" max="5" step="0.01">
         
-        <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+        <span class="range-slider__value" style="top:4px">0</span>
       
       </div>
 
@@ -77,24 +188,24 @@
     <div>
 
       <!--RANGE SLIDER OF PREDICT DISTANCE-->
-      <div class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
+      <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
         
-        <div class="box">Predict distance</div>
+        <div class="box" style="margin:0px; top:4px">Predict distance</div>
         
         <input id="Predict" class="range-slider__range" type="range" value="30" min="0">
         
-        <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+        <span class="range-slider__value" style="top:4px">0</span>
       
       </div>
       
       <!--RANGE SLIDER OF TARGET OFFSET-->
-      <div class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
+      <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
         
-        <div class="box">Target offset</div>
+        <div class="box" style="margin:0px; top:4px">Target offset</div>
         
         <input id="Target" class="range-slider__range" type="range" value="10" min="0">
         
-        <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+        <span class="range-slider__value" style="top:4px">0</span>
       
       </div>
 
@@ -103,13 +214,13 @@
     <div>
 
         <!--RANGE SLIDER OF SEPARATION FORCE-->
-        <div class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
+        <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
           
-            <div class="box">Separation Force</div>
+            <div class="box" style="margin:0px; top:4px">Separation Force</div>
             
             <input id="sepF" class="range-slider__range" type="range" value="0.5" min="0" max="5" step="0.01">
             
-            <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+            <span class="range-slider__value" style="top:4px">0</span>
           
           </div>
   
@@ -121,7 +232,7 @@
       var canvas = document.querySelector('.viewport'),
         ctx = canvas.getContext('2d');
       canvas.width = screen.width / 2;
-      canvas.height = 450;
+      canvas.height = screen.height / 2.5;
 
       //INIT PATH
       var path = new Path(canvas.width/4, 70, canvas.width/1.75, 40,30);
@@ -189,18 +300,30 @@
 
         for (let index = 0; index < vehicles.length; index++) {
 
-            vehicles[index].followPath(document.getElementById("Predict").value,
+            var follow = vehicles[index].followPath(document.getElementById("Predict").value,
             document.getElementById("Target").value,displayForces);
 
-            var sep = vehicles[index].separation(vehicles);
-            sep = sep.multiply(document.getElementById("sepF").value);
+          var seek = vehicles[index].seek(follow.x,follow.y);
 
-            vehicles[index].applyForce(sep);
+          var sep = vehicles[index].separation(vehicles);
+            if(sep != null ){
+              sep = sep.multiply(document.getElementById("sepF").value);
+              vehicles[index].applyForce(sep);
+            }
+
+            if (follow.x != 0 || follow.y != 0) {
+              var seek = vehicles[index].seek(follow.x,follow.y);
+              vehicles[index].applyForce(seek);
+            }
 
             if (freeze == 'off') {
 
               vehicles[index].update();
 
+            }
+
+            if(displayForces == "on"){
+              vehicles[index].renderForces();
             }
 
             vehicles[index].renderVehicle();
@@ -221,10 +344,11 @@
 
   </div>
 
-  <div id="codeSnippet" class="container" style="float: right; width: 49%; margin: 2px;">
+  <div id="codeSnippet" class="box" style="text-align: left; display: block;">
 
-    <!--CREATES SNIPPET OF CODE-->
-    <pre class="prettyprint linenums" style="position: inherit;margin-top: 0px;margin-bottom: 2px;margin-right: 0px">
+      <!--CREATES SNIPPET OF CODE-->
+      <pre class="prettyprint linenums"
+        style="position: inherit;margin-top: 2px;margin-bottom: 2px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
 separation(Vehicles) {
   var desired_seperation = this.radius * 2;
   var sumVector = new Vector(0, 0);
@@ -244,16 +368,17 @@ separation(Vehicles) {
     sumVector = sumVector.normalize();
     sumVector = sumVector.multiply(this.maxspeed);
     var steer = sumVector.subtract(this.velocity);
-    this.applyForce(steer);
+    return steer;
   }
-}</pre>
-<pre class="prettyprint linenums" style="position: relative;margin-top: 0px;margin-bottom: 0px;margin-right: 0px">
+}
+//USE OF SEPARATION
 function draw() {
   for (let index = 0; index < vehicles.length; index++) {
-    vehicles[index].followPath();
+    car follow = vehicles[index].followPath();
     var sep = vehicles[index].separation(vehicles);
     sep = sep.multiply(<b id="snipSep" style="color: #cd5c5c">0.5</b>);
     vehicles[index].applyForce(sep);
+    vehicles[index].applyForce(follow);
     vehicles[index].update();
     vehicles[index].renderVehicle();
 }</pre>

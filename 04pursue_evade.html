@@ -22,14 +22,111 @@
     </script>
 </head>
 
-<body style="margin:0;padding:0;overflow:hidden; background-color: hsl(117, 43%, 80%);">
+<body
+  style=" background-color: hsl(117, 43%, 80%);margin-left: 0px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 16px">
 
-    <div id="backToHome" class="container" >
-        
-        <!--BUTTON BACK TO HOME PAGE/ANCHOR-->
+    <div class="box" style="float: left; width: auto; height: auto;">
+        <div class="box" style="color: black; background: #53d8cd;width: 95%;height: 20px;text-align: center;
+            margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 8px;">
+        Simulations
+        </div>
+
+        <div class="container">
         <button class="button" onclick='window.location.href = "./00home.html"'>
-            Back to home page
+            Vehicle
         </button>
+        </div>
+
+        <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 20px;text-align: center;
+                    margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;margin-top: 5px;">
+        Basic behaviors
+        </div>
+
+        <div class="container">
+        <button class="button" onclick='window.location.href = "./01seek.html"'>
+            Seek
+        </button>
+        </div>
+        <div class="container">
+        <button class="button" onclick='window.location.href = "./02flee.html"'>
+            Flee
+        </button>
+        </div>
+        <div class="container">
+        <button class="button" onclick='window.location.href = "./03arrive.html"'>
+            Arrival
+        </button>
+        </div>
+        <div class="container">
+        <button class="button" onclick='window.location.href = "./04pursue_evade.html"'>
+            Pursue and Evade
+        </button>
+        </div>
+        <div class="container">
+        <button class="button" onclick='window.location.href = "./05wander.html"'>
+            Wander
+        </button>
+        </div>
+        <div class="container">
+        <button class="button" onclick='window.location.href = "./06obstacle_avoid.html"'>
+            Obstacle Avoidance
+        </button>
+        </div>
+        <div class="container">
+        <button class="button" onclick='window.location.href = "./07containment.html"'>
+            Containment
+        </button>
+        </div>
+        <div class="container">
+        <button class="button" onclick='window.location.href = "./08wall_follow.html"'>
+            Wall Following
+        </button>
+        </div>
+        <div class="container">
+        <button class="button" onclick='window.location.href = "./09Path_Following.html"'>
+            Path Following
+        </button>
+        </div>
+        <div class="container">
+        <button class="button" onclick='window.location.href = "./10flow.html"'>
+            Flow Field Following
+        </button>
+        </div>
+
+        <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 20px;text-align: center;
+                    margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;
+                    margin-top: 5px;">
+        Combined behaviors
+        </div>
+        <div class="container">
+        <button class="button" onclick='window.location.href = "./11CrowdPathFollow.html"'>
+            Crowd Path Following
+        </button>
+        </div>
+        <div class="container">
+        <button class="button" onclick='window.location.href = "./12leader.html"'>
+            Leader Following
+        </button>
+        </div>
+        <div class="container">
+        <button class="button" onclick='window.location.href = "./13unalignedAvoidence.html"'>
+            Unaligned Collision Avoidance
+        </button>
+        </div>
+        <div class="container">
+        <button class="button" onclick='window.location.href = "./14queue.html"'>
+            Queueing
+        </button>
+        </div>
+        <div class="container">
+        <button class="button" onclick='window.location.href = "./15flock.html"'>
+            Flocking
+        </button>
+        </div>
+        </nav>
+    </div>
+
+    <div id="backToHome" class="container" style=" display: inline-block;">
 
         <!--BUTTON DISPLAY FORCES-->
         <button id="Forces" class="button">
@@ -48,12 +145,26 @@
 
     </div>
 
-    <div id="main" class="container" style="display: inline-block;width: 50%;padding-right: 0px;">
+    <div id="main" class="container" style="display: inline-block;width: 48vw;padding-right: 0px;">
         
-        <canvas id="VP" class="viewport" style="background: #eee; width: 100%;height: 300px;"></canvas>
+        <div class="box" style="width: 90%;height:  auto;text-align: left;
+            margin-bottom: 5px;">
+            <span>&nbsp;&nbsp;Pursue and Evade are two very similar methods. If Flee is inverse of Seek, then the same is Evade for Pursue.
+                 Idea behind methods is quite simple, but with a falws.
+                 The <span style="color:#cd5c5c">red</span> vehicle is the one using one or another method.
+                  He will check current velocity and position of his target and predict when they will be able to overlap.
+                  Then the vehicle will seek to that direction.
+                 The methods itself are not robust and can be tricked and to show that the positions of vehicles and theirs atrributes will change randomly.<br>
+                &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of Vehicle is visualization of the desiredVelocity and the <span style="color:#6A5ACD">violet</span>
+                one shows current velocity vector. The <span style="color:rgba(73, 131, 103, 0.795)">green with circle</span> describes the point of collision between two.<br>
+                &nbsp;&nbsp;If you wish to freeze animation you can also press a spacebar on your keyboard and you can manually change the target of prey by clicking on the canvas with left mouse button on your desired position.
+            </span>
+        </div>
+
+        <canvas id="VP" class="viewport" style="background: #eee; width: 100%; position: relative;height: 50%;"></canvas>
 
         <!--OUTPUT OF MOUSE POSITIONS OF CANVAS-->
-        <div class="box" style="width: 90%;height: 20px;font-size: 4.7mm;text-align: center;
+        <div class="box" style="width: 90%;height: 20px;text-align: center;
               margin-left: 0px;padding-left: 0px;padding-right: 0px;">
 
             Red <span name="red">Pursuer</span> position x:
@@ -66,7 +177,7 @@
         </div>
 
         <!--OUTPUT OF VEHICLE POSITION & VELOCITY-->
-        <div class="box" style="width: 90%;height: 20px;font-size: 4.7mm;text-align: center;
+        <div class="box" style="width: 90%;height: 20px;text-align: center;
               margin-left: 0px;padding-left: 0px;padding-right: 0px; top: -4px;">
 
             Blue <span name="blue">Target</span> position x:
@@ -81,28 +192,32 @@
         <div>
 
             <!--RANGE SLIDER OF MAXSPEED OF PURSUER/CHASER-->
-            <div class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
+            <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
 
-                <div class="box">
+                <div class="box" style="margin:0px; top:4px">
                     Maxspeed of <span name="red">Pursuer</span>
                 </div>
 
                 <input id="maxspeed1" class="range-slider__range" type="range" min="0" max="7" step="0.01">
             
-                <span id="span1a" class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+                <span id="span1a" class="range-slider__value" style="top:4px">
+                    0
+                </span>
             
             </div>
 
             <!--RANGE SLIDER OF MAXFORCE PURSUER/CHASER-->
-            <div class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
+            <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
                 
-                <div class="box">
+                <div class="box" style="margin:0px; top:4px">
                     Maxforce of <span name="red">Pursuer</span>
                 </div>
 
                 <input id="maxforce1" class="range-slider__range" type="range" min="0" max="5" step="0.01">
                 
-                <span id="span1b" class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+                <span id="span1b" class="range-slider__value" style="top:4px">
+                    0
+                </span>
             
             </div>
 
@@ -111,28 +226,32 @@
         <div>
 
             <!--RANGE SLIDER OF MAXSPEED TARGET/EVADER-->
-            <div class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
+            <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
 
-                <div class="box">
+                <div class="box" style="margin:0px; top:4px">
                     Maxspeed of <span name="blue">Target</span>
                 </div>
 
                 <input id="maxspeed2" class="range-slider__range" type="range" min="0" max="7" step="0.01">
                 
-                <span id="span2a" class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+                <span id="span2a" class="range-slider__value" style="top:4px">
+                    0
+                </span>
             
             </div>
 
             <!--RANGE SLIDER OF MAXFORCE TARGET/EVADER-->
-            <div class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
+            <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
                 
-                <div class="box">
+                <div class="box" style="margin:0px; top:4px">
                     Maxforce of <span name="blue">Target</span>
                 </div>
 
                 <input id="maxforce2" class="range-slider__range" type="range" min="0" max="5" step="0.01">
                 
-                <span id="span2b" class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+                <span id="span2b" class="range-slider__value" style="top:4px">
+                    0
+                </span>
             
             </div>
             
@@ -142,26 +261,25 @@
             //CHANGE WIDTH & HEIGHT OF CANVAS
             var canvas = document.querySelector('.viewport'),
                 ctx = canvas.getContext('2d');
-            canvas.width = screen.width / 2;
-            canvas.height = 300;
+          canvas.width = screen.width / 2;
+          canvas.height = screen.height/3;
 
             //INIT MOUSE POS
-            mouseObj.Init("#VP");
+            mouseObj.Init("#VP",canvas);
+
 
             // SET RANDOM VALUES FOR VEHICLES
-            document.getElementById("maxforce1").value = Math.random() * 5;
-            document.getElementById("maxspeed1").value = Math.random() * 7;
-            document.getElementById("maxforce2").value = Math.random() * 5;
-            document.getElementById("maxspeed2").value = Math.random() * 7;
+            document.getElementById("maxspeed1").value = 1 + Math.random() * 5;
+            document.getElementById("maxspeed2").value = 1 + Math.random() * 5;
             document.getElementById("span1a").textContent = document.getElementById("maxspeed1").value;
             document.getElementById("span1b").textContent = document.getElementById("maxforce1").value;
             document.getElementById("span2a").textContent = document.getElementById("maxspeed2").value;
             document.getElementById("span2b").textContent = document.getElementById("maxforce2").value;
 
             //INIT VEHICLE
-            var vehicle = new Vehicle(Math.random() * canvas.width, Math.random() * canvas.height);
-            var vehicle2 = new Vehicle(Math.random() * canvas.width, Math.random() * canvas.height);
-            var randomTarget = new Vector(Math.ceil(Math.random() * canvas.width), Math.ceil(Math.random() * canvas.height));
+            var vehicle = new Vehicle(Math.random() * canvas.width/2, Math.random() * canvas.height/2);
+            var vehicle2 = new Vehicle(Math.random() * canvas.width/2,( Math.random() * canvas.height/2) + (canvas.height/2));
+            var randomTarget = new Vector(Math.ceil(Math.random() * canvas.width/2) + (canvas.width/2), Math.ceil(Math.random() * canvas.height/2) + (canvas.height/2));
 
             //READ IF BUTTON "PURSUE/EVADER" WAS CLICKED
             var option = 'pursuer';
@@ -217,30 +335,27 @@
             rangeSliderInit();
 
             //LOOP FUNC
+            let i = 0;
             function draw() {
-
-                if (vehicle.position.distanceBetweenPoints(vehicle2.position) < 3) {
+                if (vehicle.position.distanceBetweenPoints(vehicle2.position) < 5) {
 
                     // SET RANDOM VALUES FOR VEHICLES
-                    document.getElementById("maxforce1").value = Math.random() * 5;
-                    document.getElementById("maxspeed1").value = Math.random() * 7;
-                    document.getElementById("maxforce2").value = Math.random() * 5;
-                    document.getElementById("maxspeed2").value = Math.random() * 7;
+                    document.getElementById("maxspeed1").value = 1 + Math.random() * 5;
+                    document.getElementById("maxspeed2").value = 1 + Math.random() * 5;
                     document.getElementById("span1a").textContent = document.getElementById("maxspeed1").value;
                     document.getElementById("span1b").textContent = document.getElementById("maxforce1").value;
                     document.getElementById("span2a").textContent = document.getElementById("maxspeed2").value;
                     document.getElementById("span2b").textContent = document.getElementById("maxforce2").value;
 
                     //INIT VEHICLE
-                    vehicle = new Vehicle(Math.random() * canvas.width, Math.random() * canvas.height);
-                    vehicle2 = new Vehicle(Math.random() * canvas.width, Math.random() * canvas.height);
-                    randomTarget = new Vector(Math.random() * canvas.width, Math.random() * canvas.height);
-                
+                    vehicle = new Vehicle(Math.random() * canvas.width/2, Math.random() * canvas.height/2);
+                    vehicle2 = new Vehicle(Math.random() * canvas.width/2,( Math.random() * canvas.height/2) + (canvas.height/2));
+                    randomTarget = new Vector(Math.ceil(Math.random() * canvas.width/2) + (canvas.width/2), Math.ceil(Math.random() * canvas.height/2));
                 }
-
-            document.getElementById("VP").addEventListener('mousedown', function () {
-                randomTarget = new Vector(mouseObj.x, mouseObj.y);
-            }, false);
+                
+                document.getElementById("VP").addEventListener('mousedown', function () {
+                    randomTarget = new Vector(mouseObj.x, mouseObj.y);
+                }, false);
 
                 ctx.setTransform(1, 0, 0, 1, 0, 0); // <- JS magic for PathBegin()..
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -249,8 +364,11 @@
                     b = document.getElementsByName("blue");
 
                 if (option === 'pursuer') {
-                    vehicle.pursue(vehicle2.position, vehicle2.velocity, displayForces);
-                    vehicle2.seek(randomTarget.x, randomTarget.y, displayForces);
+                    var pursue = vehicle.pursue(vehicle2.position, vehicle2.velocity, displayForces),
+                    seek = vehicle2.seek(randomTarget.x, randomTarget.y, displayForces);
+                    var seekPursue = vehicle.seek(pursue.x,pursue.y);
+                    vehicle.applyForce(seekPursue);
+                    vehicle2.applyForce(seek);
                     for (let index = 0; index < r.length; index++) {
                         r[index].innerHTML = 'Pursuer';
                         b[index].innerHTML = 'Target';
@@ -258,14 +376,20 @@
                 }
 
                 else {
-                    vehicle.seek(vehicle2.position.x, vehicle2.position.y, displayForces);
-                    vehicle2.evade(vehicle.position, vehicle.velocity, displayForces);
+                    var evade = vehicle.evade(vehicle2.position, vehicle2.velocity, displayForces);
+                    var fleeEvade = vehicle.flee(100,evade.x,evade.y,displayForces);
+                    var arrival = vehicle2.arrival(vehicle.position.x, vehicle.position.y,5);
+                    vehicle.applyForce(fleeEvade);
+                    vehicle2.applyForce(arrival);
                     for (let index = 0; index < r.length; index++) {
-                        r[index].innerHTML = 'Chaser';
-                        b[index].innerHTML = 'Evader';
+                        r[index].innerHTML = 'Evader';
+                        b[index].innerHTML = 'Seeker';
                     }
                 }
-
+                if(displayForces == "on"){
+                        vehicle2.renderForces();
+                        vehicle.renderForces();
+                    }
                 vehicle.onlyCanvas();
                 vehicle2.onlyCanvas();
                
@@ -294,42 +418,22 @@
 
     </div>
 
-    <div id="codeSnippet" class="container" style="float: right; width: 49%; margin: 2px;">
+    <div id="codeSnippet" class="box" style="text-align: left; display: block;">
 
         <!--CREATES SNIPPET OF CODE-->
-        <pre class="prettyprint linenums" style="position: inherit;margin-top: 0px;margin-bottom: 0px;">
-class Vehicle 
-{
-  constructor(x, y) {
-    this.acceleration = new Vector(0, 0),
-    this.velocity = new Vector(0, 0),
-    this.position = new Vector(x, y),
-    this.radius = 10,
-    this.maxspeed = 4,
-    this.maxforce = 0.1;
-    this.desired_velocity = new Vector(0, 0);
-  }
-  update() {
-    this.velocity = this.velocity.add(this.acceleration);
-    this.velocity.limit(this.maxspeed);
-    this.position = this.position.add(this.velocity);
-    this.acceleration = this.acceleration.multiply(0);
-  }
-  applyForce(force) {
-    this.acceleration = this.acceleration.add(force);
-  }
-  pursue(target_position, target_velocity) {
-    var distance = this.position.distanceBetweenPoints(target_position);
-    var predictedTargetPosition = distance / this.maxspeed;
-    var target = target_position.add(target_velocity.multiply(predictedTargetPosition))
-    this.seek(target.x, target.y);
-  }
-  evade(target_position, target_velocity) {
-    var distance = this.position.distanceBetweenPoints(target_position);
-    var predictedTargetPosition = distance / this.maxspeed;
-    var target = target_position.add(target_velocity.multiply(predictedTargetPosition))
-    this.flee(target.x, target.y);
-  }
+        <pre class="prettyprint linenums"
+        style="position: inherit;margin-top: 2px;margin-bottom: 2px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
+pursue(target_position, target_velocity) {
+  var distance = this.position.distanceBetweenPoints(target_position);
+  var predictedTargetPosition = distance / this.maxspeed;
+  var target = target_position.add(target_velocity.multiply(predictedTargetPosition))
+  return target;
+}
+evade(target_position, target_velocity) {
+  var distance = this.position.distanceBetweenPoints(target_position);
+  var predictedTargetPosition = distance / this.maxspeed;
+  var target = target_position.add(target_velocity.multiply(predictedTargetPosition))
+  return target;
 }</pre>
     </div>
 </body>

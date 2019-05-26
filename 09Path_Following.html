@@ -23,15 +23,111 @@
   <script src="path.js"></script>
 </head>
 
-<body style="margin:0;padding:0;overflow:hidden; background-color: hsl(117, 43%, 80%);">
+<body
+  style=" background-color: hsl(117, 43%, 80%);margin-left: 0px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 16px">
 
-  <div id="backToHome" class="container" >
+  <div class="box" style="float: left; width: auto; height: auto;">
+    <div class="box" style="color: black; background: #53d8cd;width: 95%;height: 20px;text-align: center;
+          margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 8px;">
+      Simulations
+    </div>
 
-    <!--BUTTON BACK TO HOME PAGE/ANCHOR-->
-    <button class="button" onclick='window.location.href = "./00home.html"'>
-      Back to home page
-    </button>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./00home.html"'>
+        Vehicle
+      </button>
+    </div>
 
+    <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 20px;text-align: center;
+                  margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;margin-top: 5px;">
+      Basic behaviors
+    </div>
+
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./01seek.html"'>
+        Seek
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./02flee.html"'>
+        Flee
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./03arrive.html"'>
+        Arrival
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./04pursue_evade.html"'>
+        Pursue and Evade
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./05wander.html"'>
+        Wander
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./06obstacle_avoid.html"'>
+        Obstacle Avoidance
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./07containment.html"'>
+        Containment
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./08wall_follow.html"'>
+        Wall Following
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./09Path_Following.html"'>
+        Path Following
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./10flow.html"'>
+        Flow Field Following
+      </button>
+    </div>
+
+    <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 20px;text-align: center;
+                  margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;
+                  margin-top: 5px;">
+      Combined behaviors
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./11CrowdPathFollow.html"'>
+        Crowd Path Following
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./12leader.html"'>
+        Leader Following
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./13unalignedAvoidence.html"'>
+        Unaligned Collision Avoidance
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./14queue.html"'>
+        Queueing
+      </button>
+    </div>
+    <div class="container">
+      <button class="button" onclick='window.location.href = "./15flock.html"'>
+        Flocking
+      </button>
+    </div>
+    </nav>
+  </div>
+  <div id="backToHome" class="container" style=" display: inline-block;">
+    
     <!--BUTTON DISPLAY FORCES-->
     <button id="Forces" class="button">
       Display Forces
@@ -49,12 +145,27 @@
 
   </div>
 
-  <div id="main" class="container" style="float: left; width: 50%;padding-right: 0px;">
+  <div id="main" class="container" style="display: inline-block;width: 50vw;padding-right: 0px;">
 
-    <canvas id="VP" class="viewport" style="background: #eee; width: 100%;width: 100%;height: 300px;"></canvas>
+      <div class="box" style="width: 90%;height:  auto;text-align: left;
+        margin-bottom: 5px;">
+        <span>
+          &nbsp;&nbsp;The Path Following algorithm takes as input path object and returns a vector aiming on the path ahead of vehicle position.
+           Calculated vector is passed down to Seek method, but the main method returns actuall target, only if Vehicle drifts away from the path.
+            Essential for the algorithm is calculating normal points on paths and choosing which object is closest. It can be done in method itsefl or using methods defined for object itself.
+            Second method is better, but with the first it is possible to show most of calculations done to achive goal. For example, after best normal point has been choosen, the point ahead is 
+            find thanks to access to path object.
+          <br>
+          &nbsp;&nbsp;The <span style="color:orange">orange</span> vector pointing out of the center of Vehicle is visualization of the desiredVelocity and the <span style="color:#6A5ACD">violet</span>
+          one shows current velocity vector.<br>
+          &nbsp;&nbsp;If you wish to freeze animation you can also press a spacebar on your keyboard.
+        </span>
+      </div>
+      
+      <canvas id="VP" class="viewport" style="background: #eee; width: 100%; position: relative;height: 50%;"></canvas>
     
     <!--OUTPUT OF VEHICLE POSITION & VELOCITY-->
-    <div class="box" style="width: 90%;height: 20px;font-size: 4.7mm;text-align: center;
+    <div class="box" style="width: 90%;height: 20px;text-align: center;
         margin-left: 0px;padding-left: 0px;padding-right: 0px;">
 
       Vehicle position x:
@@ -69,24 +180,24 @@
     <div>
 
       <!--RANGE SLIDER OF MAXSPEED-->
-      <div id="ms" class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
+      <div id="ms" class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
 
-        <div class="box">Maxspeed</div>
+        <div class="box" style="margin:0px; top:4px">Maxspeed</div>
 
         <input id="maxspeed" class="range-slider__range" type="range" value="2" min="0" max="7" step="0.01">
         
-        <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+        <span class="range-slider__value" style="top:4px">0</span>
       
       </div>
 
       <!--RANGE SLIDER OF MAXFORCE-->
-      <div id="mf" class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
+      <div id="mf" class="range-slider" style="float: right;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
         
-        <div class="box">Maxforce</div>
+        <div class="box" style="margin:0px; top:4px">Maxforce</div>
         
         <input id="maxforce" class="range-slider__range" type="range" value="0.1" min="0" max="5" step="0.01">
         
-        <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+        <span class="range-slider__value" style="top:4px">0</span>
       
       </div>
 
@@ -95,24 +206,24 @@
     <div>
 
       <!--RANGE SLIDER OF PREDICT DISTANCE-->
-      <div id="pd" class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
+      <div id="pd" class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
         
-        <div class="box">Predict distance</div>
+        <div class="box" style="margin:0px; top:4px">Predict distance</div>
         
         <input id="Predict" class="range-slider__range" type="range" value="30" min="0">
         
-        <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+        <span class="range-slider__value" style="top:4px">0</span>
       
       </div>
 
       <!--RANGE SLIDER OF TARGET OFFSET-->
-      <div id="to" class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
+      <div id="to" class="range-slider" style="float: right;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
         
-        <div class="box">Target offset</div>
+        <div class="box" style="margin:0px; top:4px">Target offset</div>
         
         <input id="Target" class="range-slider__range" type="range" value="10" min="0">
         
-        <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+        <span class="range-slider__value" style="top:4px">0</span>
       
       </div>
 
@@ -121,25 +232,25 @@
     <div>
 
       <!--RANGE SLIDER OF PATH RADIUS/MARGIN-->
-      <div id="pr" class="range-slider" style="display: inline-block;top: 20px;margin-right: 70px;margin-left: 70px">
+      <div id="pr" class="range-slider" style="float:left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
         
-        <div class="box">Path radius</div>
+        <div class="box" style="margin:0px; top:4px">Path radius</div>
         
         <input id="Radius" class="range-slider__range" type="range" value="20" min="0">
         
-        <span class="range-slider__value" style="left: 140px;top: -21px;">0</span>
+        <span class="range-slider__value" style="top:4px">0</span>
       
       </div>
     
     </div>
 
     <script>
+
       //CHANGE WIDTH & HEIGHT OF CANVAS
       var canvas = document.querySelector('.viewport'),
         ctx = canvas.getContext('2d');
       canvas.width = screen.width / 2;
-      console.log(pageXOffset)
-      canvas.height = 300;
+      canvas.height = screen.height / 3;
 
       //PATH INIT
       var path = new Path(0, 210, 400, 210, 20);
@@ -208,8 +319,13 @@
           vehicle.position.y = 110;
         }
 
-        vehicle.followPath(document.getElementById("Predict").value,
+        var follow = vehicle.followPath(document.getElementById("Predict").value,
           document.getElementById("Target").value, displayForces);
+        
+        if (follow.x != 0 || follow.y != 0) {
+          var seek = vehicle.seek(follow.x, follow.y, displayForces);
+          vehicle.applyForce(seek);
+        }
 
         if (freeze == 'off') {
           vehicle.update();
@@ -267,45 +383,46 @@
 
   </div>
 
-  <div id="codeSnippet" class="container" style="float: right; width: 49%; margin: 0px;">
+    <div id="codeSnippet" class="box" style="text-align: left; display: block; width: 31vw ; margin-right: 0px;padding-right: 0px;">
 
-    <!--CREATES SNIPPET OF CODE-->
-    <pre class="prettyprint linenums" style="position: inherit;margin-top: 2px;margin-bottom: 2px;">
-class Vehicle {
-  choosePath(path, radius) {
-    this.path = path,
-      this.pathRadius = radius,
-      this.pathCurrentPoint = 0;
+      <!--CREATES SNIPPET OF CODE-->
+      <pre class="prettyprint linenums"
+        style="position: inherit;margin-top: 2px;margin-bottom: 2px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
+choosePath(path, radius) {
+  this.path = path,
+    this.pathRadius = radius,
+    this.pathCurrentPoint = 0;
+}
+followPath(predictDistance = <b id="snipPredictDist" style="color: #cd5c5c">30</b>, targetOffset = <b id="snipOffsetTarget" style="color: #cd5c5c">10</b>,displayForces = "on") {
+  var predictVehPosition = this.velocity.normalize();
+  predictVehPosition = predictVehPosition.multiply(predictDistance);
+  predictVehPosition = this.position.add(predictVehPosition);
+  var normalPoint = new Vector(0, 0), 
+    oa, ob, target, smallest_distance = Infinity;
+  for (let i = 0; i < this.path.length - 1; i++) {
+    var a = this.path[i];
+    var b = this.path[i + 1];
+    normalPoint = predictVehPosition.normalPoint(a, b);
+if((normalPoint.x < Math.min(a.x,b.x)) || (normalPoint.x > Math.max(a.x,b.x))){
+      normalPoint.equal(b);
+    }
+    var distance = predictVehPosition.distanceBetweenPoints(normalPoint);
+    if (distance < smallest_distance) {
+      smallest_distance = distance;
+      target = normalPoint;
+      oa = a;
+      ob = b;
+    }
   }
-  followPath(predictDistance = <b id="snipPredictDist" style="color: #cd5c5c">30</b>, targetOffset = <b id="snipOffsetTarget" style="color: #cd5c5c">10</b>,displayForces = "on") {
-    var predictVehPosition = this.velocity.normalize();
-    predictVehPosition = predictVehPosition.multiply(predictDistance);
-    predictVehPosition = this.position.add(predictVehPosition);
-    var normalPoint = new Vector(0, 0), 
-        oa, ob, target, smallest_distance = Infinity;
-    for (let i = 0; i < this.path.length - 1; i++) {
-      var a = this.path[i];
-      var b = this.path[i + 1];
-      normalPoint = predictVehPosition.normalPoint(a, b);
-      if ((normalPoint.x < Math.min(a.x,b.x)) ||
-         (normalPoint.x > Math.max(a.x,b.x))) {
-        normalPoint.equal(b);
-      }
-      var distance = predictVehPosition.distanceBetweenPoints(normalPoint);
-      if (distance < smallest_distance) {
-        smallest_distance = distance;
-        target = normalPoint;
-        oa = a;
-        ob = b;
-      }
-    }
-    var dir = ob.subtract(oa);
-    dir = dir.normalize().multiply(targetOffset);
-    var target_dir = target.add(dir);
-    var distance = predictVehPosition.distanceBetweenPoints(target);
-    if (distance > this.pathRadius ) {
-      this.seek(target_dir.x, target_dir.y);
-    }
+  var dir = ob.subtract(oa);
+  dir = dir.normalize().multiply(targetOffset);
+  var target_dir = target.add(dir);
+  var distance = predictVehPosition.distanceBetweenPoints(target);
+  if (distance > this.pathRadius) {
+    return target_dir;
+  }
+  else{
+    return new Vector(0,0);
   }
 }</pre>
 
