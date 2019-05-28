@@ -23,10 +23,10 @@
 </head>
 
 <body
-  style=" background-color: hsl(117, 43%, 80%);margin-left: 0px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 16px">
+  style=" background-color: hsl(117, 43%, 80%);margin-left: 0px;margin-right: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 16px">
 
-  <div class="box" style="float: left; width: auto; height: auto;">
-    <div class="box" style="color: black; background: #53d8cd;width: 95%;height: 20px;text-align: center;
+  <div class="box" style="float: left; width: auto vw; font-size: 90%; height: auto;">
+    <div class="box" style="color: black; background: #53d8cd;width: 95%;height: 90%;text-align: center;
           margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 8px;">
       Simulations
     </div>
@@ -37,7 +37,7 @@
       </button>
     </div>
 
-    <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 20px;text-align: center;
+    <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 90%;text-align: center;
                   margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;margin-top: 5px;">
       Basic behaviors
     </div>
@@ -93,7 +93,7 @@
       </button>
     </div>
 
-    <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 20px;text-align: center;
+    <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 90%;text-align: center;
                   margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;
                   margin-top: 5px;">
       Combined behaviors
@@ -344,17 +344,17 @@
       function objectW(x1,y1,x2,y2){
         objects.push( new objectWall(x1,y1,x2,y2));
       }
-      objectW(0,120,300,120);
-      objectW(300,120,301,0);
+      objectW(0,canvas.height/3,canvas.width/3,canvas.height/3);
+      objectW(canvas.width/3,canvas.height/3,canvas.width/3 + 1,0);
 
-      objectW(599,0,600,120);
-      objectW(600,120,canvas.width,120);
+      objectW(canvas.width*0.66-1,0,canvas.width*0.66,canvas.height/3);
+      objectW(canvas.width*0.66,canvas.height/3,canvas.width,canvas.height/3);
 
-      objectW(0,250,300,250);
-      objectW(300,250,301,canvas.height);
+      objectW(0,canvas.height*0.66,canvas.width/3,canvas.height*0.66);
+      objectW(canvas.width/3,canvas.height*0.66,canvas.width/3+1,canvas.height);
 
-      objectW(599,canvas.height,600,250);
-      objectW(600,250,canvas.width,250);
+      objectW(canvas.width*0.66-1,canvas.height,canvas.width*0.66,canvas.height*0.66);
+      objectW(canvas.width*0.66,canvas.height*0.66,canvas.width,canvas.height*0.66);
 
       //DISPLAY OBJECTS ON CANVAS 
       function drawObjects(Objects) {
@@ -429,11 +429,11 @@
 
   </div>
 
-  <div id="codeSnippet" class="box" style="text-align: left; display: block;">
+  <div id="codeSnippet" class="box" style="text-align: left; display: block;width: 32vw;padding-right: 0;margin-right: 0;">
 
     <!--CREATES SNIPPET OF CODE-->
     <pre class="prettyprint linenums"
-      style="position: inherit;margin-top: 2px;margin-bottom: 2px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
+      style="font-size: 90%;position: inherit;margin-top: 2px;margin-bottom: 2px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
 containment(Objects) {
   var mainRay = this.velocity.normalize().multiply(this.maxspeed),
   leftRay = mainRay.moveByAngle(-Math.PI / 6),
