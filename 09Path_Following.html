@@ -4,21 +4,16 @@
 <head>
   <meta charset="utf-8" />
   <title>Craig-Reynolds Algorithm</title>
-  <!--design-->
-  <link rel="stylesheet" href="button.css" />
-  <link rel="stylesheet" href="box.css" />
-  <!--snippet function-->
-  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
-  <link rel="stylesheet" href="desert.css" />
-  <!--mouse function-->
-  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="mouse.js"></script>
-  <!--main functions-->
-  <script src="vector.js"></script>
-  <script src="vehicle.js"></script>
-  <!--sliders-->
-  <script src="sliderStyle.js"></script>
   <link rel="stylesheet" href="sliderStyle.css" />
+  <link rel="stylesheet" type="text/css" href="desert.css" />
+  <link rel="stylesheet" href="pagesLayoutStyle.css" />
+  <link rel="stylesheet" href="button.css" />
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="vector.js"></script>
+  <script src="mouse.js"></script>
+  <script src="vehicle.js"></script>
+  <script src="sliderStyle.js"></script>
   <!--To disable focusing on Chrome browser -->
   <script type="text/javascript">
     document.addEventListener('click', function (e) {
@@ -28,19 +23,26 @@
   <script src="path.js"></script>
 </head>
 
-<body>
-  <div class="menu_box">
-    <div class="green_box">
+<body
+  style=" background-color: hsl(117, 43%, 80%);margin-right:0;margin-left: 0px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 16px">
+
+  <div class="box" style="float: left; width: auto vw; font-size: 90%; height: auto;">
+    <div class="box" style="color: black; background: #53d8cd;width: 95%;height: 90%;text-align: center;
+          margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 8px;">
       Simulations
     </div>
+
     <div class="container">
       <button class="button" onclick='window.location.href = "./00home.html"'>
         Vehicle
       </button>
     </div>
-    <div class="green_box">
+
+    <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 90%;text-align: center;
+                  margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;margin-top: 5px;">
       Basic behaviors
     </div>
+
     <div class="container">
       <button class="button" onclick='window.location.href = "./01seek.html"'>
         Seek
@@ -91,7 +93,10 @@
         Flow Field Following
       </button>
     </div>
-    <div class="green_box">
+
+    <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 90%;text-align: center;
+                  margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;
+                  margin-top: 5px;">
       Combined behaviors
     </div>
     <div class="container">
@@ -119,24 +124,31 @@
         Flocking
       </button>
     </div>
+    </nav>
   </div>
-  <div class="box">
+  <div id="backToHome" class="container" style=" display: inline-block;">
+    
     <!--BUTTON DISPLAY FORCES-->
     <button id="Forces" class="button">
       Display Forces
     </button>
+    
     <!--BUTTON FREEZE-->
     <button id="Freeze" class="button">
       Freeze
     </button>
+
     <!--BUTTON RANDOM-->
     <button id="Random" class="button">
       Random the Path
     </button>
+
   </div>
 
-  <div class="main">
-    <div class="explain_box">
+  <div id="main" class="container" style="display: inline-block;width: 50vw;padding-right: 0px;">
+
+      <div class="box" style="width: 90%;height:  auto;text-align: left;
+        margin-bottom: 5px;">
         <span>
           &nbsp;&nbsp;The Path Following algorithm takes as input path object and returns a vector aiming on the path ahead of vehicle position.
            Calculated vector is passed down to Seek method, but the main method returns actuall target, only if Vehicle drifts away from the path.
@@ -148,12 +160,13 @@
           one shows current velocity vector.<br>
           &nbsp;&nbsp;If you wish to freeze animation you can also press a spacebar on your keyboard.
         </span>
-    </div>
+      </div>
       
-    <canvas id="VP" class="viewport" style="background: #eee; width: 100%;height: 50%;"></canvas>
+      <canvas id="VP" class="viewport" style="background: #eee; width: 100%; position: relative;height: 50%;"></canvas>
     
     <!--OUTPUT OF VEHICLE POSITION & VELOCITY-->
-    <div class="output_box">
+    <div class="box" style="width: 90%;height: 20px;text-align: center;
+        margin-left: 0px;padding-left: 0px;padding-right: 0px;">
 
       Vehicle position x:
       <span id="vehicle_posX"></span>
@@ -167,24 +180,24 @@
     <div>
 
       <!--RANGE SLIDER OF MAXSPEED-->
-      <div id="ms" class="range-slider">
+      <div id="ms" class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
 
-        <div class="slider-box">Maxspeed</div>
+        <div class="box" style="margin:0px; top:4px">Maxspeed</div>
 
         <input id="maxspeed" class="range-slider__range" type="range" value="2" min="0" max="7" step="0.01">
         
-        <span class="range-slider__value">0</span>
+        <span class="range-slider__value" style="top:4px">0</span>
       
       </div>
 
       <!--RANGE SLIDER OF MAXFORCE-->
-      <div id="mf" class="range-slider">
+      <div id="mf" class="range-slider" style="float: right;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
         
-        <div class="slider-box">Maxforce</div>
+        <div class="box" style="margin:0px; top:4px">Maxforce</div>
         
         <input id="maxforce" class="range-slider__range" type="range" value="0.1" min="0" max="5" step="0.01">
         
-        <span class="range-slider__value">0</span>
+        <span class="range-slider__value" style="top:4px">0</span>
       
       </div>
 
@@ -193,24 +206,24 @@
     <div>
 
       <!--RANGE SLIDER OF PREDICT DISTANCE-->
-      <div id="pd" class="range-slider">
+      <div id="pd" class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
         
-        <div class="slider-box">Predict distance</div>
+        <div class="box" style="margin:0px; top:4px">Predict distance</div>
         
         <input id="Predict" class="range-slider__range" type="range" value="30" min="0">
         
-        <span class="range-slider__value">0</span>
+        <span class="range-slider__value" style="top:4px">0</span>
       
       </div>
 
       <!--RANGE SLIDER OF TARGET OFFSET-->
-      <div id="to" class="range-slider">
+      <div id="to" class="range-slider" style="float: right;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
         
-        <div class="slider-box">Target offset</div>
+        <div class="box" style="margin:0px; top:4px">Target offset</div>
         
         <input id="Target" class="range-slider__range" type="range" value="10" min="0">
         
-        <span class="range-slider__value">0</span>
+        <span class="range-slider__value" style="top:4px">0</span>
       
       </div>
 
@@ -219,13 +232,13 @@
     <div>
 
       <!--RANGE SLIDER OF PATH RADIUS/MARGIN-->
-      <div id="pr" class="range-slider">
+      <div id="pr" class="range-slider" style="float:left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
         
-        <div class="slider-box">Path radius</div>
+        <div class="box" style="margin:0px; top:4px">Path radius</div>
         
         <input id="Radius" class="range-slider__range" type="range" value="20" min="0">
         
-        <span class="range-slider__value">0</span>
+        <span class="range-slider__value" style="top:4px">0</span>
       
       </div>
     
@@ -370,10 +383,11 @@
 
   </div>
 
-    <div class="code_box">
+    <div id="codeSnippet" class="box" style="text-align: left; display: block; width: 32.5vw ; margin-right: 0px;padding-right: 0px;">
 
       <!--CREATES SNIPPET OF CODE-->
-      <pre class="prettyprint linenums">
+      <pre class="prettyprint linenums"
+        style="font-size:90%;position: inherit;margin-top: 2px;margin-bottom: 2px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
 choosePath(path, radius) {
   this.path = path,
     this.pathRadius = radius,

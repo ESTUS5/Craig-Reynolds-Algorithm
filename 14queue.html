@@ -4,24 +4,17 @@
 <head>
     <meta charset="utf-8" />
     <title>Craig-Reynolds Algorithm</title>
-    <!--design-->
-    <link rel="stylesheet" href="button.css" />
-    <link rel="stylesheet" href="box.css" />
-    <!--snippet function-->
-    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
-    <link rel="stylesheet" href="desert.css" />
-    <!--mouse function-->
-    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="mouse.js"></script>
-    <!--main functions-->
-    <script src="vector.js"></script>
-    <script src="vehicle.js"></script>
-    <!--sliders-->
-    <script src="sliderStyle.js"></script>
     <link rel="stylesheet" href="sliderStyle.css" />
-    <!--object functions -->
+    <link rel="stylesheet" type="text/css" href="desert.css" />
+    <link rel="stylesheet" href="pagesLayoutStyle.css" />
+    <link rel="stylesheet" href="button.css" />
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script src="vector.js"></script>
+    <script src="mouse.js"></script>
+    <script src="vehicle.js"></script>
+    <script src="sliderStyle.js"></script>
     <script src="object.js"></script>
-    <!--To disable focusing on Chrome browser -->
   <script type="text/javascript"> //To disable focusing on Chrome browser
     document.addEventListener('click', function (e) {
       if (document.activeElement.toString() == '[object HTMLButtonElement]') { document.activeElement.blur(); }
@@ -29,20 +22,26 @@
   </script>
 </head>
 
-<body>
+<body
+  style=" background-color: hsl(117, 43%, 80%);margin-left: 0px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 16px">
 
-    <div class="menu_box">
-      <div class="green_box">
+    <div class="box" style="float: left; width: auto vw; font-size: 90%; height: auto;">
+      <div class="box" style="color: black; background: #53d8cd;width: 95%;height: 90%;text-align: center;
+            margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 8px;">
         Simulations
       </div>
+
       <div class="container">
         <button class="button" onclick='window.location.href = "./00home.html"'>
           Vehicle
         </button>
       </div>
-      <div class="green_box">
+
+      <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 90%;text-align: center;
+                    margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;margin-top: 5px;">
         Basic behaviors
       </div>
+
       <div class="container">
         <button class="button" onclick='window.location.href = "./01seek.html"'>
           Seek
@@ -93,7 +92,10 @@
           Flow Field Following
         </button>
       </div>
-      <div class="slider_box">
+
+      <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 90%;text-align: center;
+                    margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;
+                    margin-top: 5px;">
         Combined behaviors
       </div>
       <div class="container">
@@ -124,7 +126,7 @@
       </nav>
     </div>
 
-    <div class="box">
+    <div id="backToHome" class="container" style="display: inline-block;">
 
     <!--BUTTON DISPLAY FORCES-->
     <button id="Forces" class="button">
@@ -138,9 +140,10 @@
 
     </div>
 
-    <div class="main">
+    <div id="main" class="container" style="display: inline-block; width: 47.5vw; padding-right: 0px;">
 
-        <div class="output_box">
+        <div class="box" style="width: 90%;height:  auto;text-align: left;
+          margin-bottom: 5px;">
           <span>
             &nbsp;&nbsp;The Queue algorithm checks if in a circle ahead of vehicle is any neighbour.
              If so, then the deceleration is calculated and applied to the vehicle.
@@ -157,28 +160,28 @@
         <canvas id="VP" class="viewport" style="background: #eee; width: 100%;"></canvas>
 
         <div>
-            <div class="range-slider">
-                <div class="slider-box">Maxspeed</div>
+            <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
+                <div class="box" style="margin:0px; top:4px">Maxspeed</div>
                 <input id="maxspeed" class="range-slider__range" type="range" value="2" min="0" max="7" step="0.01">
-                <span class="range-slider__value">0</span>
+                <span class="range-slider__value" style="top:4px">0</span>
             </div>
-            <div class="range-slider">
-                <div class="slider-box">Maxforce</div>
+            <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
+                <div class="box" style="margin:0px; top:4px">Maxforce</div>
                 <input id="maxforce" class="range-slider__range" type="range" value="0.1" min="0" max="5" step="0.01">
-                <span class="range-slider__value">0</span>
+                <span class="range-slider__value" style="top:4px">0</span>
             </div>
         </div>
 
         <div>
-            <div class="range-slider">
-                <div class="slider-box">circle </div>
+            <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
+                <div class="box" style="margin:0px; top:4px">circle </div>
                 <input id="circleAhead" class="range-slider__range" type="range" value="30" min="0" step="0.01">
-                <span class="range-slider__value">0</span>
+                <span class="range-slider__value" style="top:4px">0</span>
             </div>
-            <div class="range-slider">
-                <div class="slider-box">Maxforce</div>
+            <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
+                <div class="box" style="margin:0px; top:4px">Maxforce</div>
                 <input id="circleAheadRadius" class="range-slider__range" type="range" value="10" min="0" step="0.01">
-                <span class="range-slider__value">0</span>
+                <span class="range-slider__value" style="top:4px">0</span>
             </div>
         </div>
 
@@ -301,10 +304,11 @@
 
     </div>
 
-    <div class="code_box">
+    <div id="codeSnippet" class="box" style="text-align: left; width: 34vw;float: left;padding-left:5px;padding-right:0px;">
 
       <!--CREATES SNIPPET OF CODE-->
-      <pre class="prettyprint linenums">
+      <pre class="prettyprint linenums"
+        style="font-size:90%;position: inherit;margin-top: 2px;margin-bottom: 2px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
 queue(Vehicles, VehAhead, VehRadius) {
   var neighbour = null;
   var circleAhead = this.velocity.normalize().multiply(VehAhead);

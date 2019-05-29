@@ -4,24 +4,17 @@
 <head>
   <meta charset="utf-8" />
   <title>Craig-Reynolds Algorithm</title>
-  <!--design-->
-  <link rel="stylesheet" href="button.css" />
-  <link rel="stylesheet" href="box.css" />
-  <!--snippet function-->
-  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
-  <link rel="stylesheet" href="desert.css" />
-  <!--mouse function-->
-  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="mouse.js"></script>
-  <!--main functions-->
-  <script src="vector.js"></script>
-  <script src="vehicle.js"></script>
-  <!--sliders-->
-  <script src="sliderStyle.js"></script>
   <link rel="stylesheet" href="sliderStyle.css" />
-  <!--object functions -->
+  <link rel="stylesheet" type="text/css" href="desert.css" />
+  <link rel="stylesheet" href="pagesLayoutStyle.css" />
+  <link rel="stylesheet" href="button.css" />
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="vector.js"></script>
+  <script src="mouse.js"></script>
+  <script src="vehicle.js"></script>
+  <script src="sliderStyle.js"></script>
   <script src="object.js"></script>
-  <!--To disable focusing on Chrome browser -->
   <script type="text/javascript"> //To disable focusing on Chrome browser
     document.addEventListener('click', function (e) {
       if (document.activeElement.toString() == '[object HTMLButtonElement]') { document.activeElement.blur(); }
@@ -29,19 +22,26 @@
   </script>
 </head>
 
-<body>
-  <div class="menu_box">
-    <div class="green_box">
+<body
+  style=" background-color: hsl(117, 43%, 80%);margin-left: 0px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 16px">
+
+  <div class="box" style="float: left; width: auto vw; font-size: 90%; height: auto;">
+    <div class="box" style="color: black; background: #53d8cd;width: 95%;height: 90%;text-align: center;
+          margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 8px;">
       Simulations
     </div>
+
     <div class="container">
       <button class="button" onclick='window.location.href = "./00home.html"'>
         Vehicle
       </button>
     </div>
-    <div class="green_box">
+
+    <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 90%;text-align: center;
+                  margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;margin-top: 5px;">
       Basic behaviors
     </div>
+
     <div class="container">
       <button class="button" onclick='window.location.href = "./01seek.html"'>
         Seek
@@ -92,7 +92,10 @@
         Flow Field Following
       </button>
     </div>
-    <div class="green_box">
+
+    <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 90%;text-align: center;
+                  margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;
+                  margin-top: 5px;">
       Combined behaviors
     </div>
     <div class="container">
@@ -122,7 +125,7 @@
     </div>
     </nav>
   </div>
-  <div class="box">
+  <div id="backToHome" class="container" style="display: inline-block;">
 
     <!--BUTTON DISPLAY FORCES-->
     <button id="Forces" class="button">
@@ -136,9 +139,10 @@
 
   </div>
 
-  <div class="main">
+  <div id="main" class="container" style="display: inline-block;width: 50vw;padding-right: 0px;">
 
-    <div class="explain_box">
+    <div class="box" style="width: 90%;height:  auto;text-align: left;
+      margin-bottom: 5px;">
       <span>The seek method calculates and returns vector that will be applied to the current velocity of the Vehicle through applyForce and the Update. Target of the method will be point attached to the cursor.<br>
         The <span style="color:orange">orange</span> vector pointing out of the center of Vehicle is visualization of the desiredVelocity and the <span style="color:#6A5ACD">violet</span>
         one shows current velocity vector.<br>
@@ -146,9 +150,10 @@
       </span>
     </div>
 
-    <canvas id="VP" class="viewport" style="background: #eee; width: 100%;height: 50%;"></canvas>
+    <canvas id="VP" class="viewport" style="background: #eee; width: 100%; position: relative;height: 50%;"></canvas>
 
-    <div class="output_box">
+    <div class="box" style="width: 90%;height: 20px;text-align: center;
+        margin-left: 0px;padding-left: 0px;padding-right: 0px;">
 
       Vehicle position x:
       <span id="vehicle_posX"></span>
@@ -161,23 +166,23 @@
 
     <div>
 
-      <div class="range-slider">
+      <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
 
-        <div class="slider-box">Maxspeed</div>
+        <div class="box" style="margin:0px; top:4px">Maxspeed</div>
 
         <input id="maxspeed" class="range-slider__range" type="range" value="2" min="0" max="7" step="0.01">
 
-        <span class="range-slider__value">0</span>
+        <span class="range-slider__value" style="top:4px">0</span>
 
       </div>
 
-      <div class="range-slider">
+      <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
 
-        <div class="slider-box">Maxforce</div>
+        <div class="box" style="margin:0px; top:4px">Maxforce</div>
 
         <input id="maxforce" class="range-slider__range" type="range" value="0.1" min="0" max="5" step="0.01">
 
-        <span class="range-slider__value">0</span>
+        <span class="range-slider__value" style="top:4px">0</span>
 
       </div>
 
@@ -185,23 +190,23 @@
 
     <div>
 
-      <div class="range-slider">
+      <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
         
-        <div class="slider-box">Predict distance</div>
+        <div class="box" style="margin:0px; top:4px">Predict distance</div>
         
         <input id="Predict" class="range-slider__range" type="range" value="30" min="0">
         
-        <span class="range-slider__value">0</span>
+        <span class="range-slider__value" style="top:4px">0</span>
       
       </div>
       
-      <div class="range-slider">
+      <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
         
-        <div class="slider-box">Target offset</div>
+        <div class="box" style="margin:0px; top:4px">Target offset</div>
         
         <input id="Target" class="range-slider__range" type="range" value="10" min="0">
         
-        <span class="range-slider__value">0</span>
+        <span class="range-slider__value" style="top:4px">0</span>
       
       </div>
 
@@ -216,7 +221,7 @@
 
       mouseObj.Init('#VP',canvas);
 
-      var vehicle = new Vehicle(280,120);
+      var vehicle = new Vehicle(canvas.width/3+30,canvas.height/3+30);
       vehicle.maxspeed = 1
       
       var displayForces = 'off';
@@ -288,21 +293,21 @@
         var randomVector = new Vector((Math.random() * canvas.width), (Math.random() * canvas.height/2));
         objectW(randomVector.x,randomVector.y,randomVector.x + (Math.random()* 30), randomVector.y + (Math.random()* 30));
       }
-      objectW(-10,120,271,120);
-      objectW(271,120,300,80);
-      objectW(300,80,302,-10);
+      objectW(-10,canvas.height/3,canvas.width/3-29,canvas.height/3);
+      objectW(canvas.width/3-29,canvas.height/3,canvas.width/3,canvas.height/3-20);
+      objectW(canvas.width/3,canvas.height/3-20,canvas.width/3 + 2,-10);
 
-      objectW(600,80,599,-10);
-      objectW(600,80,630,120);
-      objectW(630,120,canvas.width+10,120);
+      objectW(canvas.width*0.66,canvas.height/3-20,canvas.width*0.66-1,-10);
+      objectW(canvas.width*0.66,canvas.height/3-20,canvas.width*0.66+30,canvas.height/3);
+      objectW(canvas.width*0.66+30,canvas.height/3,canvas.width+10,canvas.height/3);
 
-      objectW(271,250,-10,250);
-      objectW(300,290,271,250);
-      objectW(300,canvas.height+10,300,290);
+      objectW(canvas.width/3 -29,canvas.height*0.66,-10,canvas.height*0.66);
+      objectW(canvas.width/3,canvas.height*0.66 + 20,canvas.width/3 - 29, canvas.height*0.66);
+      objectW(canvas.width/3+1,canvas.height+10,canvas.width/3,canvas.height*0.66 + 20);
 
-      objectW(600,290,599,canvas.height+10);
-      objectW(630,250,600,290);
-      objectW(canvas.width+10,250,630,250);
+      objectW(canvas.width*0.66,canvas.height*0.66 + 20,canvas.width*0.66-1,canvas.height+10);
+      objectW(canvas.width*0.66+30,canvas.height*0.66 ,canvas.width*0.66,canvas.height*0.66 + 20);
+      objectW(canvas.width+10,canvas.height*0.66,canvas.width*0.66+30,canvas.height*0.66);
 
       //DISPLAY OBJECTS ON CANVAS 
       function drawObjects(Objects) {
@@ -348,6 +353,7 @@
 
         vehicle.maxforce = document.getElementById("maxforce").value;
         vehicle.maxspeed = document.getElementById("maxspeed").value;
+        //path.radius = document.getElementById("Radius").value;
         $("#vehicle_posX").text(Math.ceil(vehicle.position.x));
         $("#vehicle_posY").text(Math.ceil(vehicle.position.y));
         $("#vehicle_vel").text((vehicle.velocity.length()).toFixed(2))
@@ -360,10 +366,11 @@
 
   </div>
 
-  <div class="code_box">
+  <div id="codeSnippet" class="box" style="text-align: left; display: block;">
 
       <!--CREATES SNIPPET OF CODE-->
-      <pre class="prettyprint linenums">
+      <pre class="prettyprint linenums"
+        style="position: inherit;margin-top: 2px;margin-bottom: 2px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
 flock(Vehicles){
   var seperate = this.separation(Vehicles),
   align = this.align(Vehicles),
