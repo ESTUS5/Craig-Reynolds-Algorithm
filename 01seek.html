@@ -4,16 +4,21 @@
 <head>
   <meta charset="utf-8" />
   <title>Craig-Reynolds Algorithm</title>
-  <link rel="stylesheet" href="sliderStyle.css" />
-  <link rel="stylesheet" href="desert.css" />
-  <link rel="stylesheet" href="pagesLayoutStyle.css" />
+  <!--design-->
   <link rel="stylesheet" href="button.css" />
-  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  <link rel="stylesheet" href="box.css" />
+  <!--snippet function-->
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <link rel="stylesheet" href="desert.css" />
+  <!--mouse function-->
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
   <script src="mouse.js"></script>
+  <!--main functions-->
   <script src="vector.js"></script>
   <script src="vehicle.js"></script>
+  <!--sliders-->
   <script src="sliderStyle.js"></script>
+  <link rel="stylesheet" href="sliderStyle.css" />
   <!--To disable focusing on Chrome browser -->
   <script type="text/javascript">
     document.addEventListener('click', function (e) {
@@ -22,12 +27,10 @@
   </script>
 </head>
 
-<body
-  style=" background-color: hsl(117, 43%, 80%);margin-left: 0px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 16px">
+<body>
 
-  <div class="box" style="float: left; width: auto vw; font-size: 90%; height: auto;">
-    <div class="box" style="color: black; background: #53d8cd;width: 95%;height: 90%;text-align: center;
-          margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 8px;">
+  <div class="menu_box">
+    <div class="green_box">
       Simulations
     </div>
 
@@ -37,8 +40,7 @@
       </button>
     </div>
 
-    <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 90%;text-align: center;
-                  margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;margin-top: 5px;">
+    <div class="green_box">
       Basic behaviors
     </div>
 
@@ -93,9 +95,7 @@
       </button>
     </div>
 
-    <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 90%;text-align: center;
-                  margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;
-                  margin-top: 5px;">
+    <div class="green_box">
       Combined behaviors
     </div>
     <div class="container">
@@ -126,7 +126,7 @@
     </nav>
   </div>
 
-  <div id="backToHome" class="container" style=" display: inline-block;">
+  <div class="box">
 
     <!--BUTTON DISPLAY FORCES-->
     <button id="Forces" class="button">
@@ -140,10 +140,9 @@
 
   </div>
 
-    <div id="main" class="container" style="display: inline-block;width: 50vw;padding-right: 0px;">
+  <div class="main">
 
-      <div class="box" style="width: 90%;height:  auto;text-align: left;
-        margin-bottom: 5px;">
+      <div class="explain_box">
         <span>&nbsp;&nbsp;The seek method calculates and returns vector that will be applied to the current velocity of the Vehicle through the applyForce and the update. Target of the method will be point attached to the cursor.<br>
           The <span style="color:#FF4500">orange</span> vector pointing out of the center of Vehicle is visualization of the desiredVelocity and the <span style="color:#6A5ACD">violet</span>
           one shows current velocity vector.<br>
@@ -151,11 +150,10 @@
         </span>
       </div>
 
-      <canvas id="VP" class="viewport" style="background: #eee; width: 100%; position: relative;height: 50%;"></canvas>
+      <canvas id="VP" class="viewport" style="background: #eee; width: 100%;height: 50%;"></canvas>
 
       <!--OUTPUT OF MOUSE POSITIONS OF CANVAS-->
-      <div class="box" style="width: 90%;height: 20px;text-align: center;
-          margin-left: 0px;padding-left: 0px;padding-right: 0px;">
+      <div class="output_box">
 
         Mouse position x:
         <span id="mouse_posX"></span>
@@ -165,8 +163,7 @@
       </div>
 
       <!--OUTPUT OF VEHICLE POSITION & VELOCITY-->
-      <div class="box" style="width: 90%;height: 20px;text-align: center;
-          margin-left: 0px;padding-left: 0px;padding-right: 0px; top: -4px;">
+      <div class="output_box" >
 
         Vehicle position x:
         <span id="vehicle_posX"></span>
@@ -178,25 +175,25 @@
       </div>
 
       <!--RANGE SLIDER OF MAXSPEED-->
-      <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
+      <div class="range-slider">
 
-        <div class="box" style="margin:0px; top:4px">Maxspeed</div>
+        <div class="slider-box">Maxspeed</div>
+        <div class="container">
+          <input id="maxspeed" class="range-slider__range" type="range" value="4" min="0" max="7" step="0.01">
 
-        <input id="maxspeed" class="range-slider__range" type="range" value="4" min="0" max="7" step="0.01">
-
-        <span class="range-slider__value" style="top:4px">0</span>
-
+          <span class="range-slider__value">0</span>
+        </div>
       </div>
 
       <!--RANGE SLIDER OF MAXFORCE-->
-      <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
+      <div class="range-slider">
 
-        <div class="box" style="margin:0px; top:4px">Maxforce</div>
+        <div class="slider-box">Maxforce</div>
+        <div class="container">
+          <input id="maxforce" class="range-slider__range" type="range" value="0.1" min="0" max="5" step="0.01">
 
-        <input id="maxforce" class="range-slider__range" type="range" value="0.1" min="0" max="5" step="0.01">
-
-        <span class="range-slider__value" style="top:4px">0</span>
-
+          <span class="range-slider__value">0</span>
+        </div>
       </div>
 
       <script>
@@ -260,7 +257,7 @@
         //LOOP FUNC
         function draw() {
 
-          ctx.setTransform(1, 0, 0, 1, 0, 0); // <- JS magic for PathBegin()..
+          ctx.setTransform(1, 0, 0, 1, 0, 0); // <- JS transform for PathBegin()..
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
           vehicle.maxforce = document.getElementById("maxforce").value;
@@ -284,13 +281,11 @@
         setInterval(draw, 30);
       </script>
 
-    </div>
+  </div>
 
-    <div id="codeSnippet" class="box" style="text-align: left; float: left; width: 32 vw;">
-
-      <!--CREATES SNIPPET OF CODE-->
-      <pre class="prettyprint linenums"
-        style="font-size:95%; position: inherit;margin-top: 2px;margin-bottom: 2px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
+  <div class="code_box">
+    <!--CREATES SNIPPET OF CODE-->
+    <pre class="prettyprint linenums">
 seek(targetX = mouseObj.x, targetY = mouseObj.y) {
   this.desiredVelocity = new Vector(targetX, targetY);
   this.desiredVelocity = this.desiredVelocity.subtract(this.position);
@@ -300,7 +295,8 @@ seek(targetX = mouseObj.x, targetY = mouseObj.y) {
   this.steering_force.limit(this.maxforce);
   return this.steering_force;
 }</pre>
-    </div>
+  </div>
+
 </body>
 
 </html>

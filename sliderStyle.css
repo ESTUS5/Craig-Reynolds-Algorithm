@@ -1,18 +1,28 @@
 
 .range-slider {
-  margin: 20% 0 0 0%;
+  float: left;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 50% ;
 }
 
-
-.range-slider {
-  width: 50%;
+.slider-box {
+  display: inline-block;
+  width: auto;
+  color: #fff;
+  top: 4px;
+  text-align: center;
+  background: #333;
+  padding: 5px 5px;
+  margin:0px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .range-slider__range {
   -webkit-appearance: none;
-  width: 40%;
+  width: 70%;
   height: 5px;
-  border-radius: 5%;
+  border-radius: 5px;
   background: pink;
   outline: none;
   padding: 0;
@@ -52,7 +62,7 @@
 .range-slider__value {
   display: inline-block;
   position: relative;
-  width: 30px;
+  width: 10%;
   color: #fff;
   line-height: 20px;
   text-align: center;
@@ -60,6 +70,7 @@
   background: #333;
   padding: 5px 10px;
   margin-left: 8px;
+  top: 4px;
 }
 .range-slider__value::before {
     position: absolute;

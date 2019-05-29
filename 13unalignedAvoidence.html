@@ -4,17 +4,24 @@
 <head>
   <meta charset="utf-8" />
   <title>Craig-Reynolds Algorithm</title>
-  <link rel="stylesheet" href="sliderStyle.css" />
-  <link rel="stylesheet" type="text/css" href="desert.css" />
-  <link rel="stylesheet" href="pagesLayoutStyle.css" />
+  <!--design-->
   <link rel="stylesheet" href="button.css" />
-  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  <link rel="stylesheet" href="box.css" />
+  <!--snippet function-->
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
-  <script src="vector.js"></script>
+  <link rel="stylesheet" href="desert.css" />
+  <!--mouse function-->
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
   <script src="mouse.js"></script>
+  <!--main functions-->
+  <script src="vector.js"></script>
   <script src="vehicle.js"></script>
+  <!--sliders-->
   <script src="sliderStyle.js"></script>
+  <link rel="stylesheet" href="sliderStyle.css" />
+  <!--object functions -->
   <script src="object.js"></script>
+  <!--To disable focusing on Chrome browser -->
   <script type="text/javascript"> //To disable focusing on Chrome browser
     document.addEventListener('click', function (e) {
       if (document.activeElement.toString() == '[object HTMLButtonElement]') { document.activeElement.blur(); }
@@ -23,25 +30,19 @@
 </head>
 
 <body
-  style=" background-color: hsl(117, 43%, 80%);margin-left: 0px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 16px">
 
-  <div class="box" style="float: left; width: auto vw; font-size: 90%; height: auto;">
-    <div class="box" style="color: black; background: #53d8cd;width: 95%;height: 90%;text-align: center;
-          margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 8px;">
+  <div class="main_box">
+    <div class="green_box">
       Simulations
     </div>
-
     <div class="container">
       <button class="button" onclick='window.location.href = "./00home.html"'>
         Vehicle
       </button>
     </div>
-
-    <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 90%;text-align: center;
-                  margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;margin-top: 5px;">
+    <div class="green_box">
       Basic behaviors
     </div>
-
     <div class="container">
       <button class="button" onclick='window.location.href = "./01seek.html"'>
         Seek
@@ -92,10 +93,7 @@
         Flow Field Following
       </button>
     </div>
-
-    <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 90%;text-align: center;
-                  margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;
-                  margin-top: 5px;">
+    <div class="green_box">
       Combined behaviors
     </div>
     <div class="container">
@@ -125,7 +123,7 @@
     </div>
     </nav>
   </div>
-  <div id="backToHome" class="container" style="display: inline-block;">
+  <div class="box">
 
     <!--BUTTON DISPLAY FORCES-->
     <button id="Forces" class="button">
@@ -139,10 +137,9 @@
 
   </div>
 
-  <div id="main" class="container" style="display: inline-block;width: 48vw;padding-right: 0px;">
+  <div class="main">
 
-    <div class="box" style="width: 90%;height:  auto;text-align: left;
-      margin-bottom: 5px;">
+    <div class="explain_box">
       <span>
           &nbsp;&nbsp;The Unaligned Collision Avoidance is one of the approaches to avoid moving objects.
          In this example other vehicles are cause of collisions. To prevent this thier predicted positions are compared with the vehicle's. 
@@ -157,27 +154,27 @@
       </span>
     </div>
 
-    <canvas id="VP" class="viewport" style="background: #eee; width: 100%; position: relative;height: 50%;"></canvas>
+    <canvas id="VP" class="viewport" style="background: #eee; width: 100%;height: 50%;"></canvas>
 
     <div>
 
-      <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
+      <div class="range-slider">
 
-        <div class="box" style="margin:0px; top:4px">Maxspeed</div>
+        <div class="slider-box" >Maxspeed</div>
 
         <input id="maxspeed" class="range-slider__range" type="range" value="2" min="0" max="7" step="0.01">
 
-        <span class="range-slider__value" style="top:4px">0</span>
+        <span class="range-slider__value">0</span>
 
       </div>
 
-      <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
+      <div class="range-slider">
 
-        <div class="box" style="margin:0px; top:4px">Maxforce</div>
+        <div class="slider-box" >Maxforce</div>
 
         <input id="maxforce" class="range-slider__range" type="range" value="0.1" min="0" max="5" step="0.01">
 
-        <span class="range-slider__value" style="top:4px">0</span>
+        <span class="range-slider__value">0</span>
 
       </div>
 
@@ -185,13 +182,13 @@
 
     <div>
 
-      <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
+      <div class="range-slider">
         
-        <div class="box" style="margin:0px; top:4px">Future Position</div>
+        <div class="slider-box" >Future Position</div>
         
         <input id="futPos" class="range-slider__range" type="range" value="20" min="0">
         
-        <span class="range-slider__value" style="top:4px">0</span>
+        <span class="range-slider__value">0</span>
       
       </div>
 
@@ -208,7 +205,7 @@
       var vehicles = [];
       for (let index = 0; index < 30; index++) {
 
-          vehicles.push(new Vehicle(Math.ceil(Math.random()*(canvas.width/3)) + canvas.width/3 ,canvas.height/3 + Math.ceil(Math.random()*(canvas.height/3)) ));
+          vehicles.push(new Vehicle(Math.ceil(Math.random()*(canvas.width/3)) + 300 ,120 + Math.ceil(Math.random()*(canvas.height/3)) ));
           vehicles[vehicles.length-1].radius = 7;
           vehicles[vehicles.length-1].theta = Math.random() * 360;
 
@@ -220,17 +217,17 @@
         objects.push( new objectWall(x1,y1,x2,y2));
       }
       //Upper wall
-      objectW(0,canvas.height/3,canvas.width/3,canvas.height/3);
-      objectW(canvas.width/3,canvas.height/3,canvas.width/3 + 1,0);
+      objectW(0,120,300,120);
+      objectW(300,120,301,0);
 
-      objectW(canvas.width*0.66-1,0,canvas.width*0.66,canvas.height/3);
-      objectW(canvas.width*0.66,canvas.height/3,canvas.width,canvas.height/3);
-      //Supper wall
-      objectW(0,canvas.height*0.66,canvas.width/3,canvas.height*0.66);
-      objectW(canvas.width/3,canvas.height*0.66,canvas.width/3+1,canvas.height);
+      objectW(599,0,600,120);
+      objectW(600,120,canvas.width,120);
 
-      objectW(canvas.width*0.66-1,canvas.height,canvas.width*0.66,canvas.height*0.66);
-      objectW(canvas.width*0.66,canvas.height*0.66,canvas.width,canvas.height*0.66);
+      objectW(0,250,300,250);
+      objectW(300,250,301,canvas.height);
+
+      objectW(599,canvas.height,600,250);
+      objectW(600,250,canvas.width,250);
 
       //DISPLAY OBJECTS ON CANVAS 
       function drawObjects(Objects) {
@@ -368,11 +365,10 @@
 
   </div>
 
-  <div id="codeSnippet" class="box" style="text-align: left; width: 33.5vw;padding-right: 0px">
+  <div class="code_box">
 
       <!--CREATES SNIPPET OF CODE-->
-      <pre class="prettyprint linenums"
-        style="font-size:90%;position: inherit;margin-top: 2px;margin-bottom: 2px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
+      <pre class="prettyprint linenums">
 unalignedCollisionAvoidance(Vehicles,futurePos=<b id="futPose" style="color: crimson">0</b>){
     var predictedPosition = this.velocity.normalize().multiply(futurePos);
     predictedPosition = predictedPosition.add(this.position);
