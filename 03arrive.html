@@ -4,21 +4,16 @@
 <head>
   <meta charset="utf-8" />
   <title>Craig-Reynolds Algorithm</title>
-  <!--design-->
-  <link rel="stylesheet" href="button.css" />
-  <link rel="stylesheet" href="box.css" />
-  <!--snippet function-->
-  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
-  <link rel="stylesheet" href="desert.css" />
-  <!--mouse function-->
-  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="mouse.js"></script>
-  <!--main functions-->
-  <script src="vector.js"></script>
-  <script src="vehicle.js"></script>
-  <!--sliders-->
-  <script src="sliderStyle.js"></script>
   <link rel="stylesheet" href="sliderStyle.css" />
+  <link rel="stylesheet" href="desert.css" />
+  <link rel="stylesheet" href="pagesLayoutStyle.css" />
+  <link rel="stylesheet" href="button.css" />
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="vector.js"></script>
+  <script src="mouse.js"></script>
+  <script src="vehicle.js"></script>
+  <script src="sliderStyle.js"></script>
   <!--To disable focusing on Chrome browser -->
   <script type="text/javascript">
     document.addEventListener('click', function (e) {
@@ -27,19 +22,26 @@
   </script>
 </head>
 
-<body>
-  <div class="menu_box">
-    <div class="green_box">
+<body
+  style=" background-color: hsl(117, 43%, 80%);margin-left: 0px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 16px">
+
+  <div class="box" style="float: left; width: auto vw; font-size: 90%; height: auto;">
+    <div class="box" style="color: black; background: #53d8cd;width: 95%;height: 90%;text-align: center;
+          margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 8px;">
       Simulations
     </div>
+
     <div class="container">
       <button class="button" onclick='window.location.href = "./00home.html"'>
         Vehicle
       </button>
     </div>
-    <div class="green_box">
+
+    <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 90%;text-align: center;
+                  margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;margin-top: 5px;">
       Basic behaviors
     </div>
+
     <div class="container">
       <button class="button" onclick='window.location.href = "./01seek.html"'>
         Seek
@@ -90,7 +92,10 @@
         Flow Field Following
       </button>
     </div>
-    <div class="green_box">
+
+    <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 90%;text-align: center;
+                  margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;
+                  margin-top: 5px;">
       Combined behaviors
     </div>
     <div class="container">
@@ -118,22 +123,27 @@
         Flocking
       </button>
     </div>
+    </nav>
   </div>
 
-  <div class="box">
+  <div id="backToHome" class="container" style=" display: inline-block;">
+
     <!--BUTTON DISPLAY FORCES-->
     <button id="Forces" class="button">
       Display Forces
     </button>
+    
     <!--BUTTON FREEZE-->
     <button id="Freeze" class="button">
       Freeze
     </button>
+
   </div>
 
-  <div class="main">
+  <div id="main" class="container" style="display: inline-block;width: 50vw;padding-right: 0px;">
 
-    <div class="explain_box">
+    <div class="box" style="width: 90%;height:  auto;text-align: left;
+      margin-bottom: 5px;">
       <span>&nbsp;&nbsp;This method will seeks target the same way the Seek does, but when it approaches it's <span style="color:#cd5c5c">radius</span> vehicle will start decellerating.
         The maxspeed will be changing from it's orginal score down to 0 when the taget will be reached.
         Target of the method will be point attached to the cursor.<br>
@@ -143,64 +153,70 @@
       </span>
     </div>
 
-    <canvas id="VP" class="viewport" style="background: #eee; width: 100%;height: 50%;"></canvas>
+    <canvas id="VP" class="viewport" style="background: #eee; width: 100%; position: relative;height: 50%;"></canvas>
 
     <!--OUTPUT OF MOUSE POSITIONS OF CANVAS-->
-    <div class="output_box">
+    <div class="box" style="width: 90%;height: 20px;text-align: center;
+              margin-left: 0px;padding-left: 0px;padding-right: 0px;">
+
       Mouse position x:
       <span id="mouse_posX"></span>
       y:
       <span id="mouse_posY"></span>
+
     </div>
 
     <!--OUTPUT OF VEHICLE POSITION & VELOCITY-->
-    <div class="output_box">
+    <div class="box" style="width: 90%;height: 20px;text-align: center;
+              margin-left: 0px;padding-left: 0px;padding-right: 0px; top: -4px;">
+
       Vehicle position x:
       <span id="vehicle_posX"></span>
       y:
       <span id="vehicle_posY"></span>
       Vehicle velocity :
       <span id="vehicle_vel"></span>
+
     </div>
 
     <!--RANGE SLIDER OF MAXSPEED-->
-    <div class="range-slider">
+    <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
 
-      <div class="slider-box">Maxspeed</div>
-      <div class="container">
+      <div class="box" style="margin:0px; top:4px">Maxspeed</div>
+      
       <input id="maxspeed" class="range-slider__range" type="range" value="4" min="0" max="7" step="0.01">
       
-      <span class="range-slider__value">0</span>
-      </div>        
+      <span class="range-slider__value" style="top:4px">0</span>
+
     </div>
 
     <!--RANGE SLIDER OF MAXFORCE-->
-    <div class="range-slider">
+    <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
       
-      <div class="slider-box">Maxforce</div>
-      <div class="container">
+      <div class="box" style="margin:0px; top:4px">Maxforce</div>
+      
       <input id="maxforce" class="range-slider__range" type="range" value="0.1" min="0" max="5" step="0.01">
       
-      <span class="range-slider__value">0</span>
-      </div>
+      <span class="range-slider__value" style="top:4px">0</span>
+
     </div>
 
     <!--RANGE SLIDER OF ARRIVAL RADIUS-->
-    <div class="range-slider">
+    <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
         
-        <div class="slider-box">Arrival radius</div>
-        <div class="container">
+        <div class="box" style="margin:0px; top:4px">Arrival radius</div>
+        
         <input id="arrivalRadius" class="range-slider__range" type="range" value="100" min="1" max="500" step="0.01">
         
-        <span class="range-slider__value">0</span>
-        </div>
+        <span class="range-slider__value" style="top:4px">0</span>
+
     </div>  
 
     <script>
       //CHANGE WIDTH & HEIGHT OF CANVAS
       var canvas = document.querySelector('.viewport'),
         ctx = canvas.getContext('2d');
-      canvas.height = screen.height / 3;
+      canvas.height = screen.height/3;
       canvas.width = screen.width / 2;
 
       //READ & WRITE MOUSE POSITION
@@ -282,10 +298,11 @@
 
   </div>
 
-  <div class="code_box">
+  <div id="codeSnippet" class="box" style="text-align: left; display: block; width: 30vw; width: 32vw; padding-right: 0;margin-right: 0 ">
 
     <!--CREATES SNIPPET OF CODE-->
-    <pre class="prettyprint linenums">
+    <pre class="prettyprint linenums"
+        style="font-size: 90%;padding-left:0;position: inherit;margin-top: 2px;margin-bottom: 2px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
 arrival(targetX = mouseObj.x, targetY = mouseObj.y,arrivalDistance = <b id="snipArrival" style="color: #cd5c5c">100</b>) {
   this.desiredVelocity = new Vector(targetX, targetY);
   this.desiredVelocity = this.desiredVelocity.subtract(this.position);
