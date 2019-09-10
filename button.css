@@ -1,12 +1,11 @@
 button {
-    display: inline-block;
     background-color: white;
     color: #333;
     border: 2px solid #333;
-    padding: 3% 6%;
+    padding: 10px 26px;
     text-align: center;
-    font-size: 90%;
-    margin: 2% 2%;
+    margin: 2px 2px;
+    border-radius: 5px;
     -webkit-transition-duration: 0.4s; /* Safari */
     transition-duration: 0.4s;
     cursor: pointer;
@@ -16,5 +15,6 @@ button {
 button:hover {
     background-color: #333;
     color: white;
+    border-radius: 5px;
     font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }

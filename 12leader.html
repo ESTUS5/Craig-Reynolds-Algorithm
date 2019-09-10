@@ -4,17 +4,22 @@
 <head>
   <meta charset="utf-8" />
   <title>Craig-Reynolds Algorithm</title>
-  <link rel="stylesheet" href="sliderStyle.css" />
-  <link rel="stylesheet" type="text/css" href="desert.css" />
-  <link rel="stylesheet" href="pagesLayoutStyle.css" />
+  <!--design-->
   <link rel="stylesheet" href="button.css" />
-  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  <link rel="stylesheet" href="box.css" />
+  <!--snippet function-->
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
-  <script src="vector.js"></script>
+  <link rel="stylesheet" href="desert.css" />
+  <!--mouse function-->
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
   <script src="mouse.js"></script>
+  <!--main functions-->
+  <script src="vector.js"></script>
   <script src="vehicle.js"></script>
+  <!--sliders-->
   <script src="sliderStyle.js"></script>
-
+  <link rel="stylesheet" href="sliderStyle.css" />
+  <!--To disable focusing on Chrome browser -->
   <script type="text/javascript">
     document.addEventListener('click', function (e) {
       if (document.activeElement.toString() == '[object HTMLButtonElement]') { document.activeElement.blur(); }
@@ -22,26 +27,20 @@
   </script>
 </head>
 
-<body
-  style=" background-color: hsl(117, 43%, 80%);padding-right: 0;margin-right: 0;margin-left: 0px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 16px">
+<body>
 
-  <div class="box" style="float: left; width: auto vw; font-size: 90%; height: auto;">
-    <div class="box" style="color: black; background: #53d8cd;width: 95%;height: 90%;text-align: center;
-          margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 8px;">
+  <div class="menu_box">
+    <div class="green_box">
       Simulations
     </div>
-
     <div class="container">
       <button class="button" onclick='window.location.href = "./00home.html"'>
         Vehicle
       </button>
     </div>
-
-    <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 90%;text-align: center;
-                  margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;margin-top: 5px;">
+    <div class="green_box">
       Basic behaviors
     </div>
-
     <div class="container">
       <button class="button" onclick='window.location.href = "./01seek.html"'>
         Seek
@@ -92,10 +91,7 @@
         Flow Field Following
       </button>
     </div>
-
-    <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 90%;text-align: center;
-                  margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;
-                  margin-top: 5px;">
+    <div class="green_box">
       Combined behaviors
     </div>
     <div class="container">
@@ -104,7 +100,7 @@
       </button>
     </div>
     <div class="container">
-      <button class="button" onclick='window.location.href = "./12leader.html"'>
+      <button class="button" style="background-color: #333; color: white; cursor: not-allowed;" disabled="disabled" onclick='window.location.href = "./12leader.html"'>
         Leader Following
       </button>
     </div>
@@ -115,7 +111,7 @@
     </div>
     <div class="container">
       <button class="button" onclick='window.location.href = "./14queue.html"'>
-        Queueing
+        Queue
       </button>
     </div>
     <div class="container">
@@ -126,62 +122,66 @@
     </nav>
   </div>
 
-  <div id="backToHome" class="container" style=" display: inline-block;">
-
+  <div class="box">
     <!--BUTTON DISPLAY FORCES-->
     <button id="Forces" class="button">
       Display Forces
     </button>
-    
     <!--BUTTON FREEZE-->
     <button id="Freeze" class="button">
       Freeze
     </button>
-
     <!--BUTTON CHANGE FOLLOWING TYPE-->
     <button id="followingType" class="button">
       Change Following Type
     </button>
-
   </div>
 
-  <div id="main" class="container" style="display: inline-block;width: 48vw;padding-right: 0px;">
+  <div class="main">
 
-      <div class="box" style="width: 90%;height:  auto;text-align: left;
-        margin-bottom: 5px;">
+      <div class="explain_box">
         <span>
           &nbsp;&nbsp;The Leader Following algorithm is a method that "predicts" past position of leader (target) and the Arrives to that point.
           Beside following, the space in front of leader is being always checked by the vehicle (follower).
            If it finds itself in the <span style="color:rgba(50, 155, 50, 0.767)">green</span> space the next target is normal vector from that area.
           <br>
-          &nbsp;&nbsp;The <span style="color:orange">orange</span> vector pointing out of the center of Vehicle is visualization of the desiredVelocity and the <span style="color:#6A5ACD">violet</span>
-          one shows current velocity vector. The <span style="color:rgba(50, 155, 50, 0.767)">green</span> space 
-          is an area that follower will be escaping. The <span style="color:rgba(192, 49, 49, 0.767)">red</span> vector represents target position<br>
+          &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of Vehicle is visualization of the desiredVelocity and the <span style="color:#6A5ACD">violet</span>
+          one shows current velocity vector. The <span style="color:rgba(124, 206, 124, 0.767)">green</span> space 
+          is an area that follower will be escaping. The <span style="color:red">red</span> vector represents target position.
+           <span style="color:rgba(250, 85, 250, 0.966)">Pink circles</span> represent space in which the arrival deaccelerates.<br>
           &nbsp;&nbsp;If you wish to freeze animation you can also press a spacebar on your keyboard.
         </span>
       </div>
 
-      <canvas id="VP" class="viewport" style="background: #eee; width: 100%; position: relative;height: 50%;"></canvas>
+      <canvas id="VP" class="viewport" style="background: #eee; width: 100%;height: 50%;"></canvas>
 
     <div>
 
-      <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
+      <div class="range-slider">
 
-        <div class="box" style="margin:0px; top:4px">Maxspeed</div>
+        <div class="slider-box" >Maxspeed</div>
 
-        <input id="maxspeed" class="range-slider__range" type="range" value="2" min="0" max="7" step="0.01">
-        
-        <span class="range-slider__value" style="top:4px">0</span>
+        <div class="container">
+
+          <input id="maxspeed" class="range-slider__range" type="range" value="2" min="0" max="7" step="0.01">
+          
+          <span class="range-slider__value">0</span>
+
+        </div>
       
       </div>
 
-      <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
+      <div class="range-slider">
         
-        <div class="box" style="margin:0px; top:4px">Maxforce</div>
+        <div class="slider-box" >Maxforce</div>
         
-        <input id="maxforce" class="range-slider__range" type="range" value="0.1" min="0" max="5" step="0.01">
-        
-        <span class="range-slider__value" style="top:4px">0</span>
+        <div class="container">
+
+          <input id="maxforce" class="range-slider__range" type="range" value="0.1" min="0" max="5" step="0.01">
+          
+          <span class="range-slider__value">0</span>
+
+        </div>
       
       </div>
     
@@ -189,35 +189,47 @@
 
     <div>
 
-      <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
+      <div class="range-slider">
         
-        <div class="box" style="margin:0px; top:4px">Target offset</div>
+        <div class="slider-box" >Target offset</div>
         
-        <input id="offset" class="range-slider__range" type="range" value="30" min="0.1">
-        
-        <span class="range-slider__value" style="top:4px">0</span>
+        <div class="container">
+
+          <input id="Target" class="range-slider__range" type="range" value="30" min="0.1" step="0.01">
+          
+          <span class="range-slider__value">0</span>
+
+        </div>
       
       </div>
 
-      <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
+      <div class="range-slider">
         
-          <div class="box" style="margin:0px; top:4px">Length of green area</div>
+          <div class="slider-box" >Length of green space</div>
           
-          <input id="predist" class="range-slider__range" type="range" value="30" min="0.1">
-          
-          <span class="range-slider__value" style="top:4px">0</span>
+          <div class="container">
+
+            <input id="Length" class="range-slider__range" type="range" value="30" min="0.1" step="0.01">
+            
+            <span class="range-slider__value">0</span>
+
+          </div>
         
         </div>
 
-        <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
+        <div class="range-slider">
         
-            <div class="box" style="margin:0px; top:4px">Margin of green area</div>
+          <div class="slider-box" >Radius of green space</div>
             
-            <input id="radius" class="range-slider__range" type="range" value="10" min="0.1">
-            
-            <span class="range-slider__value" style="top:4px">0</span>
-          
+          <div class="container">
+
+            <input id="Radius" class="range-slider__range" type="range" value="10" min="0.1" step="0.01">
+              
+            <span class="range-slider__value">0</span>
+
           </div>
+          
+        </div>
     
     </div>
     
@@ -303,14 +315,15 @@
           for (let index = 1; index < vehicles.length; index++) {
 
             var leader = vehicles[index].followLeader(vehicles[index - 1],
-            offset= document.getElementById("offset").value,
-            preDistance = document.getElementById("predist").value,
-            radius = document.getElementById("radius").value,
+            offset= document.getElementById("Target").value,
+            preDistance = document.getElementById("Length").value,
+            radius = document.getElementById("Radius").value,
             displayForces)
             var separation = vehicles[index].separation(vehicles);
             var arr = vehicles[index].arrival(leader.x,leader.y,30,displayForces);
             vehicles[index].applyForce(arr);
             vehicles[index].applyForce(separation);
+            
             if (freeze == 'off') {
               vehicles[index].update();
             }
@@ -336,9 +349,9 @@
           for (let index = 1; index < vehicles.length; index++) {
 
             var leader = vehicles[index].followLeader(vehicles[0],
-              offset= document.getElementById("offset").value,
-              preDistance = document.getElementById("predist").value,
-              radius = document.getElementById("radius").value,
+              offset = document.getElementById("Target").value,
+              preDistance = document.getElementById("Length").value,
+              radius = document.getElementById("Radius").value,
               displayForces)
             var separation = vehicles[index].separation(vehicles);
             var arr = vehicles[index].arrival(leader.x,leader.y,30,displayForces);
@@ -363,9 +376,11 @@
           vehicles[0].renderVehicle();
           vehicles[0].maxforce = document.getElementById("maxforce").value;
           vehicles[0].maxspeed = document.getElementById("maxspeed").value;
-
+        
         }
-
+        document.getElementById("snipOffset").innerHTML = (document.getElementById("Target").value);
+        document.getElementById("snipLength").innerHTML = (document.getElementById("Length").value);
+        document.getElementById("snipRadius").innerHTML = (document.getElementById("Radius").value);
       }
 
       setInterval(draw, 14);
@@ -374,12 +389,11 @@
 
   </div>
 
-  <div id="codeSnippet" class="box" style="text-align: left; display: block; width: 34.5vw; margin-right: 0px;padding-right: 0px;">
+  <div class="code_box">
 
       <!--CREATES SNIPPET OF CODE-->
-      <pre class="prettyprint linenums"
-        style="font-size:90%;position: inherit;margin-top: 2px;margin-bottom: 2px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
-followLeader(Vehicle, offset,predDistance, radius) {
+      <pre class="prettyprint linenums">
+followLeader(Vehicle, offset = <b id="snipOffset" style="color: #cd5c5c">30</b> ,predDistance = <b id="snipLength" style="color: #cd5c5c">30</b>, radius = <b id="snipRadius" style="color: #cd5c5c">10</b>) {
   var predictedPosition = Vehicle.velocity.normalize();
   predictedPosition = predictedPosition.multiply(predDistance*2);
   predictedPosition = predictedPosition.add(Vehicle.position);

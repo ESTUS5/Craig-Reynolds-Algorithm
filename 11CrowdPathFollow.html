@@ -4,16 +4,21 @@
 <head>
   <meta charset="utf-8" />
   <title>Craig-Reynolds Algorithm</title>
-  <link rel="stylesheet" href="sliderStyle.css" />
-  <link rel="stylesheet" type="text/css" href="desert.css" />
-  <link rel="stylesheet" href="pagesLayoutStyle.css" />
+  <!--design-->
   <link rel="stylesheet" href="button.css" />
-  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  <link rel="stylesheet" href="box.css" />
+  <!--snippet function-->
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
-  <script src="vector.js"></script>
+  <link rel="stylesheet" href="desert.css" />
+  <!--mouse function-->
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
   <script src="mouse.js"></script>
+  <!--main functions-->
+  <script src="vector.js"></script>
   <script src="vehicle.js"></script>
+  <!--sliders-->
   <script src="sliderStyle.js"></script>
+  <link rel="stylesheet" href="sliderStyle.css" />
   <!--To disable focusing on Chrome browser -->
   <script type="text/javascript">
     document.addEventListener('click', function (e) {
@@ -23,26 +28,19 @@
   <script src="path.js"></script>
 </head>
 
-<body
-  style=" background-color: hsl(117, 43%, 80%);margin-right:0;padding-right:0;margin-left: 0px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 16px">
-
-  <div class="box" style="float: left; width: auto vw; font-size: 90%; height: auto;">
-    <div class="box" style="color: black; background: #53d8cd;width: 95%;height: 90%;text-align: center;
-          margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 8px;">
+<body>
+  <div class="menu_box">
+    <div class="green_box">
       Simulations
     </div>
-
     <div class="container">
       <button class="button" onclick='window.location.href = "./00home.html"'>
         Vehicle
       </button>
     </div>
-
-    <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 90%;text-align: center;
-                  margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;margin-top: 5px;">
+    <div class="green_box">
       Basic behaviors
     </div>
-
     <div class="container">
       <button class="button" onclick='window.location.href = "./01seek.html"'>
         Seek
@@ -93,14 +91,11 @@
         Flow Field Following
       </button>
     </div>
-
-    <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 90%;text-align: center;
-                  margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;
-                  margin-top: 5px;">
+    <div class="green_box">
       Combined behaviors
     </div>
     <div class="container">
-      <button class="button" onclick='window.location.href = "./11CrowdPathFollow.html"'>
+      <button class="button" style="background-color: #333; color: white; cursor: not-allowed;" disabled="disabled" onclick='window.location.href = "./11CrowdPathFollow.html"'>
         Crowd Path Following
       </button>
     </div>
@@ -116,7 +111,7 @@
     </div>
     <div class="container">
       <button class="button" onclick='window.location.href = "./14queue.html"'>
-        Queueing
+        Queue
       </button>
     </div>
     <div class="container">
@@ -124,62 +119,67 @@
         Flocking
       </button>
     </div>
-    </nav>
   </div>
 
-  <div id="backToHome" class="container" style=" display: inline-block;">
-
+  <div class="box">
     <!--BUTTON DISPLAY FORCES-->
     <button id="Forces" class="button">
       Display Forces
     </button>
-    
     <!--BUTTON FREEZE-->
     <button id="Freeze" class="button">
       Freeze
     </button>
-
   </div>
 
-  <div id="main" class="container" style="display: inline-block;width: 50vw;padding-right: 0px;">
+  <div class="main">
 
-      <div class="box" style="width: 90%;height:  auto;text-align: left;
-      margin-bottom: 5px;">
+      <div class="explain_box">
       <span>
         &nbsp;&nbsp;Crowd Path following is supposingly an example of human crowd walking through corridor. Only two methods are combined to achieve this effect.
         First was already described as Path following algorithm and here it is used the same way. Second method is new and requires other vehicles to work properly.
          It is called Separation and is quite simple. After it finds every neighbour's position, it makes average of it and then inverses the vector.
          When it is applied the vehicle will be separating itself from the biggest group of neighbours. 
         <br>
-        &nbsp;&nbsp;The <span style="color:orange">orange</span> vector pointing out of the center of Vehicle is visualization of the desiredVelocity and the <span style="color:#6A5ACD">violet</span>
-        one shows current velocity vector.<br>
+        &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of Vehicle is visualization of the desiredVelocity and the <span style="color:#6A5ACD">violet</span>
+        one shows current velocity vector. <span style="color:rgba(250, 85, 250, 0.966)">Pink space</span> is the path that Vehicle follows.
+        <span style="color:rgba(250, 85, 250, 0.966)">Pink circles</span> are representing predicted position of Vehicle and target position.
+        <span style="color:red">Red line</span> follows steps taken by algorithm to calculate target.<br>
         &nbsp;&nbsp;If you wish to freeze animation you can also press a spacebar on your keyboard.
       </span>
     </div>
 
-    <canvas id="VP" class="viewport" style="background: #eee; width: 100%; position: relative;height: 50%;"></canvas>
+    <canvas id="VP" class="viewport" style="background: #eee; width: 100%;height: 50%;"></canvas>
     
     <div>
 
       <!--RANGE SLIDER OF MAXSPEED-->
-      <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
+      <div class="range-slider">
 
-        <div class="box" style="margin:0px; top:4px">Maxspeed</div>
+        <div class="slider-box">Maxspeed</div>
         
-        <input id="maxspeed" class="range-slider__range" type="range" value="2" min="0" max="7" step="0.01">
-        
-        <span class="range-slider__value" style="top:4px">0</span>
+        <div class="container">
+
+          <input id="maxspeed" class="range-slider__range" type="range" value="2" min="0" max="7" step="0.01">
+          
+          <span class="range-slider__value""slider-box">0</span>
+
+        </div>
       
       </div>
 
       <!--RANGE SLIDER OF MAXFORCE-->
-      <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
+      <div class="range-slider">
         
-        <div class="box" style="margin:0px; top:4px">Maxforce</div>
+        <div class="slider-box">Maxforce</div>
         
-        <input id="maxforce" class="range-slider__range" type="range" value="0.1" min="0" max="5" step="0.01">
-        
-        <span class="range-slider__value" style="top:4px">0</span>
+        <div class="container">
+
+          <input id="maxforce" class="range-slider__range" type="range" value="0.1" min="0" max="5" step="0.01">
+          
+          <span class="range-slider__value""slider-box">0</span>
+
+        </div>
       
       </div>
 
@@ -188,24 +188,32 @@
     <div>
 
       <!--RANGE SLIDER OF PREDICT DISTANCE-->
-      <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
+      <div class="range-slider">
         
-        <div class="box" style="margin:0px; top:4px">Predict distance</div>
+        <div class="slider-box">Predict distance</div>
         
-        <input id="Predict" class="range-slider__range" type="range" value="30" min="0">
-        
-        <span class="range-slider__value" style="top:4px">0</span>
+        <div class="container">
+
+          <input id="Predict" class="range-slider__range" type="range" value="30" min="0" step="0.01">
+          
+          <span class="range-slider__value""slider-box">0</span>
+
+        </div>
       
       </div>
       
       <!--RANGE SLIDER OF TARGET OFFSET-->
-      <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
+      <div class="range-slider">
         
-        <div class="box" style="margin:0px; top:4px">Target offset</div>
+        <div class="slider-box">Target offset</div>
         
-        <input id="Target" class="range-slider__range" type="range" value="10" min="0">
-        
-        <span class="range-slider__value" style="top:4px">0</span>
+        <div class="container">
+
+          <input id="Target" class="range-slider__range" type="range" value="10" min="0" step="0.01">
+          
+          <span class="range-slider__value""slider-box">0</span>
+
+        </div>
       
       </div>
 
@@ -214,13 +222,17 @@
     <div>
 
         <!--RANGE SLIDER OF SEPARATION FORCE-->
-        <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
+        <div class="range-slider">
           
-            <div class="box" style="margin:0px; top:4px">Separation Force</div>
+            <div class="slider-box">Separation Force</div>
             
-            <input id="sepF" class="range-slider__range" type="range" value="0.5" min="0" max="5" step="0.01">
-            
-            <span class="range-slider__value" style="top:4px">0</span>
+            <div class="container">
+
+              <input id="sepF" class="range-slider__range" type="range" value="0.5" min="0" max="5" step="0.01">
+              
+              <span class="range-slider__value""slider-box">0</span>
+
+            </div>
           
           </div>
   
@@ -232,7 +244,7 @@
       var canvas = document.querySelector('.viewport'),
         ctx = canvas.getContext('2d');
       canvas.width = screen.width / 2;
-      canvas.height = screen.height / 2.5;
+      canvas.height = screen.height / 3;
 
       //INIT PATH
       var path = new Path(canvas.width/4, 70, canvas.width/1.75, 40,30);
@@ -338,17 +350,16 @@
 
       }
 
-      setInterval(draw, 14);
+      setInterval(draw, 30);
 
     </script>
 
   </div>
 
-  <div id="codeSnippet" class="box" style="text-align: left; display: inline-block; padding-right: 0;margin-right: 0;width:32.5vw;">
+  <div class="code_box">
 
       <!--CREATES SNIPPET OF CODE-->
-      <pre class="prettyprint linenums"
-        style="font-size:90%;position: inherit;margin-top: 2px;margin-bottom: 2px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
+      <pre class="prettyprint linenums">
 separation(Vehicles) {
   var desired_seperation = this.radius * 2;
   var sumVector = new Vector(0, 0);

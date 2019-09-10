@@ -373,26 +373,12 @@ class Vehicle {
           pointOnSurface.equal(objects[i].end);
       }
       this.renderCircleAround(pointOnSurface.x,pointOnSurface.y,3)
-      if(pointOnSurface.isBetween(objects[i].begin,objects[i].end)){
-        var distance = predictPoint.distanceBetweenPoints(pointOnSurface);
-        if (distance < smallest_distance) {
-          smallest_distance = distance;
-          target = pointOnSurface;
-          closestObj = objects[i];
-        }
+      var distance = predictPoint.distanceBetweenPoints(pointOnSurface);
+      if (distance < smallest_distance) {
+        smallest_distance = distance;
+        target = pointOnSurface;
+        closestObj = objects[i];
       }
-    }
-    if (displayForces == "on") {
-      this.ctx = canvas.getContext("2d");
-      this.ctx.beginPath();
-      this.ctx.moveTo(this.position.x, this.position.y);
-      this.ctx.lineTo(predictPoint.x, predictPoint.y);
-      this.ctx.lineTo(target.x, target.y);
-      //this.ctx.lineTo(targetDir.x, targetDir.y);
-      this.ctx.strokeStyle = "rgba(255,0,0,1)";
-      this.ctx.stroke();
-      this.ctx.closePath();
-      this.renderCircleAround(predictPoint.x, predictPoint.y, 3);
     }
     if(closestObj != 0){
       var dx = new Vector(0,0);
@@ -402,8 +388,20 @@ class Vehicle {
       var targetDir = target.add(dx);
       targetDir = targetDir.add(dy);
       var distance = predictPoint.distanceBetweenPoints(target);
-      this.renderCircleAround(target.x,target.y,2);
-      this.renderCircleAround(targetDir.x,targetDir.y,2);
+      if (displayForces == "on") {
+        this.ctx = canvas.getContext("2d");
+        this.ctx.beginPath();
+        this.ctx.moveTo(this.position.x, this.position.y);
+        this.ctx.lineTo(predictPoint.x, predictPoint.y);
+        this.ctx.lineTo(target.x,target.y);
+        this.ctx.lineTo(target.add(dx).x, target.add(dx).y );
+        this.ctx.lineTo(targetDir.x,targetDir.y);
+        this.ctx.strokeStyle = "rgba(255,0,0,1)";
+        this.ctx.stroke();
+        this.ctx.closePath();
+        this.renderCircleAround(target.x,target.y,2);
+        this.renderCircleAround(targetDir.x,targetDir.y,2);
+      }
       if(distance < 15 || distance > 25){
         this.renderVectorTo(targetDir.x,targetDir.y);
         return targetDir;

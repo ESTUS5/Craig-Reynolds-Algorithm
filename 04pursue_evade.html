@@ -4,16 +4,21 @@
 <head>
     <meta charset="utf-8" />
     <title>Craig-Reynolds Algorithm</title>
-    <link rel="stylesheet" href="sliderStyle.css" />
-    <link rel="stylesheet" type="text/css" href="desert.css" />
-    <link rel="stylesheet" href="pagesLayoutStyle.css" />
+    <!--design-->
     <link rel="stylesheet" href="button.css" />
-    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <link rel="stylesheet" href="box.css" />
+    <!--snippet function-->
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
-    <script src="vector.js"></script>
+    <link rel="stylesheet" href="desert.css" />
+    <!--mouse function-->
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="mouse.js"></script>
+    <!--main functions-->
+    <script src="vector.js"></script>
     <script src="vehicle.js"></script>
+    <!--sliders-->
     <script src="sliderStyle.js"></script>
+    <link rel="stylesheet" href="sliderStyle.css" />
     <!--To disable focusing on Chrome browser -->
     <script type="text/javascript">
         document.addEventListener('click', function (e) {
@@ -22,12 +27,9 @@
     </script>
 </head>
 
-<body
-  style=" background-color: hsl(117, 43%, 80%);margin-left: 0;margin-right: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 16px">
-
-    <div class="box" style="float: left; width: auto vw; font-size: 90%; height: auto;">
-        <div class="box" style="color: black; background: #53d8cd;width: 95%;height: 90%;text-align: center;
-            margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 8px;">
+<body>
+    <div class="menu_box">
+        <div class="green_box">
         Simulations
         </div>
 
@@ -37,8 +39,7 @@
         </button>
         </div>
 
-        <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 90%;text-align: center;
-                    margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;margin-top: 5px;">
+        <div class="green_box">
         Basic behaviors
         </div>
 
@@ -58,7 +59,7 @@
         </button>
         </div>
         <div class="container">
-        <button class="button" onclick='window.location.href = "./04pursue_evade.html"'>
+        <button class="button" style="background-color: #333; color: white; cursor: not-allowed;" disabled="disabled" onclick='window.location.href = "./04pursue_evade.html"'>
             Pursue and Evade
         </button>
         </div>
@@ -93,9 +94,7 @@
         </button>
         </div>
 
-        <div class="box" style="color: black; background: #53d8cd;width: 90%;height: 90%;text-align: center;
-                    margin-left: 0px;padding-left: 0px;padding-right: 0px;margin-bottom: 5px;
-                    margin-top: 5px;">
+        <div class="green_box">
         Combined behaviors
         </div>
         <div class="container">
@@ -115,7 +114,7 @@
         </div>
         <div class="container">
         <button class="button" onclick='window.location.href = "./14queue.html"'>
-            Queueing
+            Queue
         </button>
         </div>
         <div class="container">
@@ -126,34 +125,28 @@
         </nav>
     </div>
 
-    <div id="backToHome" class="container" style=" display: inline-block;">
+    <div class="box">
+
+        <!--BUTTON DISPLAY FORCES-->
+        <button id="Forces" class="button">
+            Display Forces
+        </button>
             
-            <!--BUTTON DISPLAY FORCES-->
-            <button id="Forces" class="button">
-                Display Forces
-            </button>
-        
+        <!--BUTTON FREEZE-->
+        <button id="Freeze" class="button">
+            Freeze
+        </button>
 
-
-            <!--BUTTON FREEZE-->
-            <button id="Freeze" class="button">
-                Freeze
-            </button>
-
-            
-            <!--BUTTON CHANGE ALGORITHM -->
-            <button id="change" class="button">
-                Pursue
-            </button>
-
-
+        <!--BUTTON CHANGE ALGORITHM -->
+        <button id="change" class="button">
+            Pursue
+        </button>
 
     </div>
 
-    <div id="main" class="container" style="display: inline-block;width: 48vw;padding-right: 0px;">
+    <div class="main">
         
-        <div class="box" style="width: 90%;height:  auto;text-align: left;
-            margin-bottom: 5px;">
+        <div class="explain_box">
             <span>&nbsp;&nbsp;Pursue and Evade are two very similar methods. If Flee is inverse of Seek, then the same is Evade for Pursue.
                  Idea behind methods is quite simple, but with a falws.
                  The <span style="color:#cd5c5c">red</span> vehicle is the one using one or another method.
@@ -166,11 +159,10 @@
             </span>
         </div>
 
-        <canvas id="VP" class="viewport" style="background: #eee; width: 100%; position: relative;height: 50%;"></canvas>
+        <canvas id="VP" class="viewport" style="background: #eee; width: 100%;height: 50%;"></canvas>
 
         <!--OUTPUT OF MOUSE POSITIONS OF CANVAS-->
-        <div class="box" style="width: 90%;height: 20px;text-align: center;
-              margin-left: 0px;padding-left: 0px;padding-right: 0px;">
+        <div class="output_box">
 
             Red <span name="red">Pursuer</span> position x:
             <span id="pursuer_posX"></span>
@@ -182,8 +174,7 @@
         </div>
 
         <!--OUTPUT OF VEHICLE POSITION & VELOCITY-->
-        <div class="box" style="width: 90%;height: 20px;text-align: center;
-              margin-left: 0px;padding-left: 0px;padding-right: 0px; top: -4px;">
+        <div class="output_box">
 
             Blue <span name="blue">Target</span> position x:
             <span id="evader_posX"></span>
@@ -197,33 +188,33 @@
         <div>
 
             <!--RANGE SLIDER OF MAXSPEED OF PURSUER/CHASER-->
-            <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
+            <div class="range-slider">
 
-                <div class="box" style="margin:0px; top:4px">
+                <div class="slider-box">
                     Maxspeed of <span name="red">Pursuer</span>
                 </div>
-
+                <div class="container">
                 <input id="maxspeed1" class="range-slider__range" type="range" min="0" max="7" step="0.01">
             
-                <span id="span1a" class="range-slider__value" style="top:4px">
+                <span id="span1a" class="range-slider__value">
                     0
                 </span>
-            
+                </div>
             </div>
 
             <!--RANGE SLIDER OF MAXFORCE PURSUER/CHASER-->
-            <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
+            <div class="range-slider">
                 
-                <div class="box" style="margin:0px; top:4px">
+                <div class="slider-box">
                     Maxforce of <span name="red">Pursuer</span>
                 </div>
-
+                <div class="container">
                 <input id="maxforce1" class="range-slider__range" type="range" min="0" max="5" step="0.01">
                 
-                <span id="span1b" class="range-slider__value" style="top:4px">
+                <span id="span1b" class="range-slider__value">
                     0
                 </span>
-            
+                </div>
             </div>
 
         </div>
@@ -231,33 +222,33 @@
         <div>
 
             <!--RANGE SLIDER OF MAXSPEED TARGET/EVADER-->
-            <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
+            <div class="range-slider">
 
-                <div class="box" style="margin:0px; top:4px">
+                <div class="slider-box">
                     Maxspeed of <span name="blue">Target</span>
                 </div>
-
+                <div class="container">
                 <input id="maxspeed2" class="range-slider__range" type="range" min="0" max="7" step="0.01">
                 
-                <span id="span2a" class="range-slider__value" style="top:4px">
+                <span id="span2a" class="range-slider__value">
                     0
                 </span>
-            
+                </div>
             </div>
 
             <!--RANGE SLIDER OF MAXFORCE TARGET/EVADER-->
-            <div class="range-slider" style="float: left;margin-top: 20px;margin-bottom: 20px;width: 50% ;">
+            <div class="range-slider">
                 
-                <div class="box" style="margin:0px; top:4px">
+                <div class="slider-box">
                     Maxforce of <span name="blue">Target</span>
                 </div>
-
+                <div class="container">
                 <input id="maxforce2" class="range-slider__range" type="range" min="0" max="5" step="0.01">
                 
-                <span id="span2b" class="range-slider__value" style="top:4px">
+                <span id="span2b" class="range-slider__value">
                     0
                 </span>
-            
+                </div>
             </div>
             
         </div>
@@ -267,7 +258,7 @@
             var canvas = document.querySelector('.viewport'),
                 ctx = canvas.getContext('2d');
           canvas.width = screen.width / 2;
-          canvas.height = screen.height / 3;
+          canvas.height = screen.height/3;
 
             //INIT MOUSE POS
             mouseObj.Init("#VP",canvas);
@@ -423,11 +414,10 @@
 
     </div>
 
-    <div id="codeSnippet" class="box" style="text-align: left; display: block; width:34.4vw;border-right: 0;padding-right: 0;margin-right: 0;">
+    <div class="code_box">
 
         <!--CREATES SNIPPET OF CODE-->
-        <pre class="prettyprint linenums"
-        style="font-size: 88%; margin-left:0;padding-left:0;position: inherit;margin-top: 2px;margin-bottom: 2px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
+        <pre class="prettyprint linenums">
 pursue(target_position, target_velocity) {
   var distance = this.position.distanceBetweenPoints(target_position);
   var predictedTargetPosition = distance / this.maxspeed;
