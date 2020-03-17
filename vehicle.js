@@ -372,7 +372,9 @@ class Vehicle {
         (pointOnSurface.x > Math.max(objects[i].begin.x, objects[i].end.x))) {
           pointOnSurface.equal(objects[i].end);
       }
-      this.renderCircleAround(pointOnSurface.x,pointOnSurface.y,3)
+      if(displayForces == "on"){
+        this.renderCircleAround(pointOnSurface.x,pointOnSurface.y,3)
+      }
       var distance = predictPoint.distanceBetweenPoints(pointOnSurface);
       if (distance < smallest_distance) {
         smallest_distance = distance;
@@ -396,14 +398,16 @@ class Vehicle {
         this.ctx.lineTo(target.x,target.y);
         this.ctx.lineTo(target.add(dx).x, target.add(dx).y );
         this.ctx.lineTo(targetDir.x,targetDir.y);
-        this.ctx.strokeStyle = "rgba(255,0,0,1)";
+        this.ctx.strokeStyle = "rgb(34,139,34)";
         this.ctx.stroke();
         this.ctx.closePath();
         this.renderCircleAround(target.x,target.y,2);
         this.renderCircleAround(targetDir.x,targetDir.y,2);
       }
       if(distance < 15 || distance > 25){
-        this.renderVectorTo(targetDir.x,targetDir.y);
+        if(displayForces == "on"){
+          this.renderVectorTo(targetDir.x,targetDir.y);
+        }
         return targetDir;
       }
       else{

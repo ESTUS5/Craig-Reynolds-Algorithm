@@ -124,11 +124,13 @@
     <div class="box">
       <!--BUTTON DISPLAY FORCES-->
       <button id="Forces" class="button">
-        Display Forces
+        Display Forces OFF
+        <br>(C)
       </button>
       <!--BUTTON FREEZE-->
       <button id="Freeze" class="button">
-        Freeze
+        Freeze OFF<br>
+        (spacebar)
       </button>
     </div>
 
@@ -136,12 +138,12 @@
 
         <div class="explain_box">
         <span>
-          &nbsp;&nbsp;The Flow Field Following is a method that requires implementation of object which divides space into tiles. Every tile has his own vector. 
-          When the vehicle is currently positioned on certain tile, this tile will return his vector, which will be new target for Seek method.<br>
+          &nbsp;&nbsp;The Flow Field Following is a method that requires implementation of object which divides space into tiles. Every tile has its own vector. 
+          When vehicle is currently positioned on a certain tile, this tile will return its vector, which will be new target for Seek method of agent.<br>
           &nbsp;&nbsp;The<span style="color:#FF4500">orange</span> vector pointing out of the center of Vehicle is visualization of the desiredVelocity and the <span style="color:#6A5ACD">violet</span>
           one shows current velocity vector. <span style="color:rgba(102, 196, 149, 0.5)">Green</span> vector is flow of tile that vehicle is occupying right now.<br>
-          &nbsp;&nbsp;If you wish to freeze animation you can also press a spacebar on your keyboard. In order to change the vector in tile use left mouse button in tile's space.
-           This action will move vector to direction of your choosing.
+          &nbsp;&nbsp;In order to change vector of a tile use left mouse button in tile's space.
+           This action will move vector to direction of your cursor.
         </span>
       </div>
 
@@ -222,42 +224,58 @@
           }, false);
 
           //READ IF BUTTON "DISPLAY FORCE" WAS CLICKED
-          var displayForces = 'off';
-          document.getElementById("Forces").addEventListener('click', function () {
-            if(displayForces == 'on'){
-              displayForces = 'off';
-            }
-            else{
-              displayForces = 'on';
-            }
-          }, false);
+        var displayForces = 'off';
+        document.getElementById("Forces").addEventListener('click', function () {
+          if (displayForces == 'on') {
+            displayForces = 'off';
+            document.getElementById("Forces").innerHTML = "Display Forces OFF<br>(C)";
+          }
+          else {
+            displayForces = 'on';
+            document.getElementById("Forces").innerHTML = "Display Forces ON<br>(C)";
+          }
+        }, false);
 
-          //READ IF BUTTON "FREEZE" WAS CLICKED
-          var freeze = "off";
-          document.getElementById("Freeze").addEventListener('click', function freezer() {
+        //READ IF BUTTON "FREEZE" WAS KEYPRESSED
+        document.body.addEventListener("keydown", function (c) {
+          if (c.keyCode == 67) {
+            if (displayForces == 'on') {
+              displayForces = 'off';
+              document.getElementById("Forces").innerHTML = "Display Forces OFF<br>(C)";
+            }
+            else {
+              displayForces = 'on';
+              document.getElementById("Forces").innerHTML = "Display Forces ON<br>(C)";
+            }
+          }
+        }, false);
+
+        //READ IF BUTTON "FREEZE" WAS CLICKED
+        var freeze = "off";
+        document.getElementById("Freeze").addEventListener('click', function freezer() {
+          if (freeze == 'on') {
+            freeze = 'off';
+            document.getElementById("Freeze").innerHTML = "Freeze OFF<br>(spacebar)";
+          }
+          else {
+            freeze = 'on';
+            document.getElementById("Freeze").innerHTML = "Freeze ON<br>(spacebar)";
+          }
+        }, false);
+
+        //READ IF BUTTON "FREEZE" WAS KEYPRESSED
+        document.body.addEventListener("keypress", function (k) {
+          if (k.keyCode == 32) {
             if (freeze == 'on') {
               freeze = 'off';
-              document.getElementById("Freeze").innerHTML = "Freeze OFF";
+              document.getElementById("Freeze").innerHTML = "Freeze OFF<br>(spacebar)";
             }
             else {
               freeze = 'on';
-              document.getElementById("Freeze").innerHTML = "Freeze ON";
+              document.getElementById("Freeze").innerHTML = "Freeze ON<br>(spacebar)";
             }
-          }, false);
-
-          //READ IF BUTTON "FREEZE" WAS KEYPRESSED
-          document.body.addEventListener("keypress", function (k) {
-            if (k.keyCode == 32) {
-              if (freeze == 'on') {
-                freeze = 'off';
-                document.getElementById("Freeze").innerHTML = "Freeze OFF";
-              }
-              else {
-                freeze = 'on';
-                document.getElementById("Freeze").innerHTML = "Freeze ON";
-              }
-            }
-          }, false);
+          }
+        }, false);
 
           rangeSliderInit();
 

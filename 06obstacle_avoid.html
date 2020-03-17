@@ -126,29 +126,38 @@
 
         <!--BUTTON DISPLAY FORCES-->
         <button id="Forces" class="button">
-            Display Forces
+          Display Forces OFF<br>
+          (C)
         </button>
-        
+
         <!--BUTTON FREEZE-->
         <button id="Freeze" class="button">
-            Freeze
+          Freeze OFF<br>
+          (spacebar)
         </button>
+
+        <!--BUTTON RANDOM GENERATE OBSTACLE-->
+        <button id="ButtonRndGenObs" class="button">
+          Randomize Scene<br>
+          (V)
+      </button>
 
     </div>
 
     <div class="main">
 
       <div class="explain_box">
-        <span>&nbsp;&nbsp;Obstacle Avoidance algorithm is used with unimportantly simple method runAhead(), which applies the agent with the vector with biggest possible length for the agent.
-           That vector keeps the agent in motion even when the main method doesn't respond to the enviroment.
-          The vehicle tries to move as fast as he can and avoid <span style="color:pink">objects</span> ahead of him.
-          Algorithm will calculate normal points of every <span style="color:pink">object</span>, then it will consider only those that are between vehicle position and predicted position.
-          If any of selected has radius that overlaps with the <span style="color:rgb(49, 133, 56)">margins</span>, the vector pointing to the mirrored direction will be calculated.
-          <span style="color:rgba(59, 116, 238, 0.918)">Braking force</span> will be also applied and scaled down or up accordingly to the distance between vehicle position and <span style="color:pink">object</span>.
-          After that the vector can be returned and Seek method can apply it. <br>
-          &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of Vehicle is visualization of the desiredVelocity and the <span style="color:#6A5ACD">violet</span>
-          one shows current velocity vector. As mentioned before <span style="color:rgba(59, 116, 238, 0.918)">blue</span> vector represents braking force, and <span style="color:green">green</span> one represents avoidance<br>
-          &nbsp;&nbsp;If you wish to freeze animation you can also press a spacebar on your keyboard. If you on the other hand want to change the direction of vehicle just choose point using circle attached to your cursor and keep left mouse button presssed until you your changes satisfy you.<br>
+        <span>&nbsp;&nbsp;Obstacle Avoidance algorithm is used with simple method runAhead(), which applies the agent with the vector with length of maxspeed.
+           That vector keeps the agent in motion even when the Avoiding method doesn't respond with the enviroment.
+          In simulation the vehicle tries to move as fast as he can and avoid <span style="color:pink">objects</span> ahead of him.
+          Algorithm calculates normal point of every <span style="color:pink">object</span> on the line parallel to vehicle velocity, then it will consider only those that are between vehicle position and predicted position of the vehicle.
+          If any of selected objects has radius that overlaps with the <span style="color:rgb(49, 133, 56)">space</span> ahead of agent and there is no other object between it and agent, a vector from its position to normal point is added to that normal point.
+           That way the mirrored point of the object's position is calculated in order to avoid collision.
+          <span style="color:rgba(59, 116, 238, 0.918)">Braking force</span> will be also added to calculated point and scaled down or up accordingly to the distance between vehicle position and <span style="color:pink">object</span>.
+          After that the point can be returned and passed to Seek method. <br>
+          &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of vehicle is a visualization of desired velocity and the <span style="color:#6A5ACD">violet</span>
+          one shows current velocity of the agent. As mentioned before <span style="color:rgba(59, 116, 238, 0.918)">blue</span> vector represents braking force, and <span style="color:green">green</span> one represents avoidance<br>
+          &nbsp;&nbsp;If you want to change the direction of vehicle choose point on canvas using circle attached to your cursor and keep left mouse button presssed until your change satisfies you.<br>
           &nbsp;&nbsp;The average of occuring collisions per step <span id="stat">0</span>
         </span>
       </div>
@@ -234,6 +243,24 @@
 
         </div>
 
+        <div>
+
+          <!--RANGE SLIDER OF NUMBER OF OBSTACLES-->
+          <div class="range-slider">
+
+              <div class="slider-box">Number of obstacles</div>
+
+              <div class="container">
+
+                <input id="O" class="range-slider__range" type="range" value="80" min="0" max="200" step="1">
+                
+                <span class="range-slider__value">0</span>
+
+              </div>
+          
+          </div>
+
+      </div>
 
         <script>
 
@@ -249,83 +276,58 @@
             //READ IF BUTTON "DISPLAY FORCE" WAS CLICKED
             var displayForces = 'off';
             document.getElementById("Forces").addEventListener('click', function () {
-                if (displayForces == 'on') {
-                    displayForces = 'off';
-                }
-                else {
-                    displayForces = 'on';
-                }
+              if (displayForces == 'on') {
+                  displayForces = 'off';
+                  document.getElementById("Forces").innerHTML = "Display Forces OFF<br>(C)";
+              }
+              else {
+                  displayForces = 'on';
+                  document.getElementById("Forces").innerHTML = "Display Forces ON<br>(C)";
+              }
+            }, false);
+
+            //READ IF BUTTON "FREEZE" WAS KEYPRESSED
+            document.body.addEventListener("keydown", function (c) {
+              if (c.keyCode == 67) {
+                  if (displayForces == 'on') {
+                  displayForces = 'off';
+                  document.getElementById("Forces").innerHTML = "Display Forces OFF<br>(C)";
+                  }
+                  else {
+                  displayForces = 'on';
+                  document.getElementById("Forces").innerHTML = "Display Forces ON<br>(C)";
+                  }
+              }
             }, false);
 
             //READ IF BUTTON "FREEZE" WAS CLICKED
             var freeze = "off";
             document.getElementById("Freeze").addEventListener('click', function freezer() {
-                if (freeze == 'on') {
-                freeze = 'off';
-                document.getElementById("Freeze").innerHTML = "Freeze OFF";
-                }
-                else {
-                freeze = 'on';
-                document.getElementById("Freeze").innerHTML = "Freeze ON";
-                }
+              if (freeze == 'on') {
+                  freeze = 'off';
+                  document.getElementById("Freeze").innerHTML = "Freeze OFF<br>(spacebar)";
+              }
+              else {
+                  freeze = 'on';
+                  document.getElementById("Freeze").innerHTML = "Freeze ON<br>(spacebar)";
+              }
             }, false);
 
             //READ IF BUTTON "FREEZE" WAS KEYPRESSED
             document.body.addEventListener("keypress", function (k) {
-                console.log(k.keyCode, k.key, displayForces, freeze)
-                if (k.keyCode == 32) {
-                if (freeze == 'on') {
-                    freeze = 'off';
-                    document.getElementById("Freeze").innerHTML = "Freeze OFF";
-                }
-                else {
-                    freeze = 'on';
-                    document.getElementById("Freeze").innerHTML = "Freeze ON";
-                }
-                }
+              if (k.keyCode == 32) {
+                  if (freeze == 'on') {
+                  freeze = 'off';
+                  document.getElementById("Freeze").innerHTML = "Freeze OFF<br>(spacebar)";
+                  }
+                  else {
+                  freeze = 'on';
+                  document.getElementById("Freeze").innerHTML = "Freeze ON<br>(spacebar)";
+                  }
+              }
             }, false);
 
             rangeSliderInit();
-
-            // DEFINE AND FILL ARRAY OF OBJECTS
-            var objects = []
-            var numOfRandomObj = 80;
-            for (let k = 0; k < numOfRandomObj; k++) {
-              var randomVector = new Vector(Math.round(Math.random() * canvas.width,2), Math.round(Math.random() * canvas.height,2)),
-              randomRadius = 5 + Math.round(Math.random() * 10,2);
-              var colliding = false;
-              if(objects.length > 0){
-                colliding = true;
-              }
-              while (colliding) {
-
-                  var collisions = 0;
-
-                  for(let i = 0; i < objects.length; i++){
-
-                    if(objects[i][0].distanceBetweenPoints(randomVector) <= (randomRadius + objects[i][1] ) ){
-                      collisions++;
-                    }
-
-                  }
-
-                  if(collisions > 0){
-
-                    randomVector = new Vector(Math.round(Math.random() * canvas.width,2), Math.round(Math.random() * canvas.height,2)),
-                    randomRadius = 5 + Math.round(Math.random() * 15,2);
-
-                  }
-
-                  else{
-
-                      colliding = false;
-
-                  }
-
-              }
-              objects.push([randomVector, randomRadius])
-
-            }
 
             var target = new Vector(0, 0), timeout = 0;
             document.getElementById("VP").addEventListener('mousedown', function () {
@@ -335,6 +337,81 @@
 
             //INIT VEHICLE
             var vehicle = new Vehicle(10, 10);
+            
+            // FUNCTION GENERATE OBSTACLES
+            function generateObstacles(numOfRandomObj)
+            {
+              for (let k = 0; k < numOfRandomObj; k++) {
+                var randomVector = new Vector(Math.round(Math.random() * canvas.width,2), Math.round(Math.random() * canvas.height,2)),
+                randomRadius = 5 + Math.round(Math.random() * 10,2);
+                var colliding = false;
+                if(objects.length > 0){
+                  colliding = true;
+                }
+                while (colliding) {
+
+                    var collisions = 0;
+
+                    for(let i = 0; i < objects.length; i++){
+
+                      if(objects[i][0].distanceBetweenPoints(randomVector) <= (randomRadius + objects[i][1] ) ){
+                        collisions++;
+                      }
+
+                    }
+
+                    if(collisions > 0){
+
+                      randomVector = new Vector(Math.round(Math.random() * canvas.width,2), Math.round(Math.random() * canvas.height,2)),
+                      randomRadius = 5 + Math.round(Math.random() * 15,2);
+
+                    }
+
+                    else{
+
+                        colliding = false;
+
+                    }
+
+                }
+                objects.push([randomVector, randomRadius])
+              }
+              return objects;
+            }
+
+            //DISPLAY OBJECTS ON CANVAS 
+            function drawObjects(Objects, numOfObj) {
+              for (let index = 0; index < numOfObj; index++) {
+                ctx = canvas.getContext('2d');
+                ctx.beginPath();
+                ctx.arc(Objects[index][0].x, Objects[index][0].y, Objects[index][1], 0, 2 * Math.PI);
+                ctx.closePath();
+                ctx.fillStyle = "rgba(200, 0, 200,0.3)";
+                ctx.fill();
+              }
+            }
+
+            //INITIAL PUSH FOR VEHICLE
+            vehicle.velocity.x = vehicle.maxspeed;
+            vehicle.velocity.y = vehicle.maxspeed;
+
+            // DEFINE AND FILL ARRAY OF OBJECTS
+            var objects = []
+            objects = generateObstacles(200);
+
+            //READ IF BUTTON "RANDOMIZE OBSTACLE" WAS CLICKED
+            document.getElementById("ButtonRndGenObs").addEventListener('click', function (){
+              objects = [];
+              objects = generateObstacles(200);
+            }, false);
+
+            //READ IF BUTTON "RANDOMIZE OBSTACLE" WAS KEYPRESSED
+            document.body.addEventListener("keydown", function (c) {
+              if (c.keyCode == 86) {
+                objects = [];
+                objects = generateObstacles(200);
+              }
+            }, false);
 
             //CHANGE VEHICLE POSITION IF THAT INTERSECTS WITH OBSTACLES
             var colliding = true;
@@ -364,22 +441,6 @@
 
             }
             
-            //DISPLAY OBJECTS ON CANVAS 
-            function drawObjects(Objects) {
-              for (let index = 0; index < Objects.length; index++) {
-                ctx = canvas.getContext('2d');
-                ctx.beginPath();
-                ctx.arc(Objects[index][0].x, Objects[index][0].y, Objects[index][1], 0, 2 * Math.PI);
-                ctx.closePath();
-                ctx.fillStyle = "rgba(200, 0, 200,0.3)";
-                ctx.fill();
-              }
-            }
-
-            //INITIAL PUSH FOR VEHICLE
-            vehicle.velocity.x = vehicle.maxspeed;
-            vehicle.velocity.y = vehicle.maxspeed;
-
             //LOOP FUNC
             var collided = 0, steps = 0;
             function draw() {
@@ -392,7 +453,7 @@
                 vehicle.renderCircleAround(mouseObj.x, mouseObj.y, 5);
                 
                 var obstacle = vehicle.avoidObstacle(
-                  objects,
+                  objects.slice(0,document.getElementById("O").value),
                   aheadPoint = Math.ceil(document.getElementById("L").value),
                   margin = Math.ceil(document.getElementById("r").value),
                   displayForces = displayForces
@@ -448,7 +509,7 @@
                 vehicle.outOfBounds();
                 vehicle.renderVehicle();
 
-                drawObjects(objects);
+                drawObjects(objects, document.getElementById("O").value);
 
                 document.getElementById("snipMargin").innerHTML = Math.ceil(document.getElementById("r").value);
                 document.getElementById("snipL").innerHTML = Math.ceil(document.getElementById("L").value);

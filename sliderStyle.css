@@ -1,4 +1,7 @@
-
+:root {
+  --color4:#b88c8c;
+  --color1:#9fb9bf;
+}
 .range-slider {
   float: left;
   margin-top: 20px;
@@ -24,7 +27,7 @@
   width: 70%;
   height: 5px;
   border-radius: 5px;
-  background: pink;
+  background: var(--color1);
   outline: none;
   padding: 0;
   margin: 0;
@@ -57,7 +60,7 @@
     transition: background .15s ease-in-out;
 }
 .range-slider__range:hover {
-      background: #e28b28;
+      background: var(--color4);
 }
 
 .range-slider__value {

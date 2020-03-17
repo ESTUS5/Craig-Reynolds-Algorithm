@@ -121,34 +121,37 @@
     </div>
   </div>
   <div class="box">
+
     <!--BUTTON DISPLAY FORCES-->
     <button id="Forces" class="button">
-      Display Forces
+      Display Forces OFF<br>
+      (spacebar)
     </button>
+
     <!--BUTTON FREEZE-->
     <button id="Freeze" class="button">
-      Freeze
+      Freeze OFF<br>
+      (C)
     </button>
+
     <!--BUTTON RANDOM-->
     <button id="Random" class="button">
-      Random the Path
+      Random the Path<br>
+      (V)
     </button>
   </div>
 
   <div class="main">
     <div class="explain_box">
         <span>
-          &nbsp;&nbsp;The Path Following algorithm takes as input path object and returns a vector aiming on the path ahead of vehicle position.
-           The main method returns target, only if Vehicle drifts away from the path. Calculated vector is passed down to the seek method.
-            Essential for the algorithm is calculating normal points on paths and choosing which object is closest. It can be done in method itself or using methods defined for object itself.
-            Second method is better, but with the first it is possible to show most of calculations done to achive goal. For example, after best normal point has been choosen, the point ahead is 
-            find thanks to access to path object.
+          &nbsp;&nbsp;The Path Following algorithm takes as input path object and returns a position placed on the path ahead of vehicle.
+           The main method returns target, only if vehicle drifts away from the path. Calculated point is passed down to Seek method.
+            Essential for the algorithm is calculating normal points on path's segments and choosing which is closest to agent. It can be done in method itself or using methods defined for path object.
           <br>
-          &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of Vehicle is visualization of the desiredVelocity and the <span style="color:#6A5ACD">violet</span>
-          one shows current velocity vector. <span style="color:rgba(250, 85, 250, 0.966)">Pink space</span> is the path that Vehicle follows.
-           <span style="color:rgba(250, 85, 250, 0.966)">Pink circles</span> are representing predicted position of Vehicle and target position.
+          &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of vehicle is a visualization of desired velocity and the <span style="color:#6A5ACD">violet</span>
+          one shows current velocity of the agent. <span style="color:rgba(250, 85, 250, 0.966)">Pink space</span> is the path that vehicle follows.
+           <span style="color:rgba(250, 85, 250, 0.966)">Pink circles</span> are representing predicted position of vehicle and target position.
            <span style="color:red">Red line</span> follows steps taken by algorithm to calculate target.<br>
-          &nbsp;&nbsp;If you wish to freeze animation you can also press a spacebar on your keyboard.
         </span>
     </div>
       
@@ -271,6 +274,13 @@
         option = 'on';
       }, false);
 
+      //READ IF BUTTON "RANDOM" WAS KEYPRESSED
+      document.body.addEventListener("keydown", function (c) {
+        if (c.keyCode == 86) {
+          option = 'on';
+        }
+      }, false);
+
       //INIT VEHICLE
       var vehicle = new Vehicle(-30, 110);
       vehicle.choosePath(path.points, path.radius);
@@ -280,9 +290,25 @@
       document.getElementById("Forces").addEventListener('click', function () {
         if (displayForces == 'on') {
           displayForces = 'off';
+          document.getElementById("Forces").innerHTML = "Display Forces OFF<br>(C)";
         }
         else {
           displayForces = 'on';
+          document.getElementById("Forces").innerHTML = "Display Forces ON<br>(C)";
+        }
+      }, false);
+
+      //READ IF BUTTON "FREEZE" WAS KEYPRESSED
+      document.body.addEventListener("keydown", function (c) {
+        if (c.keyCode == 67) {
+          if (displayForces == 'on') {
+            displayForces = 'off';
+            document.getElementById("Forces").innerHTML = "Display Forces OFF<br>(C)";
+          }
+          else {
+            displayForces = 'on';
+            document.getElementById("Forces").innerHTML = "Display Forces ON<br>(C)";
+          }
         }
       }, false);
 
@@ -291,25 +317,24 @@
       document.getElementById("Freeze").addEventListener('click', function freezer() {
         if (freeze == 'on') {
           freeze = 'off';
-          document.getElementById("Freeze").innerHTML = "Freeze OFF";
+          document.getElementById("Freeze").innerHTML = "Freeze OFF<br>(spacebar)";
         }
         else {
           freeze = 'on';
-          document.getElementById("Freeze").innerHTML = "Freeze ON";
+          document.getElementById("Freeze").innerHTML = "Freeze ON<br>(spacebar)";
         }
       }, false);
 
       //READ IF BUTTON "FREEZE" WAS KEYPRESSED
       document.body.addEventListener("keypress", function (k) {
-        console.log(k.keyCode, k.key, displayForces, freeze)
         if (k.keyCode == 32) {
           if (freeze == 'on') {
             freeze = 'off';
-            document.getElementById("Freeze").innerHTML = "Freeze OFF";
+            document.getElementById("Freeze").innerHTML = "Freeze OFF<br>(spacebar)";
           }
           else {
             freeze = 'on';
-            document.getElementById("Freeze").innerHTML = "Freeze ON";
+            document.getElementById("Freeze").innerHTML = "Freeze ON<br>(spacebar)";
           }
         }
       }, false);

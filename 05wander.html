@@ -128,23 +128,27 @@
   <div class="box">
     <!--BUTTON DISPLAY FORCES-->
     <button id="Forces" class="button">
-      Display Forces
-      </button>
-      <!--BUTTON FREEZE-->
-      <button id="Freeze" class="button">
-        Freeze
-      </button>
+      Display Forces OFF<br>
+      (C)
+    </button>
+
+    <!--BUTTON FREEZE-->
+    <button id="Freeze" class="button">
+      Freeze OFF<br>
+      (spacebar)
+    </button>
   </div>
 
   <div class="main">
     <div class="explain_box">
-      <span> &nbsp;&nbsp;Wander algorithm will return point which can be approach by Seek.
-         The sole method creates a circle in front of vehicle and after taking random point on circle it will start to slightly modify it.
-         Thanks to those small steps vehicle will be allowed to move ahead quite smoothly and randomly.<br>
-        &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of Vehicle is visualization of the desiredVelocity and the <span style="color:#6A5ACD">violet</span>
-         one shows current velocity vector.
-         The <span style="color:#78fc74">radius of circle</span> and <span style="color:#71f56d">vector pointing to that circle</span> can be modified.<br>
-        &nbsp;&nbsp;If you wish to freeze animation you can also press a spacebar on your keyboard.
+      <span> &nbsp;&nbsp;Wander algorithm simulates random movement of the agent.
+         In order to achive desired movement the random number theta is created outside of method. Theta is a random degree (from 0 to 360).
+         Inside the Wander method theta is modified by random number of certain length (in this example it's range is from -15 to 15).
+         Then new theta is used to calculate points on circle with certain radius. Calculated position is returned by the Wander and passed to the Seek.
+         Thanks to small steps vehicle will be able to move ahead quite smoothly and randomly.<br>
+        &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of vehicle is a visualization of desired velocity and the <span style="color:#6A5ACD">violet</span>
+         one shows current velocity of the agent.
+         The <span style="color:#df80df">radius of circle</span> and <span style="color:#71f56d">vector pointing to that circle</span> can be modified.<br>
       </span>
     </div>
 
@@ -242,9 +246,25 @@
         document.getElementById("Forces").addEventListener('click', function () {
           if (displayForces == 'on') {
             displayForces = 'off';
+            document.getElementById("Forces").innerHTML = "Display Forces OFF<br>(C)";
           }
           else {
             displayForces = 'on';
+            document.getElementById("Forces").innerHTML = "Display Forces ON<br>(C)";
+          }
+        }, false);
+
+        //READ IF BUTTON "FREEZE" WAS KEYPRESSED
+        document.body.addEventListener("keydown", function (c) {
+          if (c.keyCode == 67) {
+            if (displayForces == 'on') {
+              displayForces = 'off';
+              document.getElementById("Forces").innerHTML = "Display Forces OFF<br>(C)";
+            }
+            else {
+              displayForces = 'on';
+              document.getElementById("Forces").innerHTML = "Display Forces ON<br>(C)";
+            }
           }
         }, false);
 
@@ -253,11 +273,11 @@
         document.getElementById("Freeze").addEventListener('click', function freezer() {
           if (freeze == 'on') {
             freeze = 'off';
-            document.getElementById("Freeze").innerHTML = "Freeze OFF";
+            document.getElementById("Freeze").innerHTML = "Freeze OFF<br>(spacebar)";
           }
           else {
             freeze = 'on';
-            document.getElementById("Freeze").innerHTML = "Freeze ON";
+            document.getElementById("Freeze").innerHTML = "Freeze ON<br>(spacebar)";
           }
         }, false);
 
@@ -266,11 +286,11 @@
           if (k.keyCode == 32) {
             if (freeze == 'on') {
               freeze = 'off';
-              document.getElementById("Freeze").innerHTML = "Freeze OFF";
+              document.getElementById("Freeze").innerHTML = "Freeze OFF<br>(spacebar)";
             }
             else {
               freeze = 'on';
-              document.getElementById("Freeze").innerHTML = "Freeze ON";
+              document.getElementById("Freeze").innerHTML = "Freeze ON<br>(spacebar)";
             }
           }
         }, false);

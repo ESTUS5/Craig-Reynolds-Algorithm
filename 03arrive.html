@@ -123,23 +123,25 @@
   <div class="box">
     <!--BUTTON DISPLAY FORCES-->
     <button id="Forces" class="button">
-      Display Forces
+      Display Forces OFF<br>
+      (C)
     </button>
+
     <!--BUTTON FREEZE-->
     <button id="Freeze" class="button">
-      Freeze
+      Freeze OFF<br>
+      (spacebar)
     </button>
   </div>
 
   <div class="main">
 
     <div class="explain_box">
-      <span>&nbsp;&nbsp;Arrival algorithm will seeks target the same way the Seek does, but when it approaches it's <span style="color:rgba(250, 85, 250, 0.966)">radius</span> vehicle will start decellerating.
-        The maxspeed will be changing from it's orginal score down to 0 when the taget will be reached.
-        Target of the method will be point attached to the cursor.<br>
-        &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of Vehicle is visualization of the desiredVelocity and the <span style="color:#6A5ACD">violet</span>
-        one shows current velocity vector. The <span style="color:rgba(250, 85, 250, 0.966)">pink circle</span> is arrival radius in which vehicle applies decelleration.<br>
-        &nbsp;&nbsp;If you wish to freeze animation you can also press a spacebar on your keyboard.
+      <span>&nbsp;&nbsp;Arrival algorithm follows target the same way the Seek does, but when the agent enters inside target's <span style="color:rgba(250, 85, 250, 0.966)">radius</span> he will start decelerating.
+        Goal of the method is acomplished by decreasing the maxspeed value accordingly to the distance from the target (this operation is done only inside the <span style="color:rgba(250, 85, 250, 0.966)">radius</span>.
+        Target of the method is point attached to the cursor.<br>
+        &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of vehicle is a visualization of desired velocity and the <span style="color:#6A5ACD">violet</span>
+        one shows current velocity of the agent. The <span style="color:rgba(250, 85, 250, 0.966)">pink circle</span> is arrival radius in which vehicle applies decelleration.<br>
       </span>
     </div>
 
@@ -211,42 +213,58 @@
       });
 
       //READ IF BUTTON "DISPLAY FORCE" WAS CLICKED
-      var displayForces = 'off';
-      document.getElementById("Forces").addEventListener('click', function () {
-        if(displayForces == 'on'){
+        var displayForces = 'off';
+        document.getElementById("Forces").addEventListener('click', function () {
+          if (displayForces == 'on') {
             displayForces = 'off';
-        }
-        else{
+            document.getElementById("Forces").innerHTML = "Display Forces OFF<br>(C)";
+          }
+          else {
             displayForces = 'on';
-        }
-      }, false);
+            document.getElementById("Forces").innerHTML = "Display Forces ON<br>(C)";
+          }
+        }, false);
 
-      //READ IF BUTTON "FREEZE" WAS CLICKED
-      var freeze = "off";
-      document.getElementById("Freeze").addEventListener('click', function freezer() {
-        if (freeze == 'on') {
-          freeze = 'off';
-          document.getElementById("Freeze").innerHTML = "Freeze OFF";
-        }
-        else {
-          freeze = 'on';
-          document.getElementById("Freeze").innerHTML = "Freeze ON";
-        }
-      }, false);
+        //READ IF BUTTON "FREEZE" WAS KEYPRESSED
+        document.body.addEventListener("keydown", function (c) {
+          if (c.keyCode == 67) {
+            if (displayForces == 'on') {
+              displayForces = 'off';
+              document.getElementById("Forces").innerHTML = "Display Forces OFF<br>(C)";
+            }
+            else {
+              displayForces = 'on';
+              document.getElementById("Forces").innerHTML = "Display Forces ON<br>(C)";
+            }
+          }
+        }, false);
 
-      //READ IF BUTTON "FREEZE" WAS KEYPRESSED
-      document.body.addEventListener("keypress", function (k) {
-        if (k.keyCode == 32) {
+        //READ IF BUTTON "FREEZE" WAS CLICKED
+        var freeze = "off";
+        document.getElementById("Freeze").addEventListener('click', function freezer() {
           if (freeze == 'on') {
             freeze = 'off';
-            document.getElementById("Freeze").innerHTML = "Freeze OFF";
+            document.getElementById("Freeze").innerHTML = "Freeze OFF<br>(spacebar)";
           }
           else {
             freeze = 'on';
-            document.getElementById("Freeze").innerHTML = "Freeze ON";
+            document.getElementById("Freeze").innerHTML = "Freeze ON<br>(spacebar)";
           }
-        }
-      }, false);
+        }, false);
+
+        //READ IF BUTTON "FREEZE" WAS KEYPRESSED
+        document.body.addEventListener("keypress", function (k) {
+          if (k.keyCode == 32) {
+            if (freeze == 'on') {
+              freeze = 'off';
+              document.getElementById("Freeze").innerHTML = "Freeze OFF<br>(spacebar)";
+            }
+            else {
+              freeze = 'on';
+              document.getElementById("Freeze").innerHTML = "Freeze ON<br>(spacebar)";
+            }
+          }
+        }, false);
 
       rangeSliderInit();
 

@@ -125,15 +125,18 @@
   <div class="box">
     <!--BUTTON DISPLAY FORCES-->
     <button id="Forces" class="button">
-      Display Forces
+      Display Forces OFF<br>
+      (C)
     </button>
     <!--BUTTON FREEZE-->
     <button id="Freeze" class="button">
-      Freeze
+      Freeze OFF<br>
+      (spacebar)
     </button>
     <!--BUTTON CHANGE FOLLOWING TYPE-->
     <button id="followingType" class="button">
-      Change Following Type
+      Change Following<br>
+      (V)
     </button>
   </div>
 
@@ -141,15 +144,15 @@
 
       <div class="explain_box">
         <span>
-          &nbsp;&nbsp;The Leader Following algorithm is a method that "predicts" past position of leader (target) and the Arrives to that point.
-          Beside following, the space in front of leader is being always checked by the vehicle (follower).
+          &nbsp;&nbsp;The Leader Following algorithm is a method that "predicts" past position of leader (target) and uses the Arrival algorithm to approach that point.
+          Beside following, space in front of the leader is being always checked by vehicle (follower).
            If it finds itself in the <span style="color:rgba(50, 155, 50, 0.767)">green</span> space the next target is normal vector from that area.
+            Thanks to that, agent not only follows its target but also gets out of leader's way.
           <br>
-          &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of Vehicle is visualization of the desiredVelocity and the <span style="color:#6A5ACD">violet</span>
-          one shows current velocity vector. The <span style="color:rgba(124, 206, 124, 0.767)">green</span> space 
+          &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of Vehicle is a visualization of desired velocity and the <span style="color:#6A5ACD">violet</span>
+          one shows current velocity of the agent. The <span style="color:rgba(124, 206, 124, 0.767)">green</span> space 
           is an area that follower will be escaping. The <span style="color:red">red</span> vector represents target position.
            <span style="color:rgba(250, 85, 250, 0.966)">Pink circles</span> represent space in which the arrival deaccelerates.<br>
-          &nbsp;&nbsp;If you wish to freeze animation you can also press a spacebar on your keyboard.
         </span>
       </div>
 
@@ -251,18 +254,7 @@
         vehicles[vehicles.length - 1].radius = 10;
       }
 
-
-      var displayForces = 'off';
-      document.getElementById("Forces").addEventListener('click', function () {
-        if (displayForces == 'on') {
-          displayForces = 'off';
-        }
-        else {
-          displayForces = 'on';
-        }
-      }, false);
-
-
+      //READ IF BUTTON "FOLLOWING TYPE" WAS CLICKED
       var followingType = 'line';
       document.getElementById("followingType").addEventListener('click', function () {
         if (followingType == 'line') {
@@ -273,33 +265,72 @@
         }
       }, false);
 
+      //READ IF BUTTON "FOLLOWING TYPE" WAS KEYPRESSED
+      document.body.addEventListener("keydown", function (c) {
+          if (c.keyCode == 86) {
+            if (followingType == 'line') {
+              followingType = 'group';
+            }
+            else {
+              followingType = 'line';
+            }
+          }
+        }, false);
 
-      var freeze = "off";
-      document.getElementById("Freeze").addEventListener('click', function freezer() {
-        if (freeze == 'on') {
-          freeze = 'off';
-          document.getElementById("Freeze").innerHTML = "Freeze OFF";
-        }
-        else {
-          freeze = 'on';
-          document.getElementById("Freeze").innerHTML = "Freeze ON";
-        }
-      }, false);
 
+      //READ IF BUTTON "DISPLAY FORCE" WAS CLICKED
+        var displayForces = 'off';
+        document.getElementById("Forces").addEventListener('click', function () {
+          if (displayForces == 'on') {
+            displayForces = 'off';
+            document.getElementById("Forces").innerHTML = "Display Forces OFF<br>(C)";
+          }
+          else {
+            displayForces = 'on';
+            document.getElementById("Forces").innerHTML = "Display Forces ON<br>(C)";
+          }
+        }, false);
 
-      document.body.addEventListener("keypress", function (k) {
-        console.log(k.keyCode, k.key, displayForces, freeze)
-        if (k.keyCode == 32) {
+        //READ IF BUTTON "FREEZE" WAS KEYPRESSED
+        document.body.addEventListener("keydown", function (c) {
+          if (c.keyCode == 67) {
+            if (displayForces == 'on') {
+              displayForces = 'off';
+              document.getElementById("Forces").innerHTML = "Display Forces OFF<br>(C)";
+            }
+            else {
+              displayForces = 'on';
+              document.getElementById("Forces").innerHTML = "Display Forces ON<br>(C)";
+            }
+          }
+        }, false);
+
+        //READ IF BUTTON "FREEZE" WAS CLICKED
+        var freeze = "off";
+        document.getElementById("Freeze").addEventListener('click', function freezer() {
           if (freeze == 'on') {
             freeze = 'off';
-            document.getElementById("Freeze").innerHTML = "Freeze OFF";
+            document.getElementById("Freeze").innerHTML = "Freeze OFF<br>(spacebar)";
           }
           else {
             freeze = 'on';
-            document.getElementById("Freeze").innerHTML = "Freeze ON";
+            document.getElementById("Freeze").innerHTML = "Freeze ON<br>(spacebar)";
           }
-        }
-      }, false);
+        }, false);
+
+        //READ IF BUTTON "FREEZE" WAS KEYPRESSED
+        document.body.addEventListener("keypress", function (k) {
+          if (k.keyCode == 32) {
+            if (freeze == 'on') {
+              freeze = 'off';
+              document.getElementById("Freeze").innerHTML = "Freeze OFF<br>(spacebar)";
+            }
+            else {
+              freeze = 'on';
+              document.getElementById("Freeze").innerHTML = "Freeze ON<br>(spacebar)";
+            }
+          }
+        }, false);
 
 
       rangeSliderInit();
@@ -338,7 +369,9 @@
           var separation = vehicles[0].separation(vehicles);
           vehicles[0].applyForce(arriv);
           vehicles[0].applyForce(separation);
-          vehicles[0].update();
+          if (freeze == 'off') {
+              vehicles[0].update();
+            }
           vehicles[0].renderVehicle();
           vehicles[0].maxforce = document.getElementById("maxforce").value;
           vehicles[0].maxspeed = document.getElementById("maxspeed").value;
@@ -372,7 +405,9 @@
           var separation = vehicles[0].separation(vehicles);
           vehicles[0].applyForce(arriv);
           vehicles[0].applyForce(separation);
-          vehicles[0].update();
+          if (freeze == 'off') {
+            vehicles[0].update();
+          }
           vehicles[0].renderVehicle();
           vehicles[0].maxforce = document.getElementById("maxforce").value;
           vehicles[0].maxspeed = document.getElementById("maxspeed").value;

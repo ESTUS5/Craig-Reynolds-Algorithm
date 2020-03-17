@@ -130,12 +130,14 @@
 
     <!--BUTTON DISPLAY FORCES-->
     <button id="Forces" class="button">
-      Display Forces
+      Display Forces OFF<br>
+      (C)
     </button>
 
     <!--BUTTON FREEZE-->
     <button id="Freeze" class="button">
-      Freeze
+      Freeze OFF<br>
+      (spacebar)
     </button>
 
   </div>
@@ -143,10 +145,9 @@
   <div class="main">
 
       <div class="explain_box">
-        <span>&nbsp;&nbsp;Seek algorithm calculates and returns vector that will be applied to the current velocity of the Vehicle through the applyForce and the update. Target of the method will be point attached to the cursor.<br>
-          The <span style="color:#FF4500">orange</span> vector pointing out of the center of Vehicle is visualization of the desiredVelocity and the <span style="color:#6A5ACD">violet</span>
-          one shows current velocity vector.<br>
-          &nbsp;&nbsp;If you wish to freeze animation you can also press a spacebar on your keyboard.
+        <span>&nbsp;&nbsp;Seek algorithm calculates and returns vector that will be applied to the current velocity of the <span style="color:#98fb98">Vehicle</span> through methods the applyForce and the update. Target of the seek method is point attached to the cursor.<br>
+          The <span style="color:#FF4500">orange</span> vector pointing out of the center of vehicle is a visualization of desired velocity and the <span style="color:#6A5ACD">violet</span>
+          one shows current velocity of the agent.<br>
         </span>
       </div>
 
@@ -215,9 +216,25 @@
         document.getElementById("Forces").addEventListener('click', function () {
           if (displayForces == 'on') {
             displayForces = 'off';
+            document.getElementById("Forces").innerHTML = "Display Forces OFF<br>(C)";
           }
           else {
             displayForces = 'on';
+            document.getElementById("Forces").innerHTML = "Display Forces ONN<br>(C)";
+          }
+        }, false);
+
+        //READ IF BUTTON "FREEZE" WAS KEYPRESSED
+        document.body.addEventListener("keydown", function (c) {
+          if (c.keyCode == 67) {
+            if (displayForces == 'on') {
+              displayForces = 'off';
+              document.getElementById("Forces").innerHTML = "Display Forces OFF<br>(C)";
+            }
+            else {
+              displayForces = 'on';
+              document.getElementById("Forces").innerHTML = "Display Forces ON<br>(C)";
+            }
           }
         }, false);
 
@@ -226,11 +243,11 @@
         document.getElementById("Freeze").addEventListener('click', function freezer() {
           if (freeze == 'on') {
             freeze = 'off';
-            document.getElementById("Freeze").innerHTML = "Freeze OFF";
+            document.getElementById("Freeze").innerHTML = "Freeze OFF<br>(spacebar)";
           }
           else {
             freeze = 'on';
-            document.getElementById("Freeze").innerHTML = "Freeze ON";
+            document.getElementById("Freeze").innerHTML = "Freeze ON<br>(spacebar)";
           }
         }, false);
 
@@ -239,11 +256,11 @@
           if (k.keyCode == 32) {
             if (freeze == 'on') {
               freeze = 'off';
-              document.getElementById("Freeze").innerHTML = "Freeze OFF";
+              document.getElementById("Freeze").innerHTML = "Freeze OFF<br>(spacebar)";
             }
             else {
               freeze = 'on';
-              document.getElementById("Freeze").innerHTML = "Freeze ON";
+              document.getElementById("Freeze").innerHTML = "Freeze ON<br>(spacebar)";
             }
           }
         }, false);

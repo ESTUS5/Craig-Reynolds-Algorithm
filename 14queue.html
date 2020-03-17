@@ -128,12 +128,14 @@
 
     <!--BUTTON DISPLAY FORCES-->
     <button id="Forces" class="button">
-      Display Forces
+      Display Forces OFF<br>
+      (C)
     </button>
-        
+
     <!--BUTTON FREEZE-->
     <button id="Freeze" class="button">
-      Freeze
+      Freeze OFF<br>
+      (spacebar)
     </button>
 
     </div>
@@ -141,16 +143,16 @@
     <div class="main">
 
         <div class="explain_box">
-          <span>&nbsp;&nbsp;The Queue algorithm checks if in a circle ahead of vehicle is any neighbour.
-             If so, then the deceleration is calculated and applied to the vehicle.
-              In  emergancy situations, when neighbour will cross circle around vehicle it will brake immediatly and move slowly in a crowd.
-              Beside Queue method, Seek is used to give agents vehicles target behind doors, seperation keeps crowd from overlapping and lastly
-              containment is used to avoid walls.
+          <span>&nbsp;&nbsp;The Queue algorithm checks if in a circle (space) ahead of Vehicle is any neighbour.
+             If so, then the deceleration vector is calculated and applied to agent.
+              In emergancy situations, when neighbour will approach from other direction, Vehicle will brake immediatly and move slowly.
+              In this simulation beside Queue method, Seek is used to give vehicles target behind doors (narrow path),moreover Seperation keeps crowd from overlapping and lastly
+              Containment is used to avoid walls.
               <br>
-              &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of Vehicle is visualization of the desiredVelocity and the <span style="color:#6A5ACD">violet</span>
-            one shows current velocity vector. <span style="color:rgba(250, 85, 250, 0.966)">Pink walls</span> are obstacles that algorithm should detect and avoid.
-            <span style="color:rgba(250, 85, 250, 0.966)">Pink circles</span> placed in front of Vehicles are spaces detected by the algorithm to prevent collision with the Vehicle ahead. <span style="color:rgba(250, 85, 250, 0.966)">Pink circles</span> surrounding Vehicles are used to check if other Vehicles are not to close and if so to quickly decelerate.<br>
-            &nbsp;&nbsp;If you wish to freeze animation you can also press a spacebar on your keyboard.
+              &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of Vehicle is a visualization of desired velocity and the <span style="color:#6A5ACD">violet</span>
+            one shows current velocity of the agent. <span style="color:rgba(250, 85, 250, 0.966)">Pink walls</span> are obstacles that algorithm should detect and avoid.
+            <span style="color:rgba(250, 85, 250, 0.966)">Pink circles</span> placed in front of vehicles are spaces detected by the algorithm to prevent collision with vehicle ahead.
+             <span style="color:rgba(250, 85, 250, 0.966)">Pink circles</span> surrounding vehicles are used to check if other vehicles are not too close and if so to quickly decelerate.<br>
           </span>
         </div>
 
@@ -220,40 +222,59 @@
             vehicles[vehicles.length - 1].radius = 10;
           }
 
-          var displayForces = 'off';
-          document.getElementById("Forces").addEventListener('click', function () {
+          //READ IF BUTTON "DISPLAY FORCE" WAS CLICKED
+        var displayForces = 'off';
+        document.getElementById("Forces").addEventListener('click', function () {
+          if (displayForces == 'on') {
+            displayForces = 'off';
+            document.getElementById("Forces").innerHTML = "Display Forces OFF<br>(C)";
+          }
+          else {
+            displayForces = 'on';
+            document.getElementById("Forces").innerHTML = "Display Forces ON<br>(C)";
+          }
+        }, false);
+
+        //READ IF BUTTON "FREEZE" WAS KEYPRESSED
+        document.body.addEventListener("keydown", function (c) {
+          if (c.keyCode == 67) {
             if (displayForces == 'on') {
               displayForces = 'off';
+              document.getElementById("Forces").innerHTML = "Display Forces OFF<br>(C)";
             }
             else {
               displayForces = 'on';
+              document.getElementById("Forces").innerHTML = "Display Forces ON<br>(C)";
             }
-          }, false);
+          }
+        }, false);
 
-          var freeze = "off";
-          document.getElementById("Freeze").addEventListener('click', function freezer() {
+        //READ IF BUTTON "FREEZE" WAS CLICKED
+        var freeze = "off";
+        document.getElementById("Freeze").addEventListener('click', function freezer() {
+          if (freeze == 'on') {
+            freeze = 'off';
+            document.getElementById("Freeze").innerHTML = "Freeze OFF<br>(spacebar)";
+          }
+          else {
+            freeze = 'on';
+            document.getElementById("Freeze").innerHTML = "Freeze ON<br>(spacebar)";
+          }
+        }, false);
+
+        //READ IF BUTTON "FREEZE" WAS KEYPRESSED
+        document.body.addEventListener("keypress", function (k) {
+          if (k.keyCode == 32) {
             if (freeze == 'on') {
               freeze = 'off';
-              document.getElementById("Freeze").innerHTML = "Freeze OFF";
+              document.getElementById("Freeze").innerHTML = "Freeze OFF<br>(spacebar)";
             }
             else {
               freeze = 'on';
-              document.getElementById("Freeze").innerHTML = "Freeze ON";
+              document.getElementById("Freeze").innerHTML = "Freeze ON<br>(spacebar)";
             }
-          }, false);
-          document.body.addEventListener("keypress", function (k) {
-            console.log(k.keyCode, k.key, displayForces, freeze)
-            if (k.keyCode == 32) {
-              if (freeze == 'on') {
-                freeze = 'off';
-                document.getElementById("Freeze").innerHTML = "Freeze OFF";
-              }
-              else {
-                freeze = 'on';
-                document.getElementById("Freeze").innerHTML = "Freeze ON";
-              }
-            }
-          }, false);
+          }
+        }, false);
 
           rangeSliderInit();
 
@@ -278,7 +299,7 @@
                VehRadius = document.getElementById("circleAheadRadius").value,
                displayForces);
               if(avoid.x != 0 || avoid.y != 0){
-                var avoidSeek = vehicles[index].seek(avoid.x,avoid.y);
+                var avoidSeek = vehicles[index].seek(avoid.x,avoid.y,displayForces);
                 avoidSeek = avoidSeek.multiply(2);
                 vehicles[index].applyForce(avoidSeek);
               }
@@ -294,7 +315,6 @@
               }
 
               vehicles[index].renderVehicle();
-              vehicles[index].renderForces();
               
               vehicles[index].maxforce = document.getElementById("maxforce").value;
               vehicles[index].maxspeed = document.getElementById("maxspeed").value;
