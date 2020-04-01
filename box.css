@@ -15,15 +15,14 @@ body {
 
 .box {
   display: inline-block;
-  width: auto;
   color: var(--color2);
   line-height: 20px;
+  margin: 10px;
+  margin-right: 6%;
   text-align: center;
-  background: #333;
   padding: 5px 5px;
-  margin-right: 8px;
-  margin-bottom: 8px;
   border-radius: 3px;
+  width: min-content;
 }
 
 .menu_box {
@@ -87,7 +86,7 @@ body {
 
 .main{
   float: left;
-  width: 45%;
+  width: 23cm;
   background-color: var(--color5);
   color: #333;
   border: 2px solid #333;
@@ -103,4 +102,10 @@ body {
   width: 100%;
   color: #fff;
   background: #333;
+}
+
+.slider_container_box {
+  background-color: #fff;
+  border-radius: 3px;
+  border: 2px solid #333;
 }

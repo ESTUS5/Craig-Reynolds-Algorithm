@@ -2,30 +2,30 @@
 <html>
 
 <head>
-    <meta charset="utf-8" />
-    <title>Craig-Reynolds Algorithm</title>
-    <!--design-->
-    <link rel="stylesheet" href="button.css" />
-    <link rel="stylesheet" href="box.css" />
-    <!--snippet function-->
-    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
-    <link rel="stylesheet" href="desert.css" />
-    <!--mouse function-->
-    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="mouse.js"></script>
-    <!--main functions-->
-    <script src="vector.js"></script>
-    <script src="vehicle.js"></script>
-    <!--sliders-->
-    <script src="sliderStyle.js"></script>
-    <link rel="stylesheet" href="sliderStyle.css" />
-    <!--To disable focusing on Chrome browser -->
-    <script type="text/javascript">
-      document.addEventListener('click', function (e) {
-        if (document.activeElement.toString() == '[object HTMLButtonElement]') { document.activeElement.blur(); }
-      });
-    </script>
-    <script src="board.js"></script>
+  <meta charset="utf-8" />
+  <title>Craig-Reynolds Algorithm</title>
+  <!--design-->
+  <link rel="stylesheet" href="button.css" />
+  <link rel="stylesheet" href="box.css" />
+  <!--snippet function-->
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <link rel="stylesheet" href="desert.css" />
+  <!--mouse function-->
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="mouse.js"></script>
+  <!--main functions-->
+  <script src="vector.js"></script>
+  <script src="vehicle.js"></script>
+  <!--sliders-->
+  <script src="sliderStyle.js"></script>
+  <link rel="stylesheet" href="sliderStyle.css" />
+  <!--To disable focusing on Chrome browser -->
+  <script type="text/javascript">
+    document.addEventListener('click', function (e) {
+      if (document.activeElement.toString() == '[object HTMLButtonElement]') { document.activeElement.blur(); }
+    });
+  </script>
+  <script src="board.js"></script>
 </head>
 
 <body>
@@ -87,7 +87,8 @@
       </button>
     </div>
     <div class="container">
-      <button class="button" style="background-color: #333; color: white; cursor: not-allowed;" disabled="disabled" onclick='window.location.href = "./10flow.html"'>
+      <button class="button" style="background-color: #333; color: white; cursor: not-allowed;" disabled="disabled"
+        onclick='window.location.href = "./10flow.html"'>
         Flow Field Following
       </button>
     </div>
@@ -121,12 +122,75 @@
     </div>
     </nav>
   </div>
+
+  <div class="main">
+
+    <div class="explain_box">
+      <span>
+        &nbsp;&nbsp;The Flow Field Following is a method that requires implementation of an object which divides space into tiles.
+         Every tile has its own vector. When the vehicle is currently positioned on a certain tile,
+          this tile will return its vector, which will be a new target for the Seek method of the agent.<br>
+          &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of Vehicle is a visualization of the desired velocity
+         and the <span style="color:#6A5ACD">violet</span> one shows the current velocity vector.
+         The <span style="color:rgba(102, 196, 149, 0.5)">green</span> vector is a flow of tile that the vehicle is occupying right now.<br>
+         &nbsp;&nbsp;In order to change the vector of a tile use the left mouse button in tile's space. This action will move vector to the direction of your cursor.
+      </span>
+    </div>
+
+    <canvas id="VP" class="viewport" style="background: #eee; width: 100%;height: 50%;"></canvas>
+
+    <!--OUTPUT OF VEHICLE POSITION & VELOCITY-->
+    <div class="output_box">
+
+      Vehicle position x:
+      <span id="vehicle_posX"></span>
+      y:
+      <span id="vehicle_posY"></span>
+      velocity:
+      <span id="vehicle_vel"></span>
+
+    </div>
+
+    <!--RANGE SLIDER OF MAXSPEED-->
+    <div class="range-slider" class="slider-box">
+
+      <div class="slider-box">
+        Maxspeed
+      </div>
+      <div class="container">
+
+        <input id="maxspeed" class="range-slider__range" type="range" value="4" min="0" max="7" step="0.01">
+
+        <span class="range-slider__value">
+          0
+        </span>
+
+      </div>
+
+    </div>
+
+    <!--RANGE SLIDER OF MAXFORCE-->
+    <div class="range-slider">
+
+      <div class="slider-box">Maxforce</div>
+
+      <div class="container">
+
+        <input id="maxforce" class="range-slider__range" type="range" value="0.1" min="0" max="5" step="0.01">
+
+        <span class="range-slider__value">0</span>
+
+      </div>
+
+    </div>
+
     <div class="box">
       <!--BUTTON DISPLAY FORCES-->
-      <button id="Forces" class="button">
-        Display Forces OFF
-        <br>(C)
+      <button id="Forces" class="button" style="margin-bottom: 30px;">
+        Display Forces ON<br>
+        (C)
       </button>
+  
       <!--BUTTON FREEZE-->
       <button id="Freeze" class="button">
         Freeze OFF<br>
@@ -134,98 +198,53 @@
       </button>
     </div>
 
-    <div class="main">
+    <script>
 
-        <div class="explain_box">
-        <span>
-          &nbsp;&nbsp;The Flow Field Following is a method that requires implementation of object which divides space into tiles. Every tile has its own vector. 
-          When vehicle is currently positioned on a certain tile, this tile will return its vector, which will be new target for Seek method of agent.<br>
-          &nbsp;&nbsp;The<span style="color:#FF4500">orange</span> vector pointing out of the center of Vehicle is visualization of the desiredVelocity and the <span style="color:#6A5ACD">violet</span>
-          one shows current velocity vector. <span style="color:rgba(102, 196, 149, 0.5)">Green</span> vector is flow of tile that vehicle is occupying right now.<br>
-          &nbsp;&nbsp;In order to change vector of a tile use left mouse button in tile's space.
-           This action will move vector to direction of your cursor.
-        </span>
-      </div>
 
-        <canvas id="VP" class="viewport" style="background: #eee; width: 100%;height: 50%;"></canvas>
+      //CHANGE WIDTH & HEIGHT OF CANVAS
+      var canvas = document.querySelector('.viewport'),
+        ctx = canvas.getContext('2d');
+      canvas.width = screen.width / 2;
+      canvas.height = screen.height / 3;
 
-        <!--OUTPUT OF VEHICLE POSITION & VELOCITY-->
-        <div class="output_box">
+      //READ MOUSE POSITION
+      mouseObj.Init("#VP", canvas);
 
-            Vehicle position x:
-            <span id="vehicle_posX"></span>
-            y:
-            <span id="vehicle_posY"></span>
-            velocity:
-            <span id="vehicle_vel"></span>
+      //INIT VEHICLE
+      var vehicle = new Vehicle(100, 100);
 
-        </div>
+      //INIT BOARD
+      var num_of_divs = 4;
+      var move = "one";
+      board = new Board(canvas.width, canvas.height, num_of_divs);
+      board.create_vectors();
 
-        <!--RANGE SLIDER OF MAXSPEED-->
-        <div class="range-slider" class="slider-box">
+      //CHANGE VECTOR DIR IN TILE AFTER MOUSECLICK
+      document.getElementById("VP").addEventListener('click', function () {
+        if (move == "all") {
+          board.move_vectors(mouseObj);
+        }
+        else if (move == "one") {
+          board.move_vector(mouseObj);
+        }
+      }, false);
 
-          <div class="slider-box">
-            Maxspeed
-          </div>
-          <div class="container">
+      //READ IF BUTTON "DISPLAY FORCE" WAS CLICKED
+      var displayForces = 'on';
+      document.getElementById("Forces").addEventListener('click', function () {
+        if (displayForces == 'on') {
+          displayForces = 'off';
+          document.getElementById("Forces").innerHTML = "Display Forces OFF<br>(C)";
+        }
+        else {
+          displayForces = 'on';
+          document.getElementById("Forces").innerHTML = "Display Forces ON<br>(C)";
+        }
+      }, false);
 
-            <input id="maxspeed" class="range-slider__range" type="range" value="4" min="0" max="7" step="0.01">
-              
-            <span class="range-slider__value">
-              0
-            </span>
-
-          </div>
-        
-        </div>
-
-        <!--RANGE SLIDER OF MAXFORCE-->
-        <div class="range-slider">
-            
-          <div class="slider-box">Maxforce</div>
-          
-          <div class="container">
-
-            <input id="maxforce" class="range-slider__range" type="range" value="0.1" min="0" max="5" step="0.01">
-            
-            <span class="range-slider__value">0</span>
-
-          </div>
-        
-        </div>
-
-        <script>
-          //CHANGE WIDTH & HEIGHT OF CANVAS
-          var canvas = document.querySelector('.viewport'),
-            ctx = canvas.getContext('2d');
-          canvas.width = screen.width / 2;
-          canvas.height = screen.height / 3;
-
-          //READ MOUSE POSITION
-          mouseObj.Init("#VP",canvas);
-
-          //INIT VEHICLE
-          var vehicle = new Vehicle(100, 100);
-          
-          //INIT BOARD
-          var num_of_divs = 4;
-          var move = "one";
-          board = new Board(canvas.width, canvas.height, num_of_divs);
-          board.create_vectors();
-
-          //CHANGE VECTOR DIR IN TILE AFTER MOUSECLICK
-          document.getElementById("VP").addEventListener('click', function () {
-            if( move == "all"){    
-              board.move_vectors(mouseObj);
-            }
-            else if (move == "one"){
-              board.move_vector(mouseObj);
-            }
-          }, false);
-
-          //READ IF BUTTON "DISPLAY FORCE" WAS CLICKED
-        var displayForces = 'off';
-        document.getElementById("Forces").addEventListener('click', function () {
+      //READ IF BUTTON "FREEZE" WAS KEYPRESSED
+      document.body.addEventListener("keydown", function (c) {
+        if (c.keyCode == 67) {
           if (displayForces == 'on') {
             displayForces = 'off';
             document.getElementById("Forces").innerHTML = "Display Forces OFF<br>(C)";
@@ -234,25 +253,25 @@
             displayForces = 'on';
             document.getElementById("Forces").innerHTML = "Display Forces ON<br>(C)";
           }
-        }, false);
+        }
+      }, false);
 
-        //READ IF BUTTON "FREEZE" WAS KEYPRESSED
-        document.body.addEventListener("keydown", function (c) {
-          if (c.keyCode == 67) {
-            if (displayForces == 'on') {
-              displayForces = 'off';
-              document.getElementById("Forces").innerHTML = "Display Forces OFF<br>(C)";
-            }
-            else {
-              displayForces = 'on';
-              document.getElementById("Forces").innerHTML = "Display Forces ON<br>(C)";
-            }
-          }
-        }, false);
+      //READ IF BUTTON "FREEZE" WAS CLICKED
+      var freeze = "off";
+      document.getElementById("Freeze").addEventListener('click', function freezer() {
+        if (freeze == 'on') {
+          freeze = 'off';
+          document.getElementById("Freeze").innerHTML = "Freeze OFF<br>(spacebar)";
+        }
+        else {
+          freeze = 'on';
+          document.getElementById("Freeze").innerHTML = "Freeze ON<br>(spacebar)";
+        }
+      }, false);
 
-        //READ IF BUTTON "FREEZE" WAS CLICKED
-        var freeze = "off";
-        document.getElementById("Freeze").addEventListener('click', function freezer() {
+      //READ IF BUTTON "FREEZE" WAS KEYPRESSED
+      document.body.addEventListener("keypress", function (k) {
+        if (k.keyCode == 32) {
           if (freeze == 'on') {
             freeze = 'off';
             document.getElementById("Freeze").innerHTML = "Freeze OFF<br>(spacebar)";
@@ -261,64 +280,51 @@
             freeze = 'on';
             document.getElementById("Freeze").innerHTML = "Freeze ON<br>(spacebar)";
           }
-        }, false);
+        }
+      }, false);
 
-        //READ IF BUTTON "FREEZE" WAS KEYPRESSED
-        document.body.addEventListener("keypress", function (k) {
-          if (k.keyCode == 32) {
-            if (freeze == 'on') {
-              freeze = 'off';
-              document.getElementById("Freeze").innerHTML = "Freeze OFF<br>(spacebar)";
-            }
-            else {
-              freeze = 'on';
-              document.getElementById("Freeze").innerHTML = "Freeze ON<br>(spacebar)";
-            }
-          }
-        }, false);
+      rangeSliderInit();
 
-          rangeSliderInit();
+      //LOOP FUNC
+      function draw() {
 
-          //LOOP FUNC
-          function draw() {
+        ctx.setTransform(1, 0, 0, 1, 0, 0); // <- JS magic for PathBegin()..
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            ctx.setTransform(1, 0, 0, 1, 0, 0); // <- JS magic for PathBegin()..
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-                
-            vehicle.maxforce = document.getElementById("maxforce").value;
-            vehicle.maxspeed = document.getElementById("maxspeed").value;
-            
-            target = board.tile(vehicle.position.x, vehicle.position.y);
-            
-            if(displayForces=="on"){
-              vehicle.renderVectorTo(target[0], target[1],"rgba(40,80,60,0.5)");
-            }
-            
-            var seek = vehicle.seek(target[0], target[1],displayForces);
-            vehicle.applyForce(seek);
-            if (freeze == 'off') {
-              vehicle.update();
-            }
-            
-            vehicle.onlyCanvas();
-            vehicle.renderVehicle();
-            vehicle.renderCircleAround(mouseObj.x,mouseObj.y);
-            board.draw();
+        vehicle.maxforce = document.getElementById("maxforce").value;
+        vehicle.maxspeed = document.getElementById("maxspeed").value;
 
-            $("#vehicle_posX").text(Math.ceil(vehicle.position.x));
-            $("#vehicle_posY").text(Math.ceil(vehicle.position.y));
-            $("#vehicle_vel").text((vehicle.velocity.length()).toFixed(2))
+        target = board.tile(vehicle.position.x, vehicle.position.y);
 
-          }
+        if (displayForces == "on") {
+          vehicle.renderVectorTo(target[0], target[1], "rgba(40,80,60,0.5)");
+        }
 
-          setInterval(draw, 14);
-        </script>
+        var seek = vehicle.seek(target[0], target[1], displayForces);
+        vehicle.applyForce(seek);
+        if (freeze == 'off') {
+          vehicle.update();
+        }
 
-    </div>
+        vehicle.onlyCanvas();
+        vehicle.renderVehicle();
+        vehicle.renderCircleAround(mouseObj.x, mouseObj.y);
+        board.draw();
 
-    <div class="code_box">
+        $("#vehicle_posX").text(Math.ceil(vehicle.position.x));
+        $("#vehicle_posY").text(Math.ceil(vehicle.position.y));
+        $("#vehicle_vel").text((vehicle.velocity.length()).toFixed(2))
 
-        <!--CREATES SNIPPET OF CODE-->
+      }
+
+      setInterval(draw, 14);
+    </script>
+
+  </div>
+
+  <div class="code_box">
+
+    <!--CREATES SNIPPET OF CODE-->
     <pre class="prettyprint linenums">
 class Board{
  tile(obj_posX, obj_posY) {
@@ -328,10 +334,10 @@ class Board{
      if (obj_posY < this.vectors_arr[x][y][3]) {
       if (this.vectors_arr[x][y][0] > (this.vectors_arr[x][y][2]
        - (canvas.width/(this.divisions*2)))) {
-        var bx = this.vectors_arr[x][y][2] + 1;
+        var xb = this.vectors_arr[x][y][2] + 1;
       }
       else {
-         var bx = this.vectors_arr[x][y][2]
+         var xb = this.vectors_arr[x][y][2]
              - (canvas.width/this.divisions) - 1;
       }
       var a = (this.vectors_arr[x][y][1] - (this.vectors_arr[x][y][3]
@@ -341,23 +347,23 @@ class Board{
         a = 0;
       }
       var b = obj_posY - a * obj_posX;
-      var by = a * bx + b;
-      if (by > this.vectors_arr[x][y][3]) {
-        by = this.vectors_arr[x][y][3];
-        bx = (by - b) / a;
+      var yb = a * xb + b;
+      if (yb > this.vectors_arr[x][y][3]) {
+        yb = this.vectors_arr[x][y][3];
+        xb = (yb - b) / a;
       }
-      else if (by < this.vectors_arr[x][y][3]
+      else if (yb < this.vectors_arr[x][y][3]
          - (canvas.height/this.divisions)) {
-        by = this.vectors_arr[x][y][3] - (canvas.height/this.divisions);
-        bx = (by - b) / a;
+        yb = this.vectors_arr[x][y][3] - (canvas.height/this.divisions);
+        xb = (yb - b) / a;
       }
-      return [bx, by];
+      return [xb, yb];
      }
     }
   }
 }</pre>
-    </div>
-    
+  </div>
+
 </body>
 
 </html>

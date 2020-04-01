@@ -124,35 +124,18 @@
       </nav>
     </div>
 
-    <div class="box">
-
-    <!--BUTTON DISPLAY FORCES-->
-    <button id="Forces" class="button">
-      Display Forces OFF<br>
-      (C)
-    </button>
-
-    <!--BUTTON FREEZE-->
-    <button id="Freeze" class="button">
-      Freeze OFF<br>
-      (spacebar)
-    </button>
-
-    </div>
-
     <div class="main">
 
         <div class="explain_box">
-          <span>&nbsp;&nbsp;The Queue algorithm checks if in a circle (space) ahead of Vehicle is any neighbour.
-             If so, then the deceleration vector is calculated and applied to agent.
-              In emergancy situations, when neighbour will approach from other direction, Vehicle will brake immediatly and move slowly.
-              In this simulation beside Queue method, Seek is used to give vehicles target behind doors (narrow path),moreover Seperation keeps crowd from overlapping and lastly
-              Containment is used to avoid walls.
-              <br>
-              &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of Vehicle is a visualization of desired velocity and the <span style="color:#6A5ACD">violet</span>
-            one shows current velocity of the agent. <span style="color:rgba(250, 85, 250, 0.966)">Pink walls</span> are obstacles that algorithm should detect and avoid.
-            <span style="color:rgba(250, 85, 250, 0.966)">Pink circles</span> placed in front of vehicles are spaces detected by the algorithm to prevent collision with vehicle ahead.
-             <span style="color:rgba(250, 85, 250, 0.966)">Pink circles</span> surrounding vehicles are used to check if other vehicles are not too close and if so to quickly decelerate.<br>
+          <span>&nbsp;&nbsp;The Queue algorithm checks if in a circle (space) ahead of the vehicle is any neighbour.
+             If so, then the deceleration vector is calculated and applied to the agent.
+             In emergencies, when the neighbour will approach from another direction, the vehicle will brake immediately and move slowly.
+             In this simulation beside the Queue method, the Seek is used to give vehicles target behind doors (narrow path) moreover,
+             the Separation keeps the crowd from overlapping and lastly the Containment is used to avoid walls.<br>
+            &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of the vehicle is a visualization of the desired velocity and the <span style="color:#6A5ACD">violet</span> one shows the current velocity of the agent.
+            <span style="color:rgba(250, 85, 250, 0.966)">Pink walls</span> are obstacles that the algorithm should detect and avoid.
+            <span style="color:rgba(250, 85, 250, 0.966)">Pink circles</span> placed in front of vehicles are spaces detected by the algorithm to prevent collision with the vehicle ahead.
+            <span style="color:rgba(250, 85, 250, 0.966)">Pink circles</span> surrounding vehicles are used to check if other vehicles are not too close and if so to quickly decelerate.
           </span>
         </div>
 
@@ -186,13 +169,30 @@
             <div class="range-slider">
                 <div class="slider-box">Radius of the Circle</div>
                 <div class="container">
-                  <input id="circleAheadRadius" class="range-slider__range" type="range" value="10" min="0" step="0.01">
+                  <input id="circleAheadRadius" class="range-slider__range" type="range" value="20" min="0" step="0.01">
                   <span class="range-slider__value">0</span>
                 </div>
             </div>
         </div>
 
+        <div class="box">
+          <!--BUTTON DISPLAY FORCES-->
+          <button id="Forces" class="button" style="margin-bottom: 30px;">
+            Display Forces ON<br>
+            (C)
+          </button>
+      
+          <!--BUTTON FREEZE-->
+          <button id="Freeze" class="button">
+            Freeze OFF<br>
+            (spacebar)
+          </button>
+        </div>
+
         <script>
+          window.onkeydown = function (e) {
+            return !(e.keyCode == 32);
+          };
           var canvas = document.querySelector('.viewport'),
             ctx = canvas.getContext('2d');
           canvas.width = screen.width / 2;
@@ -217,13 +217,13 @@
           }
 
           var vehicles = [];
-          for (let index = 0; index < 20; index++) {
-            vehicles.push(new Vehicle(Math.ceil(300 +( Math.random() * (canvas.width /4))), Math.ceil(Math.random() * 50 + canvas.height)));
-            vehicles[vehicles.length - 1].radius = 10;
+          for (let index = 0; index < 10; index++) {
+            vehicles.push(new Vehicle(Math.ceil(350 +( Math.random() * (canvas.width /4))), Math.ceil(Math.random() * 50 + canvas.height)));
+            vehicles[vehicles.length - 1].radius = 9;
           }
 
           //READ IF BUTTON "DISPLAY FORCE" WAS CLICKED
-        var displayForces = 'off';
+        var displayForces = 'on';
         document.getElementById("Forces").addEventListener('click', function () {
           if (displayForces == 'on') {
             displayForces = 'off';
@@ -263,7 +263,7 @@
         }, false);
 
         //READ IF BUTTON "FREEZE" WAS KEYPRESSED
-        document.body.addEventListener("keypress", function (k) {
+        document.body.addEventListener("keydown", function (k) {
           if (k.keyCode == 32) {
             if (freeze == 'on') {
               freeze = 'off';
@@ -275,6 +275,8 @@
             }
           }
         }, false);
+
+        
 
           rangeSliderInit();
 
@@ -288,26 +290,31 @@
 
               if (vehicles[index].position.distanceBetweenPoints(target) < 30) {
 
-                vehicles[index].position.x = Math.ceil(300 +( Math.random() * (canvas.width /4)));
+                vehicles[index].position.x = Math.ceil(350 +( Math.random() * (canvas.width /4))), Math.ceil(Math.random() * 50 + canvas.height);
                 vehicles[index].position.y = Math.ceil(canvas.height);
               }
               var avoid = vehicles[index].containment(wall);
               var seek = vehicles[index].seek(target.x, target.y,displayForces);
               var sep = vehicles[index].separation(vehicles);
               var brake = vehicles[index].queue(vehicles,
-               VehAhead = document.getElementById("circleAhead").value,
-               VehRadius = document.getElementById("circleAheadRadius").value,
-               displayForces);
-              if(avoid.x != 0 || avoid.y != 0){
+              VehAhead = document.getElementById("circleAhead").value,
+              VehRadius = document.getElementById("circleAheadRadius").value,
+              displayForces);
+              if((avoid.x != 0 || avoid.y != 0) ){
                 var avoidSeek = vehicles[index].seek(avoid.x,avoid.y,displayForces);
-                avoidSeek = avoidSeek.multiply(2);
+                avoidSeek = avoidSeek.multiply(4.5);
                 vehicles[index].applyForce(avoidSeek);
               }
-              seek = seek.multiply(0.3);
-              vehicles[index].applyForce(seek);
-              vehicles[index].applyForce(sep);
-              vehicles[index].applyForce(brake);
-              vehicles[index].acceleration = vehicles[index].acceleration.divide(3);
+              else{
+                //seek = seek.multiply(0.5);
+                vehicles[index].applyForce(seek);
+                sep = sep.multiply(0.5)
+                vehicles[index].applyForce(sep);
+                brake = brake.multiply(1.5);
+                vehicles[index].applyForce(brake);
+                vehicles[index].acceleration = vehicles[index].acceleration.divide(3);
+              }
+              
               if (freeze == 'off') {
 
                 vehicles[index].update();

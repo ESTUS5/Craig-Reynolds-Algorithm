@@ -82,7 +82,8 @@
       </button>
     </div>
     <div class="container">
-      <button class="button" style="background-color: #333; color: white; cursor: not-allowed;" disabled="disabled" onclick='window.location.href = "./09Path_Following.html"'>
+      <button class="button" style="background-color: #333; color: white; cursor: not-allowed;" disabled="disabled"
+        onclick='window.location.href = "./09Path_Following.html"'>
         Path Following
       </button>
     </div>
@@ -120,43 +121,24 @@
       </button>
     </div>
   </div>
-  <div class="box">
-
-    <!--BUTTON DISPLAY FORCES-->
-    <button id="Forces" class="button">
-      Display Forces OFF<br>
-      (spacebar)
-    </button>
-
-    <!--BUTTON FREEZE-->
-    <button id="Freeze" class="button">
-      Freeze OFF<br>
-      (C)
-    </button>
-
-    <!--BUTTON RANDOM-->
-    <button id="Random" class="button">
-      Random the Path<br>
-      (V)
-    </button>
-  </div>
 
   <div class="main">
     <div class="explain_box">
-        <span>
-          &nbsp;&nbsp;The Path Following algorithm takes as input path object and returns a position placed on the path ahead of vehicle.
-           The main method returns target, only if vehicle drifts away from the path. Calculated point is passed down to Seek method.
-            Essential for the algorithm is calculating normal points on path's segments and choosing which is closest to agent. It can be done in method itself or using methods defined for path object.
-          <br>
-          &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of vehicle is a visualization of desired velocity and the <span style="color:#6A5ACD">violet</span>
-          one shows current velocity of the agent. <span style="color:rgba(250, 85, 250, 0.966)">Pink space</span> is the path that vehicle follows.
-           <span style="color:rgba(250, 85, 250, 0.966)">Pink circles</span> are representing predicted position of vehicle and target position.
-           <span style="color:red">Red line</span> follows steps taken by algorithm to calculate target.<br>
-        </span>
+      <span>
+        &nbsp;&nbsp;The Path Following algorithm takes as an input a path object and returns a position placed on the path ahead of the vehicle.
+         The main method returns a target, only if the vehicle drifts away from the path.
+          The calculated point is passed down to the Seek method.
+           Essential for the algorithm is calculating normal points on path's segments and choosing which is closest to the agent.
+            It can be done in the method itself or using methods defined in the path object.<br>
+        &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of the vehicle is a visualization of the desired velocity and the <span style="color:#6A5ACD">violet</span> one shows the current velocity of the agent.
+        <span style="color:rgba(250, 85, 250, 0.966)">Pink space</span> is the path that the vehicle follows.
+         <span style="color:rgba(250, 85, 250, 0.966)">Pink circles</span> are representing the predicted position of the vehicle and the target's position.
+          The <span style="color:red">red line</span> follows the steps taken by the algorithm to calculate the target.<br>
+      </span>
     </div>
-      
+
     <canvas id="VP" class="viewport" style="background: #eee; width: 100%;height: 50%;"></canvas>
-    
+
     <!--OUTPUT OF VEHICLE POSITION & VELOCITY-->
     <div class="output_box">
 
@@ -179,26 +161,26 @@
         <div class="container">
 
           <input id="maxspeed" class="range-slider__range" type="range" value="2" min="0" max="7" step="0.01">
-          
+
           <span class="range-slider__value">0</span>
 
         </div>
-      
+
       </div>
 
       <!--RANGE SLIDER OF MAXFORCE-->
       <div id="mf" class="range-slider">
-        
+
         <div class="slider-box">Maxforce</div>
-        
+
         <div class="container">
 
           <input id="maxforce" class="range-slider__range" type="range" value="0.1" min="0" max="5" step="0.01">
-          
+
           <span class="range-slider__value">0</span>
 
         </div>
-      
+
       </div>
 
     </div>
@@ -207,32 +189,32 @@
 
       <!--RANGE SLIDER OF PREDICT DISTANCE-->
       <div id="pd" class="range-slider">
-        
+
         <div class="slider-box">Predict distance</div>
-        
+
         <div class="container">
 
           <input id="Predict" class="range-slider__range" type="range" value="30" min="0" step="0.01">
-          
+
           <span class="range-slider__value">0</span>
 
         </div>
-      
+
       </div>
 
       <!--RANGE SLIDER OF TARGET OFFSET-->
       <div id="to" class="range-slider">
-        
+
         <div class="slider-box">Target offset</div>
-        
+
         <div class="container">
 
           <input id="Target" class="range-slider__range" type="range" value="10" min="0" step="0.01">
-          
+
           <span class="range-slider__value">0</span>
 
         </div>
-      
+
       </div>
 
     </div>
@@ -241,22 +223,45 @@
 
       <!--RANGE SLIDER OF PATH RADIUS/MARGIN-->
       <div id="pr" class="range-slider">
-        
+
         <div class="slider-box">Path radius</div>
-        
+
         <div class="container">
 
           <input id="Radius" class="range-slider__range" type="range" value="20" min="0" step="0.01">
-          
+
           <span class="range-slider__value">0</span>
 
         </div>
-      
+
       </div>
-    
+
+    </div>
+
+    <div class="box">
+
+      <!--BUTTON DISPLAY FORCES-->
+      <button id="Forces" class="button" style="margin-bottom: 30px;">
+        Display Forces ON<br>
+        (C)
+      </button>
+
+      <!--BUTTON FREEZE-->
+      <button id="Freeze" class="button" style="margin-bottom: 30px;">
+        Freeze OFF<br>
+        (spacebar)
+      </button>
+
+      <!--BUTTON RANDOM-->
+      <button id="Random" class="button">
+        Random the Path<br>
+        (V)
+      </button>
+
     </div>
 
     <script>
+
 
       //CHANGE WIDTH & HEIGHT OF CANVAS
       var canvas = document.querySelector('.viewport'),
@@ -286,7 +291,7 @@
       vehicle.choosePath(path.points, path.radius);
 
       //READ IF BUTTON "DISPLAY FORCE" WAS CLICKED
-      var displayForces = 'off';
+      var displayForces = 'on';
       document.getElementById("Forces").addEventListener('click', function () {
         if (displayForces == 'on') {
           displayForces = 'off';
@@ -343,10 +348,10 @@
 
       //LOOP FUNC
       function draw() {
-        
+
         ctx.setTransform(1, 0, 0, 1, 0, 0); // <- JS magic for PathBegin()..
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
+
         //RESET POSITION
         if (vehicle.position.distanceBetweenPoints(path.points[path.points.length - 1]) < path.radius) {
           vehicle.position.x = -30;
@@ -355,7 +360,7 @@
 
         var follow = vehicle.followPath(document.getElementById("Predict").value,
           document.getElementById("Target").value, displayForces);
-        
+
         if (follow.x != 0 || follow.y != 0) {
           var seek = vehicle.seek(follow.x, follow.y, displayForces);
           vehicle.applyForce(seek);
@@ -372,20 +377,20 @@
         if (option == 'on') {
 
           var numberOfPoints = Math.ceil(Math.random() * 3);
-          
+
           if (numberOfPoints == 0) {
 
             path = new Path(-20, Math.random() * canvas.height, canvas.width + 10, Math.random() * canvas.height, document.getElementById("Radius").value);
-          
+
           }
           else {
 
             path = new Path(-10, Math.random() * canvas.height, 100 + Math.random() * 100, Math.random() * canvas.height, document.getElementById("Radius").value);
-            
+
             for (let i = 0; i < numberOfPoints - 1; i++) {
 
               path.addPoint(path.points[i + 1].x + 100 + Math.random() * 200, Math.random() * canvas.height);
-            
+
             }
 
             path.addPoint(canvas.width + 30, Math.random() * canvas.height);
@@ -418,10 +423,10 @@
 
   </div>
 
-    <div class="code_box">
+  <div class="code_box">
 
-      <!--CREATES SNIPPET OF CODE-->
-      <pre class="prettyprint linenums">
+    <!--CREATES SNIPPET OF CODE-->
+    <pre class="prettyprint linenums">
 choosePath(path, radius = <b id="snipRadius" style="color: #cd5c5c">20</b> ) {
   this.path = path,
     this.pathRadius = radius,
@@ -463,4 +468,5 @@ if((normalPoint.x < Math.min(a.x,b.x)) || (normalPoint.x > Math.max(a.x,b.x))){
   </div>
 
 </body>
+
 </html>

@@ -122,37 +122,18 @@
     </nav>
   </div>
 
-  <div class="box">
-    <!--BUTTON DISPLAY FORCES-->
-    <button id="Forces" class="button">
-      Display Forces OFF<br>
-      (C)
-    </button>
-    <!--BUTTON FREEZE-->
-    <button id="Freeze" class="button">
-      Freeze OFF<br>
-      (spacebar)
-    </button>
-    <!--BUTTON CHANGE FOLLOWING TYPE-->
-    <button id="followingType" class="button">
-      Change Following<br>
-      (V)
-    </button>
-  </div>
-
   <div class="main">
 
       <div class="explain_box">
         <span>
-          &nbsp;&nbsp;The Leader Following algorithm is a method that "predicts" past position of leader (target) and uses the Arrival algorithm to approach that point.
-          Beside following, space in front of the leader is being always checked by vehicle (follower).
-           If it finds itself in the <span style="color:rgba(50, 155, 50, 0.767)">green</span> space the next target is normal vector from that area.
-            Thanks to that, agent not only follows its target but also gets out of leader's way.
-          <br>
-          &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of Vehicle is a visualization of desired velocity and the <span style="color:#6A5ACD">violet</span>
-          one shows current velocity of the agent. The <span style="color:rgba(124, 206, 124, 0.767)">green</span> space 
-          is an area that follower will be escaping. The <span style="color:red">red</span> vector represents target position.
-           <span style="color:rgba(250, 85, 250, 0.966)">Pink circles</span> represent space in which the arrival deaccelerates.<br>
+          &nbsp;&nbsp;The Leader Following algorithm is a method that "predicts" past position of a leader (target) and uses the Arrival algorithm to approach that point.
+           Beside following, space in front of the leader is being always checked by the vehicle (follower).
+           If it finds itself in the <span style="color:rgba(50, 155, 50, 0.767)">green</span> space the next target is a normal vector from that area.
+           Thanks to that, the agent not only follows its target but also gets out of the leader's way.<br>
+          &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of Vehicle is a visualization of the desired velocity and the <span style="color:#6A5ACD">violet</span> one shows the current velocity of the agent.
+           The <span style="color:rgba(50, 155, 50, 0.767)">green</span> space is an area that followers will be escaping.
+           The <span style="color:red">red</span> vector represents the target's position.
+           <span style="color:rgba(250, 85, 250, 0.966)">Pink circles</span> represent space in which the Arrival algorithm deaccelerates.<br>
         </span>
       </div>
 
@@ -236,8 +217,33 @@
     
     </div>
     
-    <script>
+    <div class="box">
 
+      <!--BUTTON DISPLAY FORCES-->
+      <button id="Forces" class="button" style="margin-bottom: 30px;">
+        Display Forces ON<br>
+        (C)
+      </button>
+
+      <!--BUTTON FREEZE-->
+      <button id="Freeze" class="button" style="margin-bottom: 30px;">
+        Freeze OFF<br>
+        (spacebar)
+      </button>
+
+      <!--BUTTON CHANGE FOLLOWING TYPE-->
+      <button id="followingType" class="button">
+        Change Following<br>
+        (V)
+      </button>
+
+    </div>
+  
+
+    <script>
+      window.onkeydown = function (e) {
+        return !(e.keyCode == 32);
+      };
 
       var canvas = document.querySelector('.viewport'),
       ctx = canvas.getContext('2d');
@@ -249,7 +255,7 @@
 
 
       var vehicles = [];
-      for (let index = 0; index < 10; index++) {
+      for (let index = 0; index < 5; index++) {
         vehicles.push(new Vehicle(Math.ceil(Math.random() * 800), Math.ceil(Math.random() * 400)));
         vehicles[vehicles.length - 1].radius = 10;
       }
@@ -279,7 +285,7 @@
 
 
       //READ IF BUTTON "DISPLAY FORCE" WAS CLICKED
-        var displayForces = 'off';
+        var displayForces = 'on';
         document.getElementById("Forces").addEventListener('click', function () {
           if (displayForces == 'on') {
             displayForces = 'off';
@@ -319,7 +325,7 @@
         }, false);
 
         //READ IF BUTTON "FREEZE" WAS KEYPRESSED
-        document.body.addEventListener("keypress", function (k) {
+        document.body.addEventListener("keydown", function (k) {
           if (k.keyCode == 32) {
             if (freeze == 'on') {
               freeze = 'off';
@@ -350,13 +356,15 @@
             preDistance = document.getElementById("Length").value,
             radius = document.getElementById("Radius").value,
             displayForces)
-            var separation = vehicles[index].separation(vehicles);
-            var arr = vehicles[index].arrival(leader.x,leader.y,30,displayForces);
-            vehicles[index].applyForce(arr);
-            vehicles[index].applyForce(separation);
-            
+            var arr = vehicles[index].arrival(Math.ceil(leader.x),Math.ceil(leader.y),30,displayForces);
             if (freeze == 'off') {
-              vehicles[index].update();
+              if(vehicles[index].position.distanceBetweenPoints(leader)>0){
+                vehicles[index].applyForce(arr);
+                vehicles[index].update();
+              }
+              else{
+                vehicles[index].velocity = new Vector(0,0);
+              }
             }
 
             vehicles[index].renderVehicle();
@@ -365,11 +373,9 @@
             
           }
 
-          var arriv = vehicles[0].arrival(mouseObj.x, mouseObj.y,30,displayForces);
-          var separation = vehicles[0].separation(vehicles);
-          vehicles[0].applyForce(arriv);
-          vehicles[0].applyForce(separation);
+          var arriv = vehicles[0].arrival(Math.ceil(mouseObj.x), Math.ceil(mouseObj.y),30,displayForces);
           if (freeze == 'off') {
+              vehicles[0].applyForce(arriv);
               vehicles[0].update();
             }
           vehicles[0].renderVehicle();
@@ -387,7 +393,7 @@
               radius = document.getElementById("Radius").value,
               displayForces)
             var separation = vehicles[index].separation(vehicles);
-            var arr = vehicles[index].arrival(leader.x,leader.y,30,displayForces);
+            var arr = vehicles[index].arrival(Math.ceil(leader.x),Math.ceil(leader.y),30,displayForces);
             vehicles[index].applyForce(arr);
             vehicles[index].applyForce(separation);
 
@@ -401,10 +407,10 @@
 
           }
 
-          var arriv = vehicles[0].arrival(mouseObj.x, mouseObj.y,30,displayForces);
+          var arriv = vehicles[0].arrival(Math.ceil(mouseObj.x), Math.ceil(mouseObj.y),30,displayForces);
           var separation = vehicles[0].separation(vehicles);
           vehicles[0].applyForce(arriv);
-          vehicles[0].applyForce(separation);
+          //vehicles[0].applyForce(separation);
           if (freeze == 'off') {
             vehicles[0].update();
           }
@@ -418,7 +424,7 @@
         document.getElementById("snipRadius").innerHTML = (document.getElementById("Radius").value);
       }
 
-      setInterval(draw, 14);
+      setInterval(draw, 30);
 
     </script>
 

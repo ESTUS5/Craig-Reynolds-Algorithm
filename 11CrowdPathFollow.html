@@ -121,32 +121,22 @@
     </div>
   </div>
 
-  <div class="box">
-    <!--BUTTON DISPLAY FORCES-->
-    <button id="Forces" class="button">
-      Display Forces OFF<br>
-      (C)
-    </button>
-    <!--BUTTON FREEZE-->
-    <button id="Freeze" class="button">
-      Freeze OFF<br>
-      (spacebar)
-    </button>
-  </div>
-
   <div class="main">
 
       <div class="explain_box">
       <span>
-        &nbsp;&nbsp;Crowd Path following is supposingly an example of human crowd walking through corridor. Only two methods are combined to achieve this effect.
-        First was already described as Path following algorithm and here is used the same way. Second method is new and requires other vehicles to work properly.
-         It is called Separation and is quite simple. Method finds every neighbour's position, after that it makes average of it and then inverses the vector.
-         When it is applied vehicle will be separating itself from the most dense space filled with neighbours. 
+        &nbsp;&nbsp;The Crowd Path following is supposedly an example of a human crowd walking through the corridor.
+         Only two methods are combined to achieve this effect.
+          First was already described as Path following algorithm and here is used the same way.
+           The second method is new and requires other vehicles to work properly.
+            It is called Separation and is quite simple.
+             The method finds every neighbour's position after that, it makes an average of it and then inverses the vector.
+              When it is applied vehicle will be separating itself from the densest space filled with neighbours.
         <br>
-        &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of Vehicle is a visualization of desired velocity and the <span style="color:#6A5ACD">violet</span>
-        one shows current velocity of the agent. <span style="color:rgba(250, 85, 250, 0.966)">Pink space</span> is the path that Vehicle follows.
-        <span style="color:rgba(250, 85, 250, 0.966)">Pink circles</span> are representing predicted position of Vehicle and target position.
-        <span style="color:red">Red line</span> follows steps taken by algorithm to calculate target.<br>
+        &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of the vehicle is a visualization of the desired velocity and the <span style="color:#6A5ACD">violet</span> one shows the current velocity of the agent.
+        <span style="color:rgba(250, 85, 250, 0.966)">Pink space</span> is the path that the vehicle follows.
+         <span style="color:rgba(250, 85, 250, 0.966)">Pink circles</span> are representing the predicted position of the vehicle and the target's position.
+          The <span style="color:red">red line</span> follows the steps taken by the algorithm to calculate the target.<br>
       </span>
     </div>
 
@@ -229,7 +219,7 @@
             
             <div class="container">
 
-              <input id="sepF" class="range-slider__range" type="range" value="0.5" min="0" max="5" step="0.01">
+              <input id="sepF" class="range-slider__range" type="range" value="1.5" min="0" max="5" step="0.01">
               
               <span class="range-slider__value""slider-box">0</span>
 
@@ -239,8 +229,24 @@
   
       </div>
 
-    <script>
+      <div class="box">
+        <!--BUTTON DISPLAY FORCES-->
+        <button id="Forces" class="button" style="margin-bottom: 30px;">
+          Display Forces ON<br>
+          (C)
+        </button>
+    
+        <!--BUTTON FREEZE-->
+        <button id="Freeze" class="button">
+          Freeze OFF<br>
+          (spacebar)
+        </button>
+      </div>
 
+    <script>
+      window.onkeydown = function (e) {
+        return !(e.keyCode == 32);
+      };
       //CHANGE WIDTH & HEIGHT OF CANVAS
       var canvas = document.querySelector('.viewport'),
         ctx = canvas.getContext('2d');
@@ -265,7 +271,7 @@
       }
 
       //READ IF BUTTON "DISPLAY FORCE" WAS CLICKED
-      var displayForces = 'off';
+      var displayForces = 'on';
         document.getElementById("Forces").addEventListener('click', function () {
           if (displayForces == 'on') {
             displayForces = 'off';
@@ -305,7 +311,7 @@
         }, false);
 
         //READ IF BUTTON "FREEZE" WAS KEYPRESSED
-        document.body.addEventListener("keypress", function (k) {
+        document.body.addEventListener("keydown", function (k) {
           if (k.keyCode == 32) {
             if (freeze == 'on') {
               freeze = 'off';

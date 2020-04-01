@@ -123,35 +123,20 @@
     </div>
     </nav>
   </div>
-  <div class="box">
-
-    <!--BUTTON DISPLAY FORCES-->
-    <button id="Forces" class="button">
-      Display Forces OFF<br>
-      (C)
-    </button>
-    
-    <!--BUTTON FREEZE-->
-    <button id="Freeze" class="button">
-      Freeze OFF<br>
-      (spacebar)
-    </button>
-
-  </div>
 
   <div class="main">
 
     <div class="explain_box">
       <span>
           &nbsp;&nbsp;The Unaligned Collision Avoidance is one of the approaches to avoid moving objects (for example other agents).
-         In this simulation other vehicles are cause of collisions. To prevent this, their predicted positions are compared with Vehicle's. 
-         Result tells if avoidance has to be performed. In order to avoid collision Vehicle will accelerate or decelerate
-           and seek towards the opposite direction.
-        <br>
-        &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of Vehicle is a visualization of desired velocity and the <span style="color:#6A5ACD">violet</span>
-        one shows current velocity of the agent. White vector conecting two vehicles occurs when they are on collision path.
-        <span style="color:red">Red</span> vector is predicted velocity and <span style="color:green">green</span> represents avoiding force.<br>
-        &nbsp;&nbsp;The average of occuring collisions per step <span id="stat">0</span>
+           In this simulation, other vehicles are a cause of collisions.
+           To prevent this, their predicted positions are compared with the vehicle's position.
+           Result tells if avoidance has to be performed.
+           To avoid a collision the vehicle will accelerate or decelerate and seek the opposite direction.<br>
+          &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of the vehicle is a visualization of the desired velocity and the <span style="color:#6A5ACD">violet</span> one shows the current velocity of the agent.
+           A white vector connecting two vehicles occurs when they are on a collision path.
+           The <span style="color:red">red</span> vector is a predicted velocity and the <span style="color:green">green</span> represents avoiding force.
+          &nbsp;&nbsp;The average of the occurring collisions per step <span id="stat">0</span>
       </span>
     </div>
 
@@ -207,8 +192,24 @@
 
     </div>
 
-    <script>
+    <div class="box">
+      <!--BUTTON DISPLAY FORCES-->
+      <button id="Forces" class="button" style="margin-bottom: 30px;">
+        Display Forces ON<br>
+        (C)
+      </button>
+  
+      <!--BUTTON FREEZE-->
+      <button id="Freeze" class="button">
+        Freeze OFF<br>
+        (spacebar)
+      </button>
+    </div>
 
+    <script>
+      window.onkeydown = function (e) {
+        return !(e.keyCode == 32);
+      };
       var canvas = document.querySelector('.viewport'),
         ctx = canvas.getContext('2d');
       canvas.width = screen.width / 2;
@@ -255,7 +256,7 @@
       }
 
       //READ IF BUTTON "DISPLAY FORCE" WAS CLICKED
-      var displayForces = 'off';
+      var displayForces = 'on';
         document.getElementById("Forces").addEventListener('click', function () {
           if (displayForces == 'on') {
             displayForces = 'off';
@@ -295,7 +296,7 @@
         }, false);
 
         //READ IF BUTTON "FREEZE" WAS KEYPRESSED
-        document.body.addEventListener("keypress", function (k) {
+        document.body.addEventListener("keydown", function (k) {
           if (k.keyCode == 32) {
             if (freeze == 'on') {
               freeze = 'off';

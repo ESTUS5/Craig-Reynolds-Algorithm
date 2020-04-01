@@ -4,9 +4,10 @@
 }
 .range-slider {
   float: left;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  width: 50%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 5px;
+  width: 70%;
 }
 
 .slider-box {
@@ -66,7 +67,8 @@
 .range-slider__value {
   display: inline-block;
   position: relative;
-  width: 10%;
+  top:3px;
+  width: 5%;
   color: #fff;
   line-height: 20px;
   text-align: center;
@@ -74,7 +76,7 @@
   background: #333;
   padding: 5px 10px;
   margin-left: 8px;
-  top: 4px;
+  
 }
 .range-slider__value::before {
     position: absolute;

@@ -121,31 +121,15 @@
     </nav>
   </div>
 
-  <div class="box">
-
-    <!--BUTTON DISPLAY FORCES-->
-    <button id="Forces" class="button">
-      Display Forces OFF<br>
-      (C)
-    </button>
-
-    <!--BUTTON FREEZE-->
-    <button id="Freeze" class="button">
-      Freeze OFF<br>
-      (spacebar)
-    </button>
-
-  </div>
-
   <div class="main">
   
     <div class="explain_box">
       <span>
-          &nbsp;&nbsp;Flee algorithm acts almost the same as the Seek with one exception.
-        The target becomes the point that, the <span style="color:#98fb98">Vehicle</span> tries to move away from. That is why most of the calculations are identical.
-          Point attached to the cursor will trigger the method if it is inside the <span style="color:rgba(250, 85, 250, 0.966)">radius</span>.<br>
-          &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of vehicle is a visualization of  desired velocity and the <span style="color:#6A5ACD">violet</span>
-            one shows current velocity of the agent. The <span style="color:rgba(250, 85, 250, 0.966)">pink circle</span> is flee radius in which vehicle reacts to target.<br>
+          &nbsp;&nbsp;The flee algorithm acts almost the same as the Seek with one exception.
+        The vehicle tries to move away from the target's position. That is why the calculations are almost identical, except line 6. 
+        the point attached to the cursor will trigger the method if it is inside the <span style="color:rgba(250, 85, 250, 0.966)">radius</span>.<br>
+          &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of the vehicle is a visualization of the desired velocity and the <span style="color:#6A5ACD">violet</span>
+            one shows current velocity of the agent. The <span style="color:rgba(250, 85, 250, 0.966)">pink circle</span> is the flee radius in which the vehicle calculates the steering vector to flee the target.<br>
       </span>
     </div>
 
@@ -185,7 +169,7 @@
       
       <div class="slider-box">Maxforce</div>
       <div class="container">
-      <input id="maxforce" class="range-slider__range" type="range" value="0.1" min="0" max="5" step="0.01">
+      <input id="maxforce" class="range-slider__range" type="range" value="0.1" min="0" max="2" step="0.01">
       
       <span class="range-slider__value">0</span>
       </div>
@@ -202,7 +186,24 @@
       </div>
     </div>
 
+    <div class="box">
+
+      <!--BUTTON DISPLAY FORCES-->
+      <button id="Forces" class="button" style="margin-bottom: 30px;">
+        Display Forces ON<br>
+        (C)
+      </button>
+  
+      <!--BUTTON FREEZE-->
+      <button id="Freeze" class="button">
+        Freeze OFF<br>
+        (spacebar)
+      </button>
+  
+    </div>
+
     <script>
+
       //CHANGE WIDTH & HEIGHT OF CANVAS
       var canvas = document.querySelector('.viewport');
       ctx = canvas.getContext('2d');
@@ -217,7 +218,7 @@
       });
 
       //READ IF BUTTON "DISPLAY FORCE" WAS CLICKED
-        var displayForces = 'off';
+        var displayForces = 'on';
         document.getElementById("Forces").addEventListener('click', function () {
           if (displayForces == 'on') {
             displayForces = 'off';
@@ -285,8 +286,7 @@
         vehicle.maxforce = document.getElementById("maxforce").value;
         vehicle.maxspeed = document.getElementById("maxspeed").value;
         
-        var flee = vehicle.flee(safeDistance = document.getElementById("fleeRadius").value,
-        mouseObj.x,mouseObj.y,displayForces = displayForces);
+        var flee = vehicle.flee(mouseObj.x,mouseObj.y,safeDistance = document.getElementById("fleeRadius").value,displayForces = displayForces);
         vehicle.applyForce(flee);
         if (freeze == 'off') {
           vehicle.update();

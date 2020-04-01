@@ -122,33 +122,19 @@
     </div>
     </nav>
   </div>
-  <div class="box">
-
-    <!--BUTTON DISPLAY FORCES-->
-    <button id="Forces" class="button">
-      Display Forces OFF<br>
-      (C)
-    </button>
-
-    <!--BUTTON FREEZE-->
-    <button id="Freeze" class="button">
-      Freeze OFF<br>
-      (spacebar)
-    </button>
-
-  </div>
 
   <div class="main">
 
     <div class="explain_box">
-      <span> &nbsp;&nbsp;Wall following algorithm returns position that the agent will take as target and approach it. If vehicle is in right distance from the closest wall, then 
-        the algorithm will not return any target directing vehicle. Point calculated by the method is used in Seek algorithm in order to steer vehicle onto that position.
-        <br>
-        &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of vehicle is a visualization of desired velocity and the <span style="color:#6A5ACD">violet</span>
-        one shows current velocity of the agent.  <span style="color:rgba(250, 85, 250, 0.966)">Pink walls</span> are obstacles that algorithm should detect and avoid.
-         <span style="color:rgba(250, 85, 250, 0.966)">Pink circles</span> on the walls are projections of the predicted position of the Vehicle.
-          The small <span style="color:rgba(250, 85, 250, 0.966)">pink circle</span> at the end of the <span style="color:rgb(34,139,34)">green line</span> is target point.
-          When the <span style="color:red">red line</span> appears it means that the algorithm's point was applied in seek method and approached.<br>
+      <span> &nbsp;&nbsp;The Wall following algorithm returns position that the agent will take as target and approach it.
+         If the vehicle is in the right distance from the closest wall, then the algorithm will not return any target directing vehicle.
+          Point calculated by the method is used in the Seek algorithm to steer the vehicle onto that position.<br>
+          &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of the vehicle is a visualization of the desired velocity
+         and the <span style="color:#6A5ACD">violet</span> one shows the current velocity of the agent.
+         <span style="color:rgba(250, 85, 250, 0.966)">Pink walls</span> are obstacles that the algorithm should detect and avoid.
+         <span style="color:rgba(250, 85, 250, 0.966)">Pink circles</span> on the walls are projections of the predicted position of the vehicle.
+            The <span style="color:#F55F20">orange circle</span> at the end of the <span style="color:rgb(34,139,34)">green line</span> is the target point.
+             When the <span style="color:red">red line</span> appears it means that the algorithm's point was applied in the Seek method and approached.<br>
       </span>
     </div>
 
@@ -229,6 +215,20 @@
 
     </div>
 
+    <div class="box">
+      <!--BUTTON DISPLAY FORCES-->
+      <button id="Forces" class="button" style="margin-bottom: 30px;">
+        Display Forces ON<br>
+        (C)
+      </button>
+  
+      <!--BUTTON FREEZE-->
+      <button id="Freeze" class="button">
+        Freeze OFF<br>
+        (spacebar)
+      </button>
+    </div>
+
     <script>
 
       var canvas = document.querySelector('.viewport'),
@@ -242,7 +242,7 @@
       vehicle.maxspeed = 1
       
       //READ IF BUTTON "DISPLAY FORCE" WAS CLICKED
-      var displayForces = 'off';
+      var displayForces = 'on';
       document.getElementById("Forces").addEventListener('click', function () {
         if (displayForces == 'on') {
           displayForces = 'off';

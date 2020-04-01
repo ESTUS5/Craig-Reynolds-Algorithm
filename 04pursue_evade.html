@@ -125,40 +125,19 @@
         </nav>
     </div>
 
-    <div class="box">
-
-        <!--BUTTON DISPLAY FORCES-->
-        <button id="Forces" class="button">
-        Display Forces OFF<br>
-        (C)
-        </button>
-
-        <!--BUTTON FREEZE-->
-        <button id="Freeze" class="button">
-        Freeze OFF<br>
-        (spacebar)
-        </button>
-
-        <!--BUTTON CHANGE ALGORITHM -->
-        <button id="change" class="button">
-            Pursue<br>
-            (V)
-        </button>
-
-    </div>
-
     <div class="main">
         
         <div class="explain_box">
             <span>&nbsp;&nbsp;The Pursue and the Evade are two very similar algorithms. If the Flee is inverse of the Seek, then the same is the Evade for the Pursue.
-                Idea behind this methods is quite simple, but with a flaws.
-                The <span style="color:#cd5c5c">red</span> vehicle is using the Pursue or the Evade method.
-                <span style="color:#cd5c5c">Red agent</span> checks current velocity and position of his target and predicts when they are going to overlap with each other.
-                In Pursue method predicted position is passed to the Seek so vehicle will catch target. On the other hand in the Evade predicted position is passed to the Flee so agent can evade target.
-                The methods itself are not robust and can be tricked and to show that the positions of vehicles and theirs atrributes will change randomly.<br>
-                &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of vehicle is a visualization of desired velocity and the <span style="color:#6A5ACD">violet</span>
-                one shows current velocity of the agent. The <span style="color:rgba(73, 131, 103, 0.795)">green with circle</span> describes the point of collision between two.<br>
-                &nbsp;&nbsp;During simulation it is possible to change direction of target (blue vehicle) by clicking with left click mouse button on canvas.
+                The idea behind this methods is quite simple, but with a flaws.
+                The <span style="color:#cd5c5c">red vehicle</span> is using the Pursue or the Evade method.
+                The <span style="color:#cd5c5c">red agent</span> checks current velocity and position of his target and predicts when they are going to overlap with each other.
+                In Pursue method the predicted position is passed to the Seek so the <span style="color:#cd5c5c">red vehicle</span> will catch the target(the <span style="color:#5b7ae0">blue vehicle</span>).
+                 On the other hand in the Evade the predicted position is passed to the Flee so the <span style="color:#cd5c5c">red agent</span> can evade the target.
+                Because the methods calculate a future position of the target and only that position is considered in next step, algorithms are not robust.<br>
+                &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of the vehicle is a visualization of the desired velocity and the <span style="color:#6A5ACD">violet</span>
+                one shows current velocity of the agent. The <span style="color:rgba(73, 131, 103, 0.795)">green line with the circle</span> describes the point of collision between the two vehicles.<br>
+                &nbsp;&nbsp;During simulation it is possible to change direction of the target (the <span style="color:#5b7ae0">blue vehicle</span>) by clicking with the left click mouse button on the canvas.
             </span>
         </div>
 
@@ -197,7 +176,7 @@
                     Maxspeed of <span name="red">Pursuer</span>
                 </div>
                 <div class="container">
-                <input id="maxspeed1" class="range-slider__range" type="range" min="0" max="7" step="0.01">
+                <input id="maxspeed1" class="range-slider__range" value ="2" type="range" min="0" max="7" step="0.01">
             
                 <span id="span1a" class="range-slider__value">
                     0
@@ -212,7 +191,7 @@
                     Maxforce of <span name="red">Pursuer</span>
                 </div>
                 <div class="container">
-                <input id="maxforce1" class="range-slider__range" type="range" min="0" max="5" step="0.01">
+                <input id="maxforce1" class="range-slider__range" value ="0.1" type="range" min="0" max="2" step="0.01">
                 
                 <span id="span1b" class="range-slider__value">
                     0
@@ -231,7 +210,7 @@
                     Maxspeed of <span name="blue">Target</span>
                 </div>
                 <div class="container">
-                <input id="maxspeed2" class="range-slider__range" type="range" min="0" max="7" step="0.01">
+                <input id="maxspeed2" class="range-slider__range" value ="2" type="range" min="0" max="7" step="0.01">
                 
                 <span id="span2a" class="range-slider__value">
                     0
@@ -246,7 +225,7 @@
                     Maxforce of <span name="blue">Target</span>
                 </div>
                 <div class="container">
-                <input id="maxforce2" class="range-slider__range" type="range" min="0" max="5" step="0.01">
+                <input id="maxforce2" class="range-slider__range" value ="0.1" type="range" min="0" max="2" step="0.01">
                 
                 <span id="span2b" class="range-slider__value">
                     0
@@ -256,36 +235,64 @@
             
         </div>
 
+        <div class="box">
+
+            <!--BUTTON DISPLAY FORCES-->
+            <button id="Forces" class="button" style="margin-bottom: 30px;">
+            Display Forces ON<br>
+            (C)
+            </button>
+    
+            <!--BUTTON FREEZE-->
+            <button id="Freeze" class="button"  style="margin-bottom: 30px;">
+            Freeze OFF<br>
+            (spacebar)
+            </button>
+    
+            <!--BUTTON CHANGE ALGORITHM -->
+            <button id="change" class="button" style="margin-bottom: 30px;">
+                Pursue<br>
+                (V)
+            </button>
+
+            <!--BUTTON CHANGE ALGORITHM -->
+            <button id="reset" class="button">
+                Reset<br>
+                (R)
+            </button>
+    
+        </div>
+
         <script>
+
             //CHANGE WIDTH & HEIGHT OF CANVAS
             var canvas = document.querySelector('.viewport'),
                 ctx = canvas.getContext('2d');
-          canvas.width = screen.width / 2;
-          canvas.height = screen.height/3;
+            canvas.width = screen.width / 2;
+            canvas.height = screen.height/3;
 
             //INIT MOUSE POS
             mouseObj.Init("#VP",canvas);
 
-
-            // SET RANDOM VALUES FOR VEHICLES
-            document.getElementById("maxspeed1").value = 1 + Math.random() * 5;
-            document.getElementById("maxspeed2").value = 1 + Math.random() * 5;
+            //INIT VEHICLES' SLIDERS PARAMETERS
             document.getElementById("span1a").textContent = document.getElementById("maxspeed1").value;
             document.getElementById("span1b").textContent = document.getElementById("maxforce1").value;
             document.getElementById("span2a").textContent = document.getElementById("maxspeed2").value;
             document.getElementById("span2b").textContent = document.getElementById("maxforce2").value;
 
-
+            var target = null
             //READ IF BUTTON "PURSUE/EVADER" WAS CLICKED
             var option = 'pursuer';
             document.getElementById("change").addEventListener('click', function () {
                 if (option == 'pursuer') {
                     option = 'evader';
-                    document.getElementById("change").textContent = 'Evade<br>(V)';
+                    target = new Vector(vehicle.position.x,vehicle.position.y);
+                    document.getElementById("change").innerHTML = "Evade<br>(V)";
                 }
                 else if (option == 'evader') {
                     option = 'pursuer';
-                    document.getElementById("change").textContent = 'Pursue<br>(V)';
+                    target = new Vector(vehicle.position.x,vehicle.position.y);
+                    document.getElementById("change").innerHTML = "Pursue<br>(V)";
                 }
             }, false);
             
@@ -294,17 +301,19 @@
             if (c.keyCode == 86) {
                 if (option == 'pursuer') {
                     option = 'evader';
+                    target = new Vector(vehicle.position.x,vehicle.position.y);
                     document.getElementById("change").innerHTML = "Evade<br>(V)";
                 }
                 else if (option == 'evader') {
                     option = 'pursuer';
+                    target = new Vector(vehicle.position.x,vehicle.position.y);
                     document.getElementById("change").innerHTML = "Pursue<br>(V)";
                 }
             }
             }, false);
 
             //READ IF BUTTON "DISPLAY FORCE" WAS CLICKED
-            var displayForces = 'off';
+            var displayForces = 'on';
             document.getElementById("Forces").addEventListener('click', function () {
             if (displayForces == 'on') {
                 displayForces = 'off';
@@ -357,27 +366,43 @@
             }
             }, false);
 
+
+            //READ IF BUTTON "RESET" WAS CLICKED
+            var reset = false;
+            document.getElementById("reset").addEventListener('click', function () {
+                reset = true;
+            }, false);
+
+            //READ IF BUTTON "RESET" WAS KEYPRESSED
+            document.body.addEventListener("keydown", function (k) {
+            if (k.keyCode == 82) {
+                reset = true;
+            }
+            }, false);
+
             rangeSliderInit();
             
             //INIT VEHICLE
             var vehicle = new Vehicle(Math.random() * canvas.width/2, Math.random() * canvas.height/2);
-            var vehicle2 = new Vehicle(Math.random() * canvas.width/2,( Math.random() * canvas.height/2) + (canvas.height/2));
-            var target = null
-            if(option === 'pursuer'){
+            var vehicle_blue = new Vehicle(Math.random() * canvas.width/2,( Math.random() * canvas.height/2) + (canvas.height/2));
+            if(option == "pursuer"){
                 target = new Vector(Math.ceil(Math.random() * canvas.width/2) + (canvas.width/2), Math.ceil(Math.random() * canvas.height/2) + (canvas.height/2));
             }
             else{
-                target = new Vector(vehicle2.x,vehicle2.y);
+                target = new Vector(vehicle.position.x,vehicle.position.y);
             }
 
+            document.getElementById("VP").addEventListener('mousedown', function () {
+                target = new Vector(mouseObj.x, mouseObj.y);
+            }, false);  
+                     
+            
             //LOOP FUNC
-            let i = 0;
             function draw() {
-                if (vehicle.position.distanceBetweenPoints(vehicle2.position) < 5) {
+                
+    
+                if (vehicle.position.distanceBetweenPoints(vehicle_blue.position) < 6 || reset) {
 
-                    // SET RANDOM VALUES FOR VEHICLES
-                    document.getElementById("maxspeed1").value = 1 + Math.random() * 5;
-                    document.getElementById("maxspeed2").value = 1 + Math.random() * 5;
                     document.getElementById("span1a").textContent = document.getElementById("maxspeed1").value;
                     document.getElementById("span1b").textContent = document.getElementById("maxforce1").value;
                     document.getElementById("span2a").textContent = document.getElementById("maxspeed2").value;
@@ -385,18 +410,15 @@
 
                     //INIT VEHICLE
                     vehicle = new Vehicle(Math.random() * canvas.width/2, Math.random() * canvas.height/2);
-                    vehicle2 = new Vehicle(Math.random() * canvas.width/2,( Math.random() * canvas.height/2) + (canvas.height/2));
-                    if(option === 'pursuer'){
+                    vehicle_blue = new Vehicle(Math.random() * canvas.width/2,( Math.random() * canvas.height/2) + (canvas.height/2));
+                    if(option == 'pursuer'){
                         target = new Vector(Math.ceil(Math.random() * canvas.width/2) + (canvas.width/2), Math.ceil(Math.random() * canvas.height/2) + (canvas.height/2));
                     }
-                    else{
-                        target = new Vector(vehicle2.x,vehicle2.y);
+                    else if(option == 'evader'){
+                        target = new Vector(vehicle.position.x,vehicle.position.y);
                     }
+                    reset = false;
                 }
-                
-                document.getElementById("VP").addEventListener('mousedown', function () {
-                    target = new Vector(mouseObj.x, mouseObj.y);
-                }, false);
 
                 ctx.setTransform(1, 0, 0, 1, 0, 0); // <- JS magic for PathBegin()..
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -404,12 +426,14 @@
                 var r = document.getElementsByName("red"),
                     b = document.getElementsByName("blue");
 
-                if (option === 'pursuer') {
-                    var pursue = vehicle.pursue(vehicle2.position, vehicle2.velocity, displayForces),
-                    seek = vehicle2.seek(target.x, target.y, displayForces);
-                    var seekPursue = vehicle.seek(pursue.x,pursue.y);
+                if (option == 'pursuer') {
+                    var pursue = vehicle.pursue(vehicle_blue.position, vehicle_blue.velocity, displayForces),
+                        seekPursue = vehicle.seek(pursue.x,pursue.y),
+                        seek = vehicle_blue.seek(target.x, target.y, displayForces);
+                    
                     vehicle.applyForce(seekPursue);
-                    vehicle2.applyForce(seek);
+                    vehicle_blue.applyForce(seek);
+
                     for (let index = 0; index < r.length; index++) {
                         r[index].innerHTML = 'Pursuer';
                         b[index].innerHTML = 'Target';
@@ -417,44 +441,41 @@
                 }
 
                 else {
-                    var evade = vehicle.evade(vehicle2.position, vehicle2.velocity, displayForces);
-                    var fleeEvade = vehicle.flee(100,evade.x,evade.y,displayForces);
-                    var arrival = vehicle2.arrival(target.x, target.y,5);
+                    var evade = vehicle.evade(vehicle_blue.position, vehicle_blue.velocity, displayForces);
+                    var fleeEvade = vehicle.flee(evade.x,evade.y,100,displayForces);
+                    var seek = vehicle_blue.seek(vehicle.position.x,vehicle.position.y,displayForces);
                     vehicle.applyForce(fleeEvade);
-                    vehicle2.applyForce(arrival);
+                    vehicle_blue.applyForce(seek);
                     for (let index = 0; index < r.length; index++) {
                         r[index].innerHTML = 'Evader';
                         b[index].innerHTML = 'Seeker';
                     }
                 }
-                if(displayForces == "on"){
-                        vehicle2.renderForces();
-                        vehicle.renderForces();
-                    }
+
                 vehicle.onlyCanvas();
-                vehicle2.onlyCanvas();
+                vehicle_blue.onlyCanvas();
                
                if (freeze == 'off') {
                     vehicle.update();
-                    vehicle2.update();
+                    vehicle_blue.update();
                 }
 
                 vehicle.renderVehicle(colour = 'rgba(200,0,0,0.5)');
-                vehicle2.renderVehicle();
+                vehicle_blue.renderVehicle();
 
                 vehicle.maxforce = document.getElementById("maxforce1").value;
                 vehicle.maxspeed = document.getElementById("maxspeed1").value;
-                vehicle2.maxforce = document.getElementById("maxforce2").value;
-                vehicle2.maxspeed = document.getElementById("maxspeed2").value;
+                vehicle_blue.maxforce = document.getElementById("maxforce2").value;
+                vehicle_blue.maxspeed = document.getElementById("maxspeed2").value;
 
                 $("#pursuer_posX").text(Math.ceil(vehicle.position.x));
                 $("#pursuer_posY").text(Math.ceil(vehicle.position.y));
                 $("#pursuer_vel").text(vehicle.velocity.length().toFixed(2));
-                $("#evader_posX").text(Math.ceil(vehicle2.position.x));
-                $("#evader_posY").text(Math.ceil(vehicle2.position.y));
-                $("#evader_vel").text(vehicle2.velocity.length().toFixed(2));
+                $("#evader_posX").text(Math.ceil(vehicle_blue.position.x));
+                $("#evader_posY").text(Math.ceil(vehicle_blue.position.y));
+                $("#evader_vel").text(vehicle_blue.velocity.length().toFixed(2));
             }
-            setInterval(draw, 50);
+            setInterval(draw, 30);
         </script>
 
     </div>

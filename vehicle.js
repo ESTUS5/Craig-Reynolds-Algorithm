@@ -33,7 +33,7 @@ class Vehicle {
     return this.steeringForce;
   }
 
-  flee(safeDistance = 100, targetX = mouseObj.x, targetY = mouseObj.y, displayForces = 'off') {
+  flee(targetX = mouseObj.x, targetY = mouseObj.y,safeDistance = 100, displayForces = 'off') {
     this.desiredVelocity = new Vector(targetX, targetY);
     if (this.desiredVelocity.distanceBetweenPoints(this.position) < safeDistance) {
       this.desiredVelocity = this.desiredVelocity.subtract(this.position);
@@ -92,16 +92,18 @@ class Vehicle {
     if (displayForces == 'on') {
       this.ctx = canvas.getContext("2d");
       this.ctx.beginPath();
+      this.ctx.lineWidth = 3;
       this.ctx.moveTo(this.position.x, this.position.y);
       this.ctx.lineTo(radiusVector.x, radiusVector.y);
-      this.ctx.strokeStyle = "rgba(150,0,0,0.5)";
+      this.ctx.strokeStyle = "rgba(150,0,0,1)";
       this.ctx.stroke();
       this.ctx.closePath();
       this.ctx.beginPath();
+      this.ctx.lineWidth = 3;
       this.ctx.moveTo(this.position.x, this.position.y);
       this.ctx.lineTo(lengthVector.x, lengthVector.y);
       this.ctx.lineTo(radiusVector.x, radiusVector.y);
-      this.ctx.strokeStyle = "rgba(50,200,0,0.5)";
+      this.ctx.strokeStyle = "rgba(50,200,0,1)";
       this.ctx.stroke();
       this.ctx.closePath();
       this.renderCircleAround(lengthVector.x, lengthVector.y, radius);
@@ -211,6 +213,7 @@ class Vehicle {
     if (displayForces == 'on') {
       this.ctx = canvas.getContext('2d');
       this.ctx.beginPath();
+      this.ctx.lineWidth = 3;
       this.ctx.moveTo(this.position.x, this.position.y);
       this.ctx.lineTo(target.x, target.y);
       this.ctx.arc(target.x,target.y,3,0,2*Math.PI);
@@ -228,6 +231,7 @@ class Vehicle {
     if (displayForces == 'on') {
       this.ctx = canvas.getContext('2d');
       this.ctx.beginPath();
+      this.ctx.lineWidth = 3;
       this.ctx.moveTo(this.position.x, this.position.y);
       this.ctx.lineTo(target.x, target.y);
       this.ctx.arc(target.x,target.y,3,0,2*Math.PI);
@@ -300,12 +304,12 @@ class Vehicle {
       summedVector = summedVector.add(this.position);
     }
     if(displayForces == "on"){
-      this.renderVectorTo(this.position.x +  (mainRay.x), this.position.y + (mainRay.y));
-      this.renderVectorTo(this.position.x + (leftRay.x), this.position.y + (leftRay.y));
-      this.renderVectorTo(this.position.x + (rightRay.x), this.position.y + (rightRay.y));
-      if(summedVector.x != 0 || summedVector.y != 0){
-        this.renderVectorTo(summedVector.x ,summedVector.y);
-      }
+      this.renderVectorTo(this.position.x +  (mainRay.x), this.position.y + (mainRay.y),"#00C691",3);
+      this.renderVectorTo(this.position.x + (leftRay.x), this.position.y + (leftRay.y),"#00C691",3);
+      this.renderVectorTo(this.position.x + (rightRay.x), this.position.y + (rightRay.y),"#00C691",3);
+      //if(summedVector.x != 0 || summedVector.y != 0){
+      //  this.renderVectorTo(summedVector.x ,summedVector.y,"#2CE9FF");
+      //}
     }
     
     return summedVector;
@@ -339,7 +343,7 @@ class Vehicle {
     var dir = ob.subtract(oa);
     dir = dir.normalize().multiply(targetOffset);
     var target_dir = target.add(dir);
-    var distance = predictPoint.distanceBetweenPoints(target);
+    //var distance = predictPoint.distanceBetweenPoints(target);
     if (displayForces == "on") {
       this.ctx = canvas.getContext("2d");
       this.ctx.beginPath();
@@ -353,12 +357,12 @@ class Vehicle {
       this.renderCircleAround(predictPoint.x, predictPoint.y, 5);
       this.renderCircleAround(target_dir.x, target_dir.y, 5);
     }
-    if (distance > this.pathRadius) {
+    //if (distance > this.pathRadius) {
       return target_dir;
-    }
-    else{
-      return new Vector(0,0);
-    }
+    //}
+    //else{
+    //  return new Vector(0,0);
+    //}
   }
 
   wallFollow(objects,predictDistance = 20,targetOffset = 10,displayForces) {
@@ -373,7 +377,7 @@ class Vehicle {
           pointOnSurface.equal(objects[i].end);
       }
       if(displayForces == "on"){
-        this.renderCircleAround(pointOnSurface.x,pointOnSurface.y,3)
+        this.renderCircleAround(pointOnSurface.x,pointOnSurface.y,5,3)
       }
       var distance = predictPoint.distanceBetweenPoints(pointOnSurface);
       if (distance < smallest_distance) {
@@ -401,8 +405,7 @@ class Vehicle {
         this.ctx.strokeStyle = "rgb(34,139,34)";
         this.ctx.stroke();
         this.ctx.closePath();
-        this.renderCircleAround(target.x,target.y,2);
-        this.renderCircleAround(targetDir.x,targetDir.y,2);
+        this.renderCircleAround(targetDir.x,targetDir.y,5,3,"#F55F20");
       }
       if(distance < 15 || distance > 25){
         if(displayForces == "on"){
@@ -505,7 +508,7 @@ class Vehicle {
       this.ctx.beginPath();
       this.ctx.moveTo(Vehicle.position.x, Vehicle.position.y);
       this.ctx.lineTo(predictedPosition.x, predictedPosition.y);
-      this.ctx.strokeStyle = "rgba(255,0,0,1)";
+      this.ctx.strokeStyle = "#00C691";
       this.ctx.stroke();
       this.ctx.closePath();
     }
@@ -519,7 +522,7 @@ class Vehicle {
       return steerAway;
     }
     else{
-      var target = Vehicle.velocity.normalize().multiply(-1.3);
+      var target = Vehicle.velocity.normalize().multiply(-1);
       target = target.multiply(offset);
       target = target.add(Vehicle.position)
       if(displayForces == "on"){
@@ -646,11 +649,12 @@ class Vehicle {
     this.ctx.closePath();
     this.ctx.lineWidth = 1;
   }
-  renderCircleAround(x, y, r = this.radius) {
+  renderCircleAround(x, y, r = this.radius, width=1, colour = "rgba(255, 0, 255,0.5)") {
     this.ctx = canvas.getContext("2d");
     this.ctx.beginPath();
+    this.ctx.lineWidth = width;
     this.ctx.arc(x, y, r, 0, 2 * Math.PI);
-    this.ctx.strokeStyle = "rgba(255, 0, 255,0.5)";
+    this.ctx.strokeStyle = colour;
     this.ctx.stroke();
     this.ctx.closePath();
   }
