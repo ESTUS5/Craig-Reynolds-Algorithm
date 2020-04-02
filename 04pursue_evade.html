@@ -391,15 +391,17 @@
             else{
                 target = new Vector(vehicle.position.x,vehicle.position.y);
             }
-
+            var newTarget = false;
             document.getElementById("VP").addEventListener('mousedown', function () {
-                target = new Vector(mouseObj.x, mouseObj.y);
+                    newTarget = true;
+                    target = new Vector(mouseObj.x, mouseObj.y);
             }, false);  
-                     
-            
+ 
             //LOOP FUNC
             function draw() {
-                
+                if(option == 'evader' && newTarget == false){
+                        target = new Vector(vehicle.position.x,vehicle.position.y);
+                }
     
                 if (vehicle.position.distanceBetweenPoints(vehicle_blue.position) < 6 || reset) {
 
@@ -417,7 +419,18 @@
                     else if(option == 'evader'){
                         target = new Vector(vehicle.position.x,vehicle.position.y);
                     }
+                    newTarget = false;
                     reset = false;
+                }
+
+                if(vehicle_blue.position.distanceBetweenPoints(target) <6){
+                    if(option == 'pursuer'){
+                        target = new Vector(Math.ceil(Math.random() * canvas.width/2) + (canvas.width/2), Math.ceil(Math.random() * canvas.height/2) + (canvas.height/2));
+                    }
+                    else if(option == 'evader'){
+                        target = new Vector(vehicle.position.x,vehicle.position.y);
+                    }
+                    newTarget = false;
                 }
 
                 ctx.setTransform(1, 0, 0, 1, 0, 0); // <- JS magic for PathBegin()..
@@ -430,7 +443,9 @@
                     var pursue = vehicle.pursue(vehicle_blue.position, vehicle_blue.velocity, displayForces),
                         seekPursue = vehicle.seek(pursue.x,pursue.y),
                         seek = vehicle_blue.seek(target.x, target.y, displayForces);
-                    
+                    if(displayForces == "on"){
+                        vehicle_blue.renderCircleAround(target.x,target.y);
+                    }
                     vehicle.applyForce(seekPursue);
                     vehicle_blue.applyForce(seek);
 
@@ -443,7 +458,10 @@
                 else {
                     var evade = vehicle.evade(vehicle_blue.position, vehicle_blue.velocity, displayForces);
                     var fleeEvade = vehicle.flee(evade.x,evade.y,100,displayForces);
-                    var seek = vehicle_blue.seek(vehicle.position.x,vehicle.position.y,displayForces);
+                    var seek = vehicle_blue.seek(target.x,target.y,displayForces);
+                    if(displayForces == "on"){
+                        vehicle_blue.renderCircleAround(target.x,target.y);
+                    }
                     vehicle.applyForce(fleeEvade);
                     vehicle_blue.applyForce(seek);
                     for (let index = 0; index < r.length; index++) {
