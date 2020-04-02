@@ -130,10 +130,10 @@
          which applies the agent with the vector with a length of the maxspeed.
          That vector keeps the agent in motion even when the OA method doesn't respond with the environment.
          In the simulation, the vehicle tries to move as fast as he can and avoid <span style="color:pink">objects</span> ahead of him. 
-         The algorithm calculates the normal point of every <span style="color:pink">objects</span> on the line parallel to the vehicle's velocity,
-          then it will consider only those that are between vehicle position and predicted position of the vehicle.
-           If any of the selected objects have a radius that overlaps with <span style="color:rgb(68, 207, 79)">space</span> ahead of
-            agent and there is no other <span style="color:pink">objects</span> between it and agent,
+         The algorithm calculates the normal point of the every <span style="color:pink">object</span> on the line parallel to the vehicle's velocity,
+          then it will consider only those that are between the vehicle's position and the predicted position of the vehicle.
+           If any of the selected <span style="color:pink">objects</span> have a radius that overlaps with a <span style="color:rgb(68, 207, 79)">space</span> ahead of
+            the agent and there is no other <span style="color:pink">object</span> between it and agent,
             a vector from its position to the normal point is added to that normal point.
             That way the mirrored point of the object's position is calculated to avoid a collision.
              The <span style="color:rgba(59, 116, 238, 0.918)">braking force</span> will be also added to the calculated point and scaled-down or up accordingly to
