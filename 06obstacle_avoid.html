@@ -126,23 +126,23 @@
   <div class="main">
 
     <div class="explain_box">
-      <span>&nbsp;&nbsp;The Obstacle Avoidance (OA) algorithm is used with a simple method runAhead(),
-         which applies the agent with the vector with a length of the maxspeed.
-         That vector keeps the agent in motion even when the OA method doesn't respond with the environment.
+      <span>&nbsp;&nbsp;Obstacle Avoidance algorithm is used with a simple method runAhead(),
+         which applies the agent with a vector of the length of the maxspeed.
+         That vector keeps the agent in motion even when the Obstacle Avoidance method doesn't return any vectors.
          In the simulation, the vehicle tries to move as fast as he can and avoid <span style="color:pink">objects</span> ahead of him. 
-         The algorithm calculates the normal point of the every <span style="color:pink">object</span> on the line parallel to the vehicle's velocity,
-          then it will consider only those that are between the vehicle's position and the predicted position of the vehicle.
+         The algorithm calculates the normal point of every <span style="color:pink">object</span> on the line parallel to the vehicle's velocity.
+          Then it considers only those <span style="color:pink">objects</span> that are between the vehicle's position and the predicted position of the vehicle.
            If any of the selected <span style="color:pink">objects</span> have a radius that overlaps with a <span style="color:rgb(68, 207, 79)">space</span> ahead of
-            the agent and there is no other <span style="color:pink">object</span> between it and agent,
+            the agent and there is no other <span style="color:pink">object</span> between it and the agent,
             a vector from its position to the normal point is added to that normal point.
             That way the mirrored point of the object's position is calculated to avoid a collision.
              The <span style="color:rgba(59, 116, 238, 0.918)">braking force</span> will be also added to the calculated point and scaled-down or up accordingly to
               the distance between the vehicle's position and the <span style="color:pink">object's position</span>.
-              After that, the point can be returned and passed to the Seek method.<br>
-            The <span style="color:#FF4500">orange</span> vector pointing out of the center of the vehicle is a
+              After that, the point can be returned and passed to Seek.<br>
+            The <span style="color:#FF4500">orange</span> vector sticking out of the center of the vehicle is a
              visualization of the desired velocity and the <span style="color:#6A5ACD">violet</span> one shows the current velocity of the agent.
-             As mentioned before the <span style="color:rgba(59, 116, 238, 0.918)">blue</span> vector represents braking force,
-              and the <span style="color:rgb(49, 133, 56)">green</span> one represents avoidance.<br>
+             The <span style="color:rgba(59, 116, 238, 0.918)">blue</span> vector represents a braking force,
+              and the <span style="color:rgb(49, 133, 56)">green</span> one represents an avoidance.<br>
             &nbsp;&nbsp;If you want to change the direction of the vehicle choose a point on the canvas by moving your cursor
              and keeping the left click mouse button pressed until the modified direction satisfies you.<br>
             &nbsp;&nbsp;The average of occurring collisions per step <span id="stat">0</span>

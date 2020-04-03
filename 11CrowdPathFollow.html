@@ -125,17 +125,16 @@
 
       <div class="explain_box">
       <span>
-        &nbsp;&nbsp;The Crowd Path following is supposedly an example of a human crowd walking through the corridor.
-         Only two methods are combined to achieve this effect.
-          First was already described as Path following algorithm and here is used the same way.
-           The second method is new and requires other vehicles to work properly.
-            It is called Separation and is quite simple.
-             The method finds every neighbour's position after that, it makes an average of it and then inverses the vector.
-              When it is applied vehicle will be separating itself from the densest space filled with neighbours.
+        &nbsp;&nbsp;Crowd Path Following is supposedly an example of a human crowd walking through a corridor.
+         Two methods are combined to achieve this effect.
+          First algorithm is Path Following and it works in the same way as in the ninth demonstration.
+           The second method, called Separation, is new and requires the use of other vehicles.
+             The method finds the position of each neighbour, calculates their average, and then creates a vector.
+              When the vector is passed to applyForce, the vehicle will be separating itself from the densest space filled with the neighbours.
         <br>
-        &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of the vehicle is a visualization of the desired velocity and the <span style="color:#6A5ACD">violet</span> one shows the current velocity of the agent.
-        <span style="color:rgba(250, 85, 250, 0.966)">Pink space</span> is the path that the vehicle follows.
-         <span style="color:rgba(250, 85, 250, 0.966)">Pink circles</span> are representing the predicted position of the vehicle and the target's position.
+        &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector sticking out of the center of the vehicle is a visualization of the desired velocity and the <span style="color:#6A5ACD">violet</span> one shows the current velocity of the agent.
+        The <span style="color:rgba(250, 85, 250, 0.966)">pink space</span> is the path that the vehicle follows.
+        The <span style="color:rgba(250, 85, 250, 0.966)">pink circles</span> are representing the predicted position of the vehicle and the target's position.
           The <span style="color:red">red line</span> follows the steps taken by the algorithm to calculate the target.<br>
       </span>
     </div>

@@ -127,14 +127,14 @@
 
   <div class="main">
     <div class="explain_box">
-      <span> &nbsp;&nbsp;The Wander algorithm simulates the random movement of the agent.
-        To achieve the desired movement the random number theta is created outside of the method. Theta is a random degree (from 0 to 360) which will be initial direction for the vehicle.
-         Inside the Wander method, the theta is modified by a random number of a certain length (in this example it's range is from -15 to 15).
-         Then new theta is used to calculate points on a circle with a certain radius. The calculated position is returned by the Wander and passed to the Seek.
-         Thanks to small steps vehicle will be able to move ahead quite smoothly and randomly.<br>
-        &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of the vehicle is a visualization of the desired velocity and the <span style="color:#6A5ACD">violet</span>
+      <span> &nbsp;&nbsp;Wander algorithm simulates the random movement of the agent.
+        To achieve the desired movement the random number theta is created outside of the method. Theta is a random degree (from 0 to 360), which will be an initial direction for the vehicle.
+         Inside the Wander method, theta is modified by a random number of a certain length (in this example it's range is from -15 to 15).
+         Then a new theta is used to calculate points on a circle with a certain radius. The calculated position is returned by Wander and passed to Seek.
+         Thanks to small steps vehicle is able to move ahead quite smoothly and randomly.<br>
+        &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector sticking out of the center of the vehicle is a visualization of the desired velocity and the <span style="color:#6A5ACD">violet</span>
          one shows the current velocity of the agent.
-         The <span style="color:#df80df">radius of the circle</span> and the <span style="color:#71f56d">vector pointing to that circle</span> can be modified using sliders below.<br>
+         The <span style="color:#df80df">radius of a circle</span> and the <span style="color:#71f56d">vector pointing to that circle</span> can be modified using sliders below.<br>
       </span>
     </div>
 

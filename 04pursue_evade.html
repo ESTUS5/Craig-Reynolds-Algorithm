@@ -128,15 +128,16 @@
     <div class="main">
         
         <div class="explain_box">
-            <span>&nbsp;&nbsp;The Pursue and the Evade are two very similar algorithms. If the Flee is inverse of the Seek, then the same is the Evade for the Pursue.
-                The idea behind this methods is quite simple, but with a flaws.
-                The <span style="color:#cd5c5c">red vehicle</span> is using the Pursue or the Evade method.
+            <span>&nbsp;&nbsp;Pursue and Evade are two very similar algorithms.
+                The idea behind those methods is quite simple, but with flaws.
+                In the simulation, a <span style="color:#cd5c5c">red vehicle</span> is using the Pursue or the Evade algorithm.
                 The <span style="color:#cd5c5c">red agent</span> checks the current velocity and the position of his target, then predicts when they are going to overlap with each other.
-                In Pursue method the predicted position is passed to the Seek so the <span style="color:#cd5c5c">red vehicle</span> will catch the target(the <span style="color:#5b7ae0">blue vehicle</span>).
-                 On the other hand in the Evade the predicted position is passed to the Flee so the <span style="color:#cd5c5c">red agent</span> can evade the target.
-                Because the methods calculate a future position of the target and only that position is considered in next step, which is passing the target to another method, algorithms are not robust.<br>
-                &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector pointing out of the center of the vehicle is a visualization of the desired velocity and the <span style="color:#6A5ACD">violet</span>
-                one shows current velocity of the agent. The <span style="color:rgba(73, 131, 103, 0.795)">green line with the circle</span> describes the point of collision between the two vehicles.<br>
+                In the Pursue method the predicted position is passed to Seek so the <span style="color:#cd5c5c">red vehicle</span> can catch the target(the <span style="color:#5b7ae0">blue vehicle</span>).
+                 On the other hand in Evade the predicted position is passed to Flee so the <span style="color:#cd5c5c">red agent</span> can evade the target.
+                However, because the methods calculate a future position of the target and only that position is considered in next step,
+                 which is passing the predicted position to another method, algorithms are not robust.<br>
+                &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector sticking out of the center of the vehicle is a visualization of the desired velocity and the <span style="color:#6A5ACD">violet</span>
+                one shows the current velocity of the agent. The <span style="color:rgba(73, 131, 103, 0.795)">green line with a circle</span> describes a point of collision between the two vehicles.<br>
                 &nbsp;&nbsp;During simulation it is possible to change direction of the target (the <span style="color:#5b7ae0">blue vehicle</span>) by clicking with the left click mouse button on the canvas.
             </span>
         </div>
