@@ -127,15 +127,15 @@
     <div class="main">
 
         <div class="explain_box">
-          <span>&nbsp;&nbsp;Queue algorithm checks if in a circle (a space) ahead of the vehicle is any neighbour.
-             If so, the deceleration vector is calculated and applied to the agent.
+          <span>&nbsp;&nbsp;Queue algorithm decelerates and stops the vehicle, if in front of the agent appears other vehicle.
+             When the other vehicle is gone the method refrains from stopping the vehicle and begins to monitor space in front of the agent.
              In emergencies, when the neighbour will approach from another direction, the vehicle will brake immediately and move slowly.
              In this simulation, beside Queue, Seek is used to give vehicles a target behind a doors (a narrow path) moreover,
              Separation keeps the crowd from overlapping and lastly Containment is used to avoid walls.<br>
             &nbsp;&nbsp;The <span style="color:#FF4500">orange</span> vector sticking out of the center of the vehicle is a visualization of the desired velocity and the <span style="color:#6A5ACD">violet</span> one shows the current velocity of the agent.
-            the<span style="color:rgba(250, 85, 250, 0.966)">pink walls</span> are obstacles that the algorithm should detect and avoid.
-            The<span style="color:rgba(250, 85, 250, 0.966)">pink circle</span> placed in front of vehicle is space detected by Queue to prevent collision with the vehicle ahead.
-            The<span style="color:rgba(250, 85, 250, 0.966)">pink circle</span> surrounding vehicle is used by Queue to check if another vehicles are not too close.
+            the<span style="color:pink">pink walls</span> are obstacles that the algorithm should detect and avoid.
+            The<span style="color:pink">pink circle</span> placed in front of vehicle is space detected by Queue to prevent collision with the vehicle ahead.
+            The<span style="color:pink">pink circle</span> surrounding vehicle is used by Queue to check if another vehicles are not too close.
           </span>
         </div>
 
